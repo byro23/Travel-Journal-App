@@ -6,11 +6,58 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6BD9BD372CC33DA00077195C /* Share-Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6BD9BD2D2CC33DA00077195C /* Share-Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6BD9BD352CC33DA00077195C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1D091FF2CBFC23900E43436 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BD9BD2C2CC33DA00077195C;
+			remoteInfo = "Share-Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6BD9BD382CC33DA00077195C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6BD9BD372CC33DA00077195C /* Share-Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6BD9BD2D2CC33DA00077195C /* Share-Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share-Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1D092072CBFC23900E43436 /* Travel Journal App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Travel Journal App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6BD9BD3B2CC33DA00077195C /* Exceptions for "Share-Extension" folder in "Share-Extension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6BD9BD2C2CC33DA00077195C /* Share-Extension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6BD9BD2E2CC33DA00077195C /* Share-Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6BD9BD3B2CC33DA00077195C /* Exceptions for "Share-Extension" folder in "Share-Extension" target */,
+			);
+			path = "Share-Extension";
+			sourceTree = "<group>";
+		};
 		C1D092092CBFC23900E43436 /* Travel Journal App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Travel Journal App";
@@ -19,6 +66,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6BD9BD2A2CC33DA00077195C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1D092042CBFC23900E43436 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
+				6BD9BD2E2CC33DA00077195C /* Share-Extension */,
 				C1D092082CBFC23900E43436 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				C1D092072CBFC23900E43436 /* Travel Journal App.app */,
+				6BD9BD2D2CC33DA00077195C /* Share-Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +104,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6BD9BD2C2CC33DA00077195C /* Share-Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BD9BD3C2CC33DA00077195C /* Build configuration list for PBXNativeTarget "Share-Extension" */;
+			buildPhases = (
+				6BD9BD292CC33DA00077195C /* Sources */,
+				6BD9BD2A2CC33DA00077195C /* Frameworks */,
+				6BD9BD2B2CC33DA00077195C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6BD9BD2E2CC33DA00077195C /* Share-Extension */,
+			);
+			name = "Share-Extension";
+			packageProductDependencies = (
+			);
+			productName = "Share-Extension";
+			productReference = 6BD9BD2D2CC33DA00077195C /* Share-Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C1D092062CBFC23900E43436 /* Travel Journal App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C1D0921A2CBFC23A00E43436 /* Build configuration list for PBXNativeTarget "Travel Journal App" */;
@@ -55,10 +133,12 @@
 				C1D092032CBFC23900E43436 /* Sources */,
 				C1D092042CBFC23900E43436 /* Frameworks */,
 				C1D092052CBFC23900E43436 /* Resources */,
+				6BD9BD382CC33DA00077195C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6BD9BD362CC33DA00077195C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
@@ -80,6 +160,9 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					6BD9BD2C2CC33DA00077195C = {
+						CreatedOnToolsVersion = 16.0;
+					};
 					C1D092062CBFC23900E43436 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -100,11 +183,19 @@
 			projectRoot = "";
 			targets = (
 				C1D092062CBFC23900E43436 /* Travel Journal App */,
+				6BD9BD2C2CC33DA00077195C /* Share-Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6BD9BD2B2CC33DA00077195C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1D092052CBFC23900E43436 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +206,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6BD9BD292CC33DA00077195C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1D092032CBFC23900E43436 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +222,63 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6BD9BD362CC33DA00077195C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6BD9BD2C2CC33DA00077195C /* Share-Extension */;
+			targetProxy = 6BD9BD352CC33DA00077195C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		6BD9BD392CC33DA00077195C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Share-Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Share-Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Travel-Journal-App.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6BD9BD3A2CC33DA00077195C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Share-Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Share-Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Travel-Journal-App.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		C1D092182CBFC23A00E43436 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -303,6 +457,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6BD9BD3C2CC33DA00077195C /* Build configuration list for PBXNativeTarget "Share-Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BD9BD392CC33DA00077195C /* Debug */,
+				6BD9BD3A2CC33DA00077195C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C1D092022CBFC23900E43436 /* Build configuration list for PBXProject "Travel Journal App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
