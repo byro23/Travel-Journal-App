@@ -45,11 +45,11 @@ class AuthController: ObservableObject { // This class is used to manage the use
     }
     
     // Create an account and authenticate the user
-    func signUp(email: String, password: String) async {
+    func signUp(email: String, password: String, name: String) async {
         authenticationState = .authenticating
         
         do {
-            let isEmailUnique = try await FirebaseManager.shared.createUser(email: email, password: password)
+            let isEmailUnique = try await FirebaseManager.shared.createUser(email: email, password: password, name: name)
             if(isEmailUnique) {
                 try await FirebaseManager.shared.authenticateUser(email: email, password: password)
                 await fetchUser()
