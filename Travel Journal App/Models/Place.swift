@@ -7,20 +7,8 @@
 
 import Foundation
 
-
-class Place {
-    
-    let id = UUID().uuidString
+struct Place: Identifiable {
+    let id = UUID()
     let placeName: String
-    let address: String
-    let latitude: Double
-    let longitude: Double
-    let userId = UUID().uuidString
-    
-    init(placeName: String, address: String, latitude: Double, longitude: Double) {
-        self.placeName = placeName
-        self.address = address
-        self.latitude = latitude
-        self.longitude = longitude
-    }
+    let placeAddress: String
 }

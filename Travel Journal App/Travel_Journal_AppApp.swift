@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Travel_Journal_AppApp: App {
@@ -17,5 +18,6 @@ struct Travel_Journal_AppApp: App {
             MapView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+        .modelContainer(for: Journal.self)
     }
 }

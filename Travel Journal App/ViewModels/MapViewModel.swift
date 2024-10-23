@@ -8,6 +8,7 @@
 import Foundation
 import MapKit
 import _MapKit_SwiftUI
+import SwiftData
 
 class MapViewModel: ObservableObject {
     
@@ -15,13 +16,15 @@ class MapViewModel: ObservableObject {
     
     private let mapView = MKMapView() // Allows for interaction with the map
     
-    @Published var selectedCoordinate: CLLocationCoordinate2D?
+    @Published var tappedCoordinates: CLLocationCoordinate2D?
     
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
     )
     @Published var cameraPosition: MapCameraPosition = .automatic
     @Published var showNewPlaceSheet = false
+    @Published var tappedMap = false
+    
     
     
     func convertTapToCoordinates(at point: CGPoint) -> CLLocationCoordinate2D {

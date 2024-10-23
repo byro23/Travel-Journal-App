@@ -7,9 +7,12 @@
 
 import SwiftUI
 import MapKit
+import SwiftData
 
 struct MapView: View {
     @StateObject var viewModel = MapViewModel()
+    @Environment(\.modelContext) private var context // For using Swift Data
+    @Query private var journals: [Journal] = []
     
     let initialPosition = MapCameraPosition.region(
         MKCoordinateRegion(
@@ -28,13 +31,22 @@ struct MapView: View {
                 }
                 .onTapGesture { position in
                     if let coordinate = proxy.convert(position, from: .local) {
-                        
+                        viewModel.tappedCoordinates = coordinate
+                        viewModel.tappedMap = true
                     }
                 }
             }
             
         }
-        //.sheet(item: $viewModel.showNewPlaceSheet, content: )
+        .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap, actions: {
+            Button("Create journal at this location", role: .none) {
+                viewModel.showNewPlaceSheet = true
+            }
+            Button("Cancel", role: .cancel) { }
+        })
+        .sheet(isPresented: $viewModel.showNewPlaceSheet) {
+            NewPlaceView(showingSheet: $viewModel.showNewPlaceSheet, longitude: viewModel.tappedCoordinates?.longitude ?? 0.0, latitude: viewModel.tappedCoordinates?.latitude ?? 0.0)
+        }
         
         
         
