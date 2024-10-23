@@ -22,11 +22,19 @@ struct MapView: View {
         
         VStack{
             HeaderView()
-            
-            Map(initialPosition: initialPosition) {
-                
+            MapReader { proxy in
+                Map(initialPosition: initialPosition) {
+                    
+                }
+                .onTapGesture { position in
+                    if let coordinate = proxy.convert(position, from: .local) {
+                        
+                    }
+                }
             }
+            
         }
+        //.sheet(item: $viewModel.showNewPlaceSheet, content: )
         
         
         
