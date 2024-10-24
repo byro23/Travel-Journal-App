@@ -35,8 +35,6 @@ class NewPlaceViewModel: ObservableObject {
         
         let searchSpan = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
         
-        print(searchSpan)
-        
         let searchRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: placeLatitude, longitude: placeLongitude), span: searchSpan)
         
         let searchRequest = MKLocalSearch.Request()
@@ -53,10 +51,18 @@ class NewPlaceViewModel: ObservableObject {
                 return
             }
             
+            let centerLocation = CLLocation(latitude: self.placeLatitude, longitude: self.placeLongitude)
+            
             let fetchedPlaces = response.mapItems.compactMap { mapItem -> Place? in
                 guard let name = mapItem.name else { return nil }
                 let coordinate = mapItem.placemark.coordinate
                 let address = mapItem.placemark.title ?? "No address available"
+                
+                // Calculate distance from center location
+                let placeLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                let distance = centerLocation.distance(from: placeLocation) // Distance in meters
+                
+                guard distance <= 1000 else { return nil } // Filter out places > 1 km away (necessary unless we target iOS 18 minimum)
                 
                 return Place(placeName: name, placeAddress: address, latitude: coordinate.latitude, longitude: coordinate.longitude)
             }
