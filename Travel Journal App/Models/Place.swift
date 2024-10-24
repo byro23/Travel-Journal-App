@@ -11,4 +11,6 @@ struct Place: Identifiable {
     let id = UUID()
     let placeName: String
     let placeAddress: String
+    let latitude: Double
+    let longitude: Double
 }

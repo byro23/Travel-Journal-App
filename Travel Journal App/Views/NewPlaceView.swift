@@ -22,33 +22,50 @@ struct NewPlaceView: View {
     var body: some View {
         VStack {
             Form {
+                
+                if(viewModel.isFetchingSuggestions) {
+                    HStack {
+                        Text("Fetching suggestions")
+                            .font(.headline)
+                        ProgressView()
+                            .scaleEffect(0.8)
+                            .padding(.trailing, 8)
+                    }
+                }
+                else if(viewModel.places.isEmpty) {
+                    Text("No suggestions found.")
+                        .font(.headline)
+                }
+                else {
+                    ForEach(viewModel.places.prefix(5)) { place in
+                        PlaceRow(place: place)
+                    }
+                }
+                
+                
                 Section {
                     TextField("Enter place name", text: $viewModel.placeName)
                     
-                    Text("Suggestions")
-                        .font(.headline)
                     
-                    if(!viewModel.placeResults.isEmpty) {
-                        
-                    }
                     
                 } header: {
                     Text("Place Information")
                 }
+                
                 Section {
                     TextEditor(text: $viewModel.journalEntry)
                 } header: {
                     Text("Journal Entry")
                 }
                 
-                Button("Add Entry") {
+                Button("Confirm") {
                     addJournalEntry()
                 }
             }
         }
         .navigationTitle("New Journal")
         .onAppear {
-            viewModel.fetchNearByPlaces()
+            viewModel.fetchNearbyPlaces()
         }
     }
     

@@ -53,7 +53,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "PLACES_API_KEY"
-            value = "AIzaSyBCRZrQOH5LXgF6yIZ6kpK_j-v1K7coCQc"
+            value = "AIzaSyDcoWqB9uQQ-bdklcirGOynHL7lxXMbUmE"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

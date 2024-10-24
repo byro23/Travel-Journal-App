@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C1C20AD32CC8BE2C00EFD4FC /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = C1C20AD22CC8BE2C00EFD4FC /* GooglePlaces */; };
 		C1D092212CC3748F00E43436 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092202CC3748F00E43436 /* FirebaseAnalytics */; };
 		C1D092232CC3748F00E43436 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092222CC3748F00E43436 /* FirebaseAuth */; };
 		C1D092252CC3748F00E43436 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092242CC3748F00E43436 /* FirebaseFirestore */; };
@@ -31,7 +30,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1D092212CC3748F00E43436 /* FirebaseAnalytics in Frameworks */,
-				C1C20AD32CC8BE2C00EFD4FC /* GooglePlaces in Frameworks */,
 				C1D092232CC3748F00E43436 /* FirebaseAuth in Frameworks */,
 				C1D092252CC3748F00E43436 /* FirebaseFirestore in Frameworks */,
 			);
@@ -79,7 +77,6 @@
 				C1D092202CC3748F00E43436 /* FirebaseAnalytics */,
 				C1D092222CC3748F00E43436 /* FirebaseAuth */,
 				C1D092242CC3748F00E43436 /* FirebaseFirestore */,
-				C1C20AD22CC8BE2C00EFD4FC /* GooglePlaces */,
 			);
 			productName = "Travel Journal App";
 			productReference = C1D092072CBFC23900E43436 /* Travel Journal App.app */;
@@ -111,7 +108,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				C1C20AD12CC8BE2C00EFD4FC /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C1D092082CBFC23900E43436 /* Products */;
@@ -278,6 +274,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,6 +303,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -343,14 +341,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C1C20AD12CC8BE2C00EFD4FC /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.1.0;
-			};
-		};
 		C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -362,11 +352,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C1C20AD22CC8BE2C00EFD4FC /* GooglePlaces */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C1C20AD12CC8BE2C00EFD4FC /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
-			productName = GooglePlaces;
-		};
 		C1D092202CC3748F00E43436 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

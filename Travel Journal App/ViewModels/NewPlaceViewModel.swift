@@ -6,53 +6,68 @@
 //
 
 import Foundation
-import GooglePlaces
+import MapKit
 
 
 class NewPlaceViewModel: ObservableObject {
     
     @Published var placeName: String = ""
     @Published var journalEntry: String = ""
+    @Published var places: [Place] = []
+    @Published var isFetchingSuggestions = false
     
     var placeLongitude: Double = 0.0
     var placeLatitude: Double = 0.0
-    
-    @Published var placeResults: [GMSPlace] = []
     
     init(longitude: Double, latitude: Double) {
         placeLongitude = longitude
         placeLatitude = latitude
     }
     
-    func fetchNearByPlaces() {
+    func fetchNearbyPlaces() {
+        isFetchingSuggestions = true
         
-        // Define the search area as a 3000 meter diameter circle in San Francisco, CA.
-        let circularLocationRestriction = GMSPlaceCircularLocationOption(CLLocationCoordinate2DMake(placeLatitude, placeLatitude), 3000) // Look for nearby places in a 3km radius
+        print("Latitude: \(placeLatitude) Longitude: \(placeLongitude)")
         
-        // Specify the fields to return in the GMSPlace object for each place in the response.
-        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.formattedAddress].map {$0.rawValue}
+        let latitudeDelta = 1 / 111.0
+        let longitudeDelta = 1 / (111.0 * cos(placeLatitude * .pi / 180))
         
-        // Create the GMSPlaceSearchNearbyRequest, specifying the search area and GMSPlace fields to return.
-        var request = GMSPlaceSearchNearbyRequest(locationRestriction: circularLocationRestriction, placeProperties: placeProperties)
-        let includedTypes = ["restaurant", "cafe", "tourist_attraction", "museum", "art_gallery", "zoo", "amusement_park",
-        "lodging", "campground", "restaurant", "cafe", "bakery", "bar"]
         
-        request.includedTypes = includedTypes
-
-        let callback: GMSPlaceSearchNearbyResultCallback = { [weak self] results, error in
-          guard let self, error == nil else {
-            if let error {
-              print(error.localizedDescription)
+        let searchSpan = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+        
+        print(searchSpan)
+        
+        let searchRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: placeLatitude, longitude: placeLongitude), span: searchSpan)
+        
+        let searchRequest = MKLocalSearch.Request()
+        searchRequest.region = searchRegion
+        searchRequest.resultTypes = .pointOfInterest
+        searchRequest.naturalLanguageQuery = "Things to do"
+        
+        let search = MKLocalSearch(request: searchRequest)
+        
+        search.start { response, error in
+            guard let response = response, error == nil else {
+                print("Search error: \(String(describing: error?.localizedDescription))")
+                self.isFetchingSuggestions = false
+                return
             }
-            return
-          }
-          guard let results = results as? [GMSPlace] else {
-            return
-          }
-          placeResults = results
+            
+            let fetchedPlaces = response.mapItems.compactMap { mapItem -> Place? in
+                guard let name = mapItem.name else { return nil }
+                let coordinate = mapItem.placemark.coordinate
+                let address = mapItem.placemark.title ?? "No address available"
+                
+                return Place(placeName: name, placeAddress: address, latitude: coordinate.latitude, longitude: coordinate.longitude)
+            }
+            
+            DispatchQueue.main.async {
+                self.places = fetchedPlaces
+                self.isFetchingSuggestions = false
+            }
         }
-
-        GMSPlacesClient.shared().searchNearby(with: request, callback: callback)
+        
     }
+    
     
 }
