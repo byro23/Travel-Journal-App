@@ -1,13 +1,15 @@
 //
-//  Place.swift
+//  JournalSwiftData.swift
 //  Travel Journal App
 //
-//  Created by Byron Lester on 23/10/2024.
+//  Created by Byron Lester on 26/10/2024.
 //
 
 import Foundation
+import SwiftData
 
-class Journal: Identifiable, Encodable {
+@Model
+class JournalSwiftData: Identifiable {
     
     var id = UUID().uuidString
     var journalTitle: String

@@ -12,7 +12,7 @@ import SwiftData
 struct MapView: View {
     @StateObject var viewModel = MapViewModel()
     @Environment(\.modelContext) private var context // For using Swift Data
-    @Query private var journals: [Journal] = []
+    @Query private var journals: [JournalSwiftData] = []
     
     let initialPosition = MapCameraPosition.region(
         MKCoordinateRegion(

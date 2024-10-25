@@ -97,7 +97,7 @@ class NewPlaceViewModel: ObservableObject {
             try FirebaseManager.shared.addDocument(object: journal, toCollection: FirestoreCollection.journals.rawValue, forUserId: userId)
         }
         catch {
-            print("Error journal to Firestore: \(error.localizedDescription)")
+            print("Error saving journal to Firestore: \(error.localizedDescription)")
         }
         
     }

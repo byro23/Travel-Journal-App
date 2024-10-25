@@ -23,7 +23,7 @@ struct Travel_Journal_AppApp: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }
-        .modelContainer(for: Journal.self) // Stores journals using Swift Data
+        .modelContainer(for: JournalSwiftData.self) // Stores journals using Swift Data
         .environmentObject(navigationController)
         .environmentObject(authController)
     }

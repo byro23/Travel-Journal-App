@@ -9,12 +9,20 @@ import SwiftUI
 
 struct NewPlaceView: View {
     
+    enum FocusField: Hashable {
+        case title, placeName, placeAddress
+    }
+    
     @StateObject var viewModel: NewPlaceViewModel
     @Environment(\.modelContext) private var context // For using Swift Data
     @EnvironmentObject var authController: AuthController
     @Binding var showingSheet: Bool
-    @FocusState private var isFocused: Bool
+    @FocusState private var focusField: FocusField?
     
+    // New state to control background color animation
+    @State private var isAutoFillingPlaceName = false
+    @State private var isAutoFillingPlaceAddress = false
+
     
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
         self._showingSheet = showingSheet // Assign the binding variable
@@ -29,9 +37,9 @@ struct NewPlaceView: View {
                     
                     Section {
                         TextField("Journal title", text: $viewModel.journalTitle)
-                            .focused($isFocused)
-                            .background(isFocused ? Color.blue.opacity(0.1) : Color.clear)
-                            .animation(.easeInOut, value: isFocused)
+                            .focused($focusField, equals: .title)
+                            .background(focusField == .title ? Color.blue.opacity(0.1) : Color.clear)
+                            .animation(.easeInOut, value: focusField)
                         
                         DatePicker(
                                 "Date",
@@ -69,12 +77,24 @@ struct NewPlaceView: View {
                         
                         ZStack(alignment: .leading) {
                             TextField("Enter place name", text: $viewModel.placeName)
+                                .focused($focusField, equals: .placeName)
+                                .background(focusField == .placeName ? Color.blue.opacity(0.1) : Color.clear)
+                                .background(isAutoFillingPlaceName ? Color.blue.opacity(0.1) : Color.clear)
+                                .animation(.easeInOut, value: focusField)
+                                .animation(.easeInOut(duration: 0.2), value: isAutoFillingPlaceAddress)
+                
                             ClearButton(text: $viewModel.placeName)
                                 .padding(.leading, 8)
                         }
                         
                         ZStack {
                             TextField("Enter address", text: $viewModel.placeAddress)
+                                .focused($focusField, equals: .placeAddress)
+                                .background(focusField == .placeAddress ? Color.blue.opacity(0.1) : Color.clear)
+                                .background(isAutoFillingPlaceAddress ? Color.blue.opacity(0.1) : Color.clear)
+                                .animation(.easeInOut, value: focusField)
+                                .animation(.easeInOut(duration: 0.2), value: isAutoFillingPlaceAddress)
+                            
                             ClearButton(text: $viewModel.placeAddress)
                                 .padding(.leading, 8)
                         }
@@ -107,7 +127,9 @@ struct NewPlaceView: View {
                                 ForEach(viewModel.places.prefix(3)) { place in
                                     PlaceRow(place: place)
                                         .onTapGesture {
+                                            focusField = nil
                                             viewModel.autofillPlace(placeName: place.placeName, placeAddress: place.placeAddress)
+                                            animateAutoFill()
                                         }
                                 }
                             }
@@ -157,8 +179,25 @@ struct NewPlaceView: View {
         
     }
     
-    func addJournalEntry() {
-        // context.insert(item)
+    func saveJournalSwiftData() {
+        let journal = JournalSwiftData(journalTitle: viewModel.journalTitle, journalEntry: viewModel.journalTitle, date: viewModel.journalDate, placeName: viewModel.placeName, address: viewModel.placeAddress, latitude: viewModel.placeLatitude, longitude: viewModel.placeLongitude, imageReferences: [""])
+        
+        context.insert(journal)
+    }
+    
+    func animateAutoFill() {
+        withAnimation {
+            isAutoFillingPlaceName = true
+            isAutoFillingPlaceAddress = true
+        }
+                
+        // Reset the background color after a short delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation {
+                isAutoFillingPlaceName = false
+                isAutoFillingPlaceAddress = false
+            }
+        }
     }
 }
 
