@@ -17,6 +17,8 @@ class NewPlaceViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var isFetchingSuggestions = false
     
+    @Published var isShowingSuggestionsSheet = false
+    
     var placeLongitude: Double = 0.0
     var placeLatitude: Double = 0.0
     
@@ -76,10 +78,16 @@ class NewPlaceViewModel: ObservableObject {
         
     }
     
+    func showSuggestionsSheet() {
+        isShowingSuggestionsSheet = true
+    }
+    
     func autofillPlace(placeName: String, placeAddress: String) {
         self.placeName = placeName
         self.placeAddress = placeAddress
     }
+    
+    
     
     
 }

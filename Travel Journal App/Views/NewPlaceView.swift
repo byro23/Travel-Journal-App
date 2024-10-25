@@ -29,6 +29,7 @@ struct NewPlaceView: View {
                     ZStack(alignment: .leading) {
                         TextField("Enter place name", text: $viewModel.placeName)
                         ClearButton(text: $viewModel.placeName)
+                            .padding(.leading, 8)
                     }
                                        
                     
@@ -39,6 +40,7 @@ struct NewPlaceView: View {
                 Section {
                     TextField("Enter address", text: $viewModel.placeAddress)
                     ClearButton(text: $viewModel.placeAddress)
+                        .padding(.leading, 8)
                 } header: {
                     Text("Address")
                 }
@@ -73,6 +75,7 @@ struct NewPlaceView: View {
                                     }
                             }
                         }
+                        Text("Tap a suggestion to autofill the form.")
                         
                     } header: {
                         HStack {
@@ -80,11 +83,14 @@ struct NewPlaceView: View {
                             
                             Spacer()
                             
-                            Button {
-                                
-                            } label: {
-                                Text("Show all")
+                            if(viewModel.places.count > 3) {
+                                Button {
+                                    viewModel.showSuggestionsSheet()
+                                } label: {
+                                    Text("Show all")
+                                }
                             }
+                            
                         }
                     }
                 }
@@ -99,6 +105,9 @@ struct NewPlaceView: View {
         .navigationTitle("New Journal")
         .onAppear {
             viewModel.fetchNearbyPlaces()
+        }
+        .sheet(isPresented: $viewModel.isShowingSuggestionsSheet) {
+            PlaceListView(showSheet: $viewModel.isFetchingSuggestions, placeName: $viewModel.placeName, placeAddress: $viewModel.placeAddress, places: viewModel.places)
         }
     }
     

@@ -14,3 +14,8 @@ struct Place: Identifiable {
     let latitude: Double
     let longitude: Double
 }
+
+extension Place {
+    static let MOCK_PLACE = Place(placeName: "Opera House", placeAddress: "Bennelong Point, Sydney NSW 2000"
+, latitude: 33.8568, longitude: 151.2153)
+}
