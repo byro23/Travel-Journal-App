@@ -11,6 +11,8 @@ import MapKit
 
 class NewPlaceViewModel: ObservableObject {
     
+    @Published var journalTitle: String = ""
+    @Published var journalDate: Date = Date()
     @Published var placeName: String = ""
     @Published var placeAddress: String = ""
     @Published var journalEntry: String = ""

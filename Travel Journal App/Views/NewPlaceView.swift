@@ -10,8 +10,10 @@ import SwiftUI
 struct NewPlaceView: View {
     
     @StateObject var viewModel: NewPlaceViewModel
-    @Binding var showingSheet: Bool
     @Environment(\.modelContext) private var context // For using Swift Data
+    @Binding var showingSheet: Bool
+    @FocusState private var isFocused: Bool
+    
     
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
         self._showingSheet = showingSheet // Assign the binding variable
@@ -23,6 +25,43 @@ struct NewPlaceView: View {
         VStack {
             Form {
                 
+                Section {
+                    TextField("Journal title", text: $viewModel.journalTitle)
+                        .focused($isFocused)
+                        .background(isFocused ? Color.blue.opacity(0.1) : Color.clear)
+                        .animation(.easeInOut, value: isFocused)
+                    
+                    DatePicker(
+                            "Date",
+                            selection: $viewModel.journalDate,
+                            displayedComponents: [.date,]
+                        )
+                    
+                    // Date picker
+                } header: {
+                    Text("Journal Details")
+                }
+                
+                Section {
+                    ZStack(alignment: .topLeading) {
+                        if viewModel.journalEntry.isEmpty {
+                            Text("Enter your journal entry...")
+                                .foregroundStyle(.gray)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 12)
+                        }
+                        
+                        TextEditor(text: $viewModel.journalEntry)
+                    }
+                } header: {
+                    Text("Journal Entry")
+                }
+                
+                Section {
+                    
+                } header: {
+                    Text("Images")
+                }
                 
                 Section {
                     
@@ -31,42 +70,30 @@ struct NewPlaceView: View {
                         ClearButton(text: $viewModel.placeName)
                             .padding(.leading, 8)
                     }
-                                       
                     
-                } header: {
-                    Text("Place Name")
-                }
-                
-                Section {
-                    TextField("Enter address", text: $viewModel.placeAddress)
-                    ClearButton(text: $viewModel.placeAddress)
-                        .padding(.leading, 8)
-                } header: {
-                    Text("Address")
-                }
-                
-                Section {
-                    TextEditor(text: $viewModel.journalEntry)
-                } header: {
-                    Text("Journal Entry")
-                }
-                
-                if(viewModel.isFetchingSuggestions) {
-                    HStack {
-                        Text("Fetching suggestions")
-                            .font(.headline)
-                        ProgressView()
-                            .scaleEffect(0.8)
-                            .padding(.trailing, 8)
+                    ZStack {
+                        TextField("Enter address", text: $viewModel.placeAddress)
                     }
-                }
-                else if(viewModel.places.isEmpty) {
-                    Text("No suggestions found.")
-                        .font(.headline)
-                }
-                else {
                     
-                    Section {
+                } header: {
+                    Text("Place Details")
+                }
+                
+                Section {
+                    if(viewModel.isFetchingSuggestions) {
+                        HStack {
+                            Text("Fetching suggestions")
+                                .font(.headline)
+                            ProgressView()
+                                .scaleEffect(0.8)
+                                .padding(.trailing, 8)
+                        }
+                    }
+                    else if(viewModel.places.isEmpty) {
+                        Text("No suggestions found.")
+                            //.font(.headline)
+                    }
+                    else {
                         List {
                             ForEach(viewModel.places.prefix(3)) { place in
                                 PlaceRow(place: place)
@@ -76,31 +103,35 @@ struct NewPlaceView: View {
                             }
                         }
                         Text("Tap a suggestion to autofill the form.")
+                    }
+                    
+                } header: {
+                    HStack {
+                        Text("Nearby Places")
                         
-                    } header: {
-                        HStack {
-                            Text("Suggestions")
-                            
-                            Spacer()
-                            
-                            if(viewModel.places.count > 3) {
-                                Button {
-                                    viewModel.showSuggestionsSheet()
-                                } label: {
-                                    Text("Show all")
-                                }
+                        Spacer()
+                        
+                        if(viewModel.places.count > 3) {
+                            Button {
+                                viewModel.showSuggestionsSheet()
+                            } label: {
+                                Text("Show all")
                             }
-                            
                         }
                     }
                 }
-                
-                Section {
-                    Button("Confirm") {
-                        addJournalEntry()
-                    }
-                }
             }
+            Button {
+                
+            } label: {
+                Text("Save")
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .padding(.horizontal)
         }
         .navigationTitle("New Journal")
         .onAppear {

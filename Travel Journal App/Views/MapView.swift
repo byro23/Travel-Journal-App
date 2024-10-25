@@ -28,6 +28,13 @@ struct MapView: View {
             MapReader { proxy in
                 Map(initialPosition: initialPosition) {
                     
+                    if let coordinate = viewModel.tappedCoordinates {
+                        Annotation("New Journal", coordinate: coordinate) {
+                            Image(systemName: "mappin.circle.fill")
+                                .foregroundStyle(.red)
+                        }
+                    }
+                    
                 }
                 .onTapGesture { position in
                     if let coordinate = proxy.convert(position, from: .local) {
@@ -42,7 +49,9 @@ struct MapView: View {
             Button("Create journal at this location", role: .none) {
                 viewModel.showNewPlaceSheet = true
             }
-            Button("Cancel", role: .cancel) { }
+            Button("Cancel", role: .cancel) {
+                viewModel.tappedCoordinates = nil
+            }
         })
         .sheet(isPresented: $viewModel.showNewPlaceSheet) {
             NewPlaceView(showingSheet: $viewModel.showNewPlaceSheet, longitude: viewModel.tappedCoordinates?.longitude ?? 0.0, latitude: viewModel.tappedCoordinates?.latitude ?? 0.0)
