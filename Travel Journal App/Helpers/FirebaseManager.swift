@@ -10,6 +10,11 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
+enum FirestoreCollection: String {
+    case users = "users"
+    case journals = "journals"
+}
+
 class FirebaseManager {
     static let shared = FirebaseManager()
     private let db = Firestore.firestore()
@@ -23,7 +28,7 @@ class FirebaseManager {
     func createUser(email: String, password: String, name: String) async throws -> Bool {
         
         do {
-            let emailQuerySnapshot = try await Firestore.firestore().collection("Users").whereField("email", isEqualTo: email).getDocuments()
+            let emailQuerySnapshot = try await Firestore.firestore().collection(FirestoreCollection.users.rawValue).whereField("email", isEqualTo: email).getDocuments()
             
             if(!emailQuerySnapshot.isEmpty) {
                 print("Email already exists")
@@ -38,7 +43,7 @@ class FirebaseManager {
             let encodedUser = try Firestore.Encoder().encode(user)
             
             
-            try await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
+            try await Firestore.firestore().collection(FirestoreCollection.users.rawValue).document(user.id).setData(encodedUser)
             return true
         }
         
@@ -51,7 +56,7 @@ class FirebaseManager {
     
     func fetchUser(uid: String) async -> DocumentSnapshot? {
         do {
-            let snapshot = try await Firestore.firestore().collection("users").document(uid).getDocument()
+            let snapshot = try await Firestore.firestore().collection(FirestoreCollection.users.rawValue).document(uid).getDocument()
             return snapshot
         }
         catch {
@@ -62,8 +67,8 @@ class FirebaseManager {
     
     
     // Generic function to add any Encodable object as subcollection to a user
-    func addDocument<T: Encodable>(object: T, toCollection collection: String, forUser uid: String) throws {
-        let collectionRef = db.collection("users").document(uid).collection(collection)
+    func addDocument<T: Encodable>(object: T, toCollection collection: String, forUserId uid: String) throws {
+        let collectionRef = db.collection(FirestoreCollection.users.rawValue).document(uid).collection(collection)
         
         do {
             try collectionRef.addDocument(from: object) { error in
@@ -84,7 +89,7 @@ class FirebaseManager {
         
         var documents: [T] = []
         
-        let collectionRef = db.collection("users").document(uid).collection(collectionName)
+        let collectionRef = db.collection(FirestoreCollection.users.rawValue).document(uid).collection(collectionName)
                 
         let querySnapshot = try await collectionRef.getDocuments()
         documents = try querySnapshot.documents.map { try $0.data(as: T.self) }
@@ -93,7 +98,7 @@ class FirebaseManager {
     }
     
     func deleteDocument(uid: String, collectionName: String, documentId: String) async throws {
-        let documentRef = db.collection("users").document(uid).collection(collectionName).document(documentId)
+        let documentRef = db.collection(FirestoreCollection.users.rawValue).document(uid).collection(collectionName).document(documentId)
         
         try await documentRef.delete()
     }

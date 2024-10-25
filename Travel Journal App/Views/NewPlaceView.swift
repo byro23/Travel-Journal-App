@@ -11,6 +11,7 @@ struct NewPlaceView: View {
     
     @StateObject var viewModel: NewPlaceViewModel
     @Environment(\.modelContext) private var context // For using Swift Data
+    @EnvironmentObject var authController: AuthController
     @Binding var showingSheet: Bool
     @FocusState private var isFocused: Bool
     
@@ -129,7 +130,12 @@ struct NewPlaceView: View {
                     }
                 }
                 Button {
-                    
+                    if let userId = authController.currentUser?.id {
+                        viewModel.saveJournalFirestore(userId: userId)
+                    }
+                    else {
+                        print("Unauthenticated state. Unable to save journal.")
+                    }
                 } label: {
                     Text("Save")
                 }

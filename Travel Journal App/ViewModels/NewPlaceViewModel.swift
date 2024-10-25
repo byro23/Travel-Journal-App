@@ -89,6 +89,19 @@ class NewPlaceViewModel: ObservableObject {
         self.placeAddress = placeAddress
     }
     
+    func saveJournalFirestore(userId: String) {
+        let journal = Journal(journalTitle: journalTitle, journalEntry: journalEntry, date: journalDate,
+                              placeName: placeName, address: placeAddress, latitude: placeLatitude, longitude: placeLongitude, imageReferences: [""])
+        
+        do {
+            try FirebaseManager.shared.addDocument(object: journal, toCollection: FirestoreCollection.journals.rawValue, forUserId: userId)
+        }
+        catch {
+            print("Error journal to Firestore: \(error.localizedDescription)")
+        }
+        
+    }
+    
     
     
     
