@@ -15,18 +15,27 @@ struct PlaceListView: View {
     let places: [Place]
     
     var body: some View {
-        VStack(alignment: .leading) {
-            List {
-                ForEach(places) { place in
-                    PlaceRow(place: place)
-                        .onTapGesture {
-                            handleSuggestionTap(placeName: place.placeName, placeAddress: place.placeAddress)
-                        }
+        NavigationView {
+            VStack(alignment: .leading) {
+                List {
+                    HStack {
+                        Image(systemName: "exclamationmark.circle")
+                            .foregroundStyle(.yellow)
+                        Text("Tap a suggestion to autofill the form.")
+                    }
+                    ForEach(places) { place in
+                        PlaceRow(place: place)
+                            .onTapGesture {
+                                handleSuggestionTap(placeName: place.placeName, placeAddress: place.placeAddress)
+                            }
+                    }
+                    
                 }
+                
             }
-            Text("Tap a suggestion to autofill the form.")
+            .navigationTitle("Nearby places")
         }
-        .navigationTitle("Place Suggestion")
+        
     }
     
     private func handleSuggestionTap(placeName: String, placeAddress: String) {

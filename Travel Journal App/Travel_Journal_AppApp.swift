@@ -12,12 +12,19 @@ import SwiftData
 struct Travel_Journal_AppApp: App {
     let persistenceController = PersistenceController.shared
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    @StateObject var navigationController = NavigationController()
+    @StateObject var authController = AuthController()
 
     var body: some Scene {
         WindowGroup {
-            MapView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            NavigationStack {
+                UserView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            }
         }
-        .modelContainer(for: Journal.self)
+        .modelContainer(for: Journal.self) // Stores journals using Swift Data
+        .environmentObject(navigationController)
+        .environmentObject(authController)
     }
 }

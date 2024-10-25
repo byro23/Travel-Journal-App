@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct UserView: View {
+    @EnvironmentObject var navigationController: NavigationController
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        // A TabView for navigating between different app sections.
+        TabView(selection: $navigationController.currentTab) {
+            MapView()
+                .tabItem {
+                    Label("Map", systemImage: "map")
+                }
+                .tag(NavigationController.Tab.map)
+        }
     }
 }
 
