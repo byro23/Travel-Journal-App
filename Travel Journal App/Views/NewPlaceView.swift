@@ -23,6 +23,32 @@ struct NewPlaceView: View {
         VStack {
             Form {
                 
+                
+                Section {
+                    
+                    ZStack(alignment: .leading) {
+                        TextField("Enter place name", text: $viewModel.placeName)
+                        ClearButton(text: $viewModel.placeName)
+                    }
+                                       
+                    
+                } header: {
+                    Text("Place Name")
+                }
+                
+                Section {
+                    TextField("Enter address", text: $viewModel.placeAddress)
+                    ClearButton(text: $viewModel.placeAddress)
+                } header: {
+                    Text("Address")
+                }
+                
+                Section {
+                    TextEditor(text: $viewModel.journalEntry)
+                } header: {
+                    Text("Journal Entry")
+                }
+                
                 if(viewModel.isFetchingSuggestions) {
                     HStack {
                         Text("Fetching suggestions")
@@ -37,29 +63,36 @@ struct NewPlaceView: View {
                         .font(.headline)
                 }
                 else {
-                    ForEach(viewModel.places.prefix(5)) { place in
-                        PlaceRow(place: place)
+                    
+                    Section {
+                        List {
+                            ForEach(viewModel.places.prefix(3)) { place in
+                                PlaceRow(place: place)
+                                    .onTapGesture {
+                                        viewModel.autofillPlace(placeName: place.placeName, placeAddress: place.placeAddress)
+                                    }
+                            }
+                        }
+                        
+                    } header: {
+                        HStack {
+                            Text("Suggestions")
+                            
+                            Spacer()
+                            
+                            Button {
+                                
+                            } label: {
+                                Text("Show all")
+                            }
+                        }
                     }
                 }
                 
-                
                 Section {
-                    TextField("Enter place name", text: $viewModel.placeName)
-                    
-                    
-                    
-                } header: {
-                    Text("Place Information")
-                }
-                
-                Section {
-                    TextEditor(text: $viewModel.journalEntry)
-                } header: {
-                    Text("Journal Entry")
-                }
-                
-                Button("Confirm") {
-                    addJournalEntry()
+                    Button("Confirm") {
+                        addJournalEntry()
+                    }
                 }
             }
         }

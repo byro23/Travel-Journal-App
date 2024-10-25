@@ -12,6 +12,7 @@ import MapKit
 class NewPlaceViewModel: ObservableObject {
     
     @Published var placeName: String = ""
+    @Published var placeAddress: String = ""
     @Published var journalEntry: String = ""
     @Published var places: [Place] = []
     @Published var isFetchingSuggestions = false
@@ -73,6 +74,11 @@ class NewPlaceViewModel: ObservableObject {
             }
         }
         
+    }
+    
+    func autofillPlace(placeName: String, placeAddress: String) {
+        self.placeName = placeName
+        self.placeAddress = placeAddress
     }
     
     
