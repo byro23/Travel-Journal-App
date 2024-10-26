@@ -26,6 +26,13 @@ struct LoginView: View {
             
             AnimatedSignInButton {
                 await authController.signIn(email: viewModel.email, password: viewModel.password)
+                
+                if(authController.authenticationState == .authenticated) {
+                    navigationController.push(.user)
+                }
+                else {
+                    viewModel.incorrectCredentials = true
+                }
             }
             .disabled(!viewModel.validForm)
             .opacity(viewModel.validForm ? 1: 0.7)

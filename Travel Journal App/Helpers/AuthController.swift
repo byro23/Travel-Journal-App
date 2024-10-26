@@ -14,6 +14,7 @@ enum AuthenticationState {
     case unauthenticated
     case authenticating
     case authenticated
+    case incorrect
 }
 
 // MARK: - AuthController
