@@ -34,7 +34,7 @@ struct LoginView: View {
                     viewModel.incorrectCredentials = true
                 }
             }
-            .disabled(!viewModel.validForm)
+            .disabled(!viewModel.validForm || authController.authenticationState == .authenticated)
             .opacity(viewModel.validForm ? 1: 0.7)
             .padding()
             

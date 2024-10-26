@@ -39,12 +39,39 @@ struct MapView: View {
                             )
                         
                         Annotation(journal.journalTitle, coordinate: coordinate) {
+                            
+                            // Determine annotation size based on map zoom level.
+                            let size: CGFloat = {
+                                let delta = viewModel.region.span.latitudeDelta
+                                if delta > 1.0 {
+                                    return 8 // Small size for zoomed-out view.
+                                } else if delta > 0.1 {
+                                    return 20 // Medium size for mid-zoom view.
+                                } else {
+                                    return 30 // Larger size for zoomed-in view.
+                                }
+                            }()
+                            
                             VStack {
-                                Image(systemName: "mappin.circle.fill")
-                                    .resizable() // Make the image scalable
-                                    .foregroundStyle(.red)
-                                    .frame(width: 25, height: 25) // Set the desired size
-                                    .padding(4) // Optional padding for a better touch area
+                                if(viewModel.region.span.latitudeDelta > 1.0 || viewModel.region.span.longitudeDelta > 1.0) {
+                                    Image(systemName: "mappin.circle.fill")
+                                        .resizable()
+                                        .frame(width: size, height: size)
+                                        .foregroundStyle(.red)
+                                }
+                                else if(viewModel.region.span.latitudeDelta > 0.1 || viewModel.region.span.longitudeDelta > 0.1) {
+                                    Image(systemName: "mappin.circle.fill")
+                                        .resizable()
+                                        .frame(width: size, height: size)
+                                        .foregroundStyle(.red)
+                                }
+                                else {
+                                    Image(systemName: "mappin.circle.fill")
+                                        .resizable() // Make the image scalable
+                                        .foregroundStyle(.red)
+                                        .frame(width: size, height: size) // Set the desired size
+                                        .padding(4) // Optional padding for a better touch area
+                                }
                             }
                         }
                     }
@@ -64,6 +91,9 @@ struct MapView: View {
                         viewModel.tappedCoordinates = coordinate
                         viewModel.tappedMap = true
                     }
+                }
+                .onMapCameraChange { context in
+                    viewModel.region = context.region
                 }
             }
             
