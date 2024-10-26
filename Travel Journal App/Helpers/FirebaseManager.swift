@@ -24,32 +24,41 @@ class FirebaseManager {
         try await Auth.auth().signIn(withEmail: email, password: password)
     }
     
-    
-    func createUser(email: String, password: String, name: String) async throws -> Bool {
+    func isEmailUnique(email: String) async -> Bool {
         
         do {
             let emailQuerySnapshot = try await Firestore.firestore().collection(FirestoreCollection.users.rawValue).whereField("email", isEqualTo: email).getDocuments()
             
-            if(!emailQuerySnapshot.isEmpty) {
-                print("Email already exists")
-                return false
+            if(emailQuerySnapshot.isEmpty) {
+               return false
             }
-            
-            
+        }
+        catch {
+            print("Error verifying email: \(error.localizedDescription)")
+        }
+        
+        return true
+    }
+    
+    // Creates a user in FirebaseAuth and Firestore Database
+    func createUser(email: String, password: String, name: String) async {
+        
+        do {
+            // Create user in FirebaseAuth
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             
+            // Create user in Firestore database
             let user = User(id: authResult.user.uid, name: name, email: email)
             
+            // Encode user
             let encodedUser = try Firestore.Encoder().encode(user)
             
             
             try await Firestore.firestore().collection(FirestoreCollection.users.rawValue).document(user.id).setData(encodedUser)
-            return true
         }
         
         catch {
-            print("Failed to create user")
-            return false
+            print("Failed to create user: \(error.localizedDescription)")
         }
         
     }

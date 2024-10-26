@@ -23,7 +23,7 @@ class AuthController: ObservableObject { // This class is used to manage the use
     @Published var isLoggedIn: Bool = false
     @Published var currentUser: User?
     @Published var authenticationState: AuthenticationState = .unauthenticated
-    @Published var emailAlreadyExists: Bool = false
+    @Published var isEmailUnique: Bool?
     
     // MARK: - Functions
     
@@ -48,20 +48,16 @@ class AuthController: ObservableObject { // This class is used to manage the use
     func signUp(email: String, password: String, name: String) async {
         authenticationState = .authenticating
         
-        do {
-            let isEmailUnique = try await FirebaseManager.shared.createUser(email: email, password: password, name: name)
-            if(isEmailUnique) {
-                try await FirebaseManager.shared.authenticateUser(email: email, password: password)
-                await fetchUser()
-                authenticationState = .authenticated
-                print("Sign up successful.")
-                return
-            }
-            emailAlreadyExists = true
-            authenticationState = .unauthenticated
+        // Check if email is unique
+        isEmailUnique = await FirebaseManager.shared.isEmailUnique(email: email)
+        
+        // Force unwrapped as IsEmailUnique function has to return true or false
+        if(isEmailUnique!) {
+            await FirebaseManager.shared.createUser(email: email, password: password, name: name)
+            
+            authenticationState = .authenticated
         }
-        catch {
-            print("Error signing up: \(error)")
+        else {
             authenticationState = .unauthenticated
         }
     }
