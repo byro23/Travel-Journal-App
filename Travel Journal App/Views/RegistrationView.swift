@@ -62,7 +62,7 @@ struct RegistrationView: View {
                 
             }
             
-            AnimatedSignInButton {
+            AnimatedButton(buttonText: "Register now") {
                 await authController.signUp(email: viewModel.email, password: viewModel.password, name: viewModel.name)
                 
                 if(authController.authenticationState == .authenticated) {

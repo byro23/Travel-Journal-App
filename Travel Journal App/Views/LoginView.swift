@@ -24,7 +24,7 @@ struct LoginView: View {
             FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
                 .padding()
             
-            AnimatedSignInButton {
+            AnimatedButton(buttonText: "Login") {
                 await authController.signIn(email: viewModel.email, password: viewModel.password)
                 
                 if(authController.authenticationState == .authenticated) {

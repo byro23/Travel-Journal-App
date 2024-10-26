@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct AnimatedSignInButton: View {
+struct AnimatedButton: View {
     @State private var isPressed = false
     @State private var isLoading = false
+    var buttonText: String
     let action: () async -> Void
     
     var body: some View {
@@ -38,7 +39,7 @@ struct AnimatedSignInButton: View {
                         .transition(.scale.combined(with: .opacity))
                 }
                 
-                Text("Sign In")
+                Text(buttonText)
                     .fontWeight(.semibold)
             }
             .foregroundColor(.white)
@@ -59,7 +60,7 @@ struct AnimatedSignInButton: View {
 
 #Preview {
     VStack(spacing: 20) {
-        AnimatedSignInButton {
+        AnimatedButton(buttonText: "Test Button") {
             // Simulate an async action
             try? await Task.sleep(nanoseconds: 1_500_000_000)
         }

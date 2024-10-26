@@ -27,7 +27,7 @@ struct MapView: View {
         VStack{
             HeaderView()
             
-            Text("Hello, \(String(describing: authController.currentUser?.name))")
+            Text("Hello, \(authController.currentUser?.name ?? "Preview name")")
             
             MapReader { proxy in
                 Map(initialPosition: initialPosition) {
@@ -53,7 +53,8 @@ struct MapView: View {
                     .foregroundStyle(.yellow)
                 Text("Tap anywhere on the map to add a new journal.")
             }
-            .padding([.top, .bottom])
+            .padding(.top)
+            .padding(.bottom)
             
         }
         .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap, actions: {
@@ -75,4 +76,5 @@ struct MapView: View {
 
 #Preview {
     MapView()
+                    .environmentObject(AuthController())
 }

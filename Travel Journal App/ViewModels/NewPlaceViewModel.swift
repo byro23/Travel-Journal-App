@@ -24,6 +24,10 @@ class NewPlaceViewModel: ObservableObject {
     var placeLongitude: Double = 0.0
     var placeLatitude: Double = 0.0
     
+    var validForm: Bool {
+        !journalTitle.isEmpty && !placeName.isEmpty && !placeAddress.isEmpty && !journalEntry.isEmpty
+    }
+    
     init(longitude: Double, latitude: Double) {
         placeLongitude = longitude
         placeLatitude = latitude
@@ -100,6 +104,13 @@ class NewPlaceViewModel: ObservableObject {
             print("Error saving journal to Firestore: \(error.localizedDescription)")
         }
         
+    }
+    
+    func resetFields() {
+        journalTitle = ""
+        journalEntry = ""
+        placeName = ""
+        placeAddress = ""
     }
     
     

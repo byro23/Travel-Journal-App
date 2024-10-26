@@ -10,7 +10,7 @@ import SwiftUI
 struct NewPlaceView: View {
     
     enum FocusField: Hashable {
-        case title, placeName, placeAddress
+        case title, placeName, placeAddress, journalEntry
     }
     
     @StateObject var viewModel: NewPlaceViewModel
@@ -53,16 +53,9 @@ struct NewPlaceView: View {
                     }
                     
                     Section {
-                        ZStack(alignment: .topLeading) {
-                            if viewModel.journalEntry.isEmpty {
-                                Text("Enter your journal entry...")
-                                    .foregroundStyle(.gray)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 12)
-                            }
-                            
-                            TextEditor(text: $viewModel.journalEntry)
-                        }
+                        
+                        TextField("Write up a journal entry for your trip!", text: $viewModel.journalEntry, axis: .vertical)
+                        
                     } header: {
                         Text("Journal Entry")
                     }
@@ -153,23 +146,16 @@ struct NewPlaceView: View {
                             }
                         }
                     }
-                }
-                Button {
-                    if let userId = authController.currentUser?.id {
-                        viewModel.saveJournalFirestore(userId: userId)
+                    
+                    AnimatedButton(buttonText: "Save") {
+                        if let userId = authController.currentUser?.id {
+                            viewModel.saveJournalFirestore(userId: userId)
+                        }
+                        
                     }
-                    else {
-                        print("Unauthenticated state. Unable to save journal.")
-                    }
-                } label: {
-                    Text("Save")
+                    .disabled(!viewModel.validForm)
+                    .opacity(viewModel.validForm ? 1 : 0.7)
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .padding(.horizontal)
             }
             .navigationTitle("New Journal")
             .onAppear {
