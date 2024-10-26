@@ -96,7 +96,7 @@ class NewPlaceViewModel: ObservableObject {
     
     func saveJournalFirestore(userId: String) {
         let journal = Journal(journalTitle: journalTitle, journalEntry: journalEntry, date: journalDate,
-                              placeName: placeName, address: placeAddress, latitude: placeLatitude, longitude: placeLongitude, imageReferences: [""])
+                              placeName: placeName, address: placeAddress, latitude: placeLatitude, longitude: placeLongitude, userId: userId, imageReferences: [""])
         
         do {
             try FirebaseManager.shared.addDocument(object: journal, toCollection: FirestoreCollection.journals.rawValue, forUserId: userId)

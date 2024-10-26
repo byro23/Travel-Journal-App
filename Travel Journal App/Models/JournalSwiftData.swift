@@ -19,10 +19,10 @@ class JournalSwiftData: Identifiable {
     var address: String
     var latitude: Double
     var longitude: Double
-    // var userId: String
+    var userId: String
     var imageReferences: [String]
     
-    init(id: String = UUID().uuidString, journalTitle: String, journalEntry: String, date: Date, placeName: String, address: String, latitude: Double, longitude: Double, imageReferences: [String]) {
+    init(id: String = UUID().uuidString, journalTitle: String, journalEntry: String, date: Date, placeName: String, address: String, latitude: Double, longitude: Double, userId: String, imageReferences: [String]) {
         self.id = id
         self.journalTitle = journalTitle
         self.journalEntry = journalEntry
@@ -31,6 +31,7 @@ class JournalSwiftData: Identifiable {
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
+        self.userId = userId
         self.imageReferences = imageReferences
     }
 }

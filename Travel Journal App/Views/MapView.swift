@@ -32,10 +32,29 @@ struct MapView: View {
             MapReader { proxy in
                 Map(initialPosition: initialPosition) {
                     
+                    
+                    ForEach(viewModel.journals, id: \.self) { journal in
+                            let coordinate = CLLocationCoordinate2D(
+                                latitude: journal.latitude, longitude: journal.longitude
+                            )
+                        
+                        Annotation(journal.journalTitle, coordinate: coordinate) {
+                            VStack {
+                                Image(systemName: "mappin.circle.fill")
+                                    .resizable() // Make the image scalable
+                                    .foregroundStyle(.red)
+                                    .frame(width: 25, height: 25) // Set the desired size
+                                    .padding(4) // Optional padding for a better touch area
+                            }
+                        }
+                    }
+                    
                     if let coordinate = viewModel.tappedCoordinates {
                         Annotation("New Journal", coordinate: coordinate) {
                             Image(systemName: "mappin.circle.fill")
+                                .resizable()
                                 .foregroundStyle(.red)
+                                .frame(width: 25, height: 25)
                         }
                     }
                     
@@ -60,7 +79,6 @@ struct MapView: View {
         .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap, actions: {
             Button("Create journal at this location", role: .none) {
                 viewModel.showNewPlaceSheet = true
-                viewModel.tappedCoordinates = nil
             }
             Button("Cancel", role: .cancel) {
                 viewModel.tappedCoordinates = nil
@@ -68,6 +86,13 @@ struct MapView: View {
         })
         .sheet(isPresented: $viewModel.showNewPlaceSheet) {
             NewPlaceView(showingSheet: $viewModel.showNewPlaceSheet, longitude: viewModel.tappedCoordinates?.longitude ?? 0.0, latitude: viewModel.tappedCoordinates?.latitude ?? 0.0)
+        }
+        .onAppear {
+            if let userId = authController.currentUser?.id {
+                viewModel.fetchJournals(for: userId, context: context)
+            }
+            viewModel.tappedCoordinates = nil
+            
         }
         
         
@@ -77,5 +102,5 @@ struct MapView: View {
 
 #Preview {
     MapView()
-                    .environmentObject(AuthController())
+    .environmentObject(AuthController())
 }

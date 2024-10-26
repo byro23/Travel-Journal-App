@@ -24,7 +24,7 @@ class MapViewModel: ObservableObject {
     @Published var cameraPosition: MapCameraPosition = .automatic
     @Published var showNewPlaceSheet = false
     @Published var tappedMap = false
-    
+    @Published var journals: [JournalSwiftData] = []
     
     
     
@@ -32,4 +32,19 @@ class MapViewModel: ObservableObject {
         
         return mapView.convert(point, toCoordinateFrom: mapView)
     }
+    
+    
+    func fetchJournals(for userId: String, context: ModelContext) {
+        let request = FetchDescriptor<JournalSwiftData>(
+            predicate: #Predicate { $0.userId == userId } // Filter by userId
+        )
+
+        do {
+            journals = try context.fetch(request)
+            print("Journal count for user \(userId): \(journals.count)")
+        } catch {
+            print("Failed to fetch journals: \(error.localizedDescription)")
+        }
+    }
+
 }

@@ -178,9 +178,17 @@ struct NewPlaceView: View {
     }
     
     func saveJournalSwiftData() {
-        let journal = JournalSwiftData(journalTitle: viewModel.journalTitle, journalEntry: viewModel.journalTitle, date: viewModel.journalDate, placeName: viewModel.placeName, address: viewModel.placeAddress, latitude: viewModel.placeLatitude, longitude: viewModel.placeLongitude, imageReferences: [""])
         
-        context.insert(journal)
+        if let userId = authController.currentUser?.id {
+            let journal = JournalSwiftData(journalTitle: viewModel.journalTitle, journalEntry: viewModel.journalEntry, date: viewModel.journalDate, placeName: viewModel.placeName, address: viewModel.placeAddress, latitude: viewModel.placeLatitude, longitude: viewModel.placeLongitude, userId: userId, imageReferences: [""])
+            
+                context.insert(journal)
+        }
+        else {
+            print("Unable to save locally: user unauthenticated. ")
+        }
+        
+        
     }
     
     func animateAutoFill() {
