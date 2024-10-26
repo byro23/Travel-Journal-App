@@ -26,6 +26,15 @@ struct LoginView: View {
                     
                 }
                 .padding()
+                
+                // Button to RegistrationView
+                HStack {
+                    Text("Haven't got an account?")
+                        .foregroundStyle(.gray)
+                    NavigationLink("Signup") {
+                        RegistrationView()
+                    }
+                }
             }
         }
     }

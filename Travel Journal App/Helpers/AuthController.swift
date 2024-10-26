@@ -23,7 +23,7 @@ class AuthController: ObservableObject { // This class is used to manage the use
     @Published var isLoggedIn: Bool = false
     @Published var currentUser: User?
     @Published var authenticationState: AuthenticationState = .unauthenticated
-    @Published var isEmailUnique: Bool?
+    @Published var isEmailTaken: Bool = false
     
     // MARK: - Functions
     
@@ -49,10 +49,10 @@ class AuthController: ObservableObject { // This class is used to manage the use
         authenticationState = .authenticating
         
         // Check if email is unique
-        isEmailUnique = await FirebaseManager.shared.isEmailUnique(email: email)
+        isEmailTaken = await FirebaseManager.shared.isEmailUnique(email: email)
         
         // Force unwrapped as IsEmailUnique function has to return true or false
-        if(isEmailUnique!) {
+        if(isEmailTaken == false) {
             await FirebaseManager.shared.createUser(email: email, password: password, name: name)
             
             authenticationState = .authenticated

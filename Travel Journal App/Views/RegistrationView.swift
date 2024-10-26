@@ -28,11 +28,18 @@ struct RegistrationView: View {
                     .padding()
                 
                 AnimatedSignInButton {
-                    
+                    Task {
+                        await authController.signUp(email: viewModel.email, password: viewModel.password, name: viewModel.name)
+                    }
                 }
                 .padding()
             }
             .navigationTitle("Registration")
+            .alert("Email already exists. Please try again", isPresented: $authController.isEmailTaken) {
+                Button("Ok", role: .cancel) {
+                    authController.isEmailTaken = false
+                }
+            }
         }
     }
 }
