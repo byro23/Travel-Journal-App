@@ -60,6 +60,7 @@ struct MapView: View {
         .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap, actions: {
             Button("Create journal at this location", role: .none) {
                 viewModel.showNewPlaceSheet = true
+                viewModel.tappedCoordinates = nil
             }
             Button("Cancel", role: .cancel) {
                 viewModel.tappedCoordinates = nil
