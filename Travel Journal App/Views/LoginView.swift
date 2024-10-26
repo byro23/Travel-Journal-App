@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct LoginView: View {
+    
+    @StateObject var viewModel = LoginViewModel()
+    
     var body: some View {
         NavigationView {
             VStack {
                 HeaderView()
                 
-                Text("Login")
+                FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
+                    .padding()
                 
+                FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
+                    .padding()
                 
+                AnimatedSignInButton {
+                    
+                }
+                .padding()
             }
         }
     }

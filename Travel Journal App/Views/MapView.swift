@@ -44,6 +44,13 @@ struct MapView: View {
                 }
             }
             
+            HStack {
+                Image(systemName: "exclamationmark.circle")
+                    .foregroundStyle(.yellow)
+                Text("Tap anywhere on the map to add a new journal.")
+            }
+            .padding([.top, .bottom])
+            
         }
         .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap, actions: {
             Button("Create journal at this location", role: .none) {

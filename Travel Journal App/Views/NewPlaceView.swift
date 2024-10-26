@@ -114,8 +114,11 @@ struct NewPlaceView: View {
                             }
                         }
                         else if(viewModel.places.isEmpty) {
-                            Text("No suggestions found.")
-                                //.font(.headline)
+                            HStack {
+                                Image(systemName: "exclamationmark.circle")
+                                    .foregroundStyle(.yellow)
+                                Text("No suggestions found.")
+                            }
                         }
                         else {
                             List {
