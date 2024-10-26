@@ -18,6 +18,7 @@ class NewPlaceViewModel: ObservableObject {
     @Published var journalEntry: String = ""
     @Published var places: [Place] = []
     @Published var isFetchingSuggestions = false
+    @Published var isJournalSaved = false
     
     @Published var isShowingSuggestionsSheet = false
     

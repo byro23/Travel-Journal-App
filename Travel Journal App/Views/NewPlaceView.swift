@@ -152,6 +152,10 @@ struct NewPlaceView: View {
                             viewModel.saveJournalFirestore(userId: userId)
                         }
                         
+                        saveJournalSwiftData()
+                        
+                        viewModel.isJournalSaved = true
+                        
                     }
                     .disabled(!viewModel.validForm)
                     .opacity(viewModel.validForm ? 1 : 0.7)
@@ -163,6 +167,11 @@ struct NewPlaceView: View {
             }
             .sheet(isPresented: $viewModel.isShowingSuggestionsSheet) {
                 PlaceListView(showSheet: $viewModel.isShowingSuggestionsSheet, placeName: $viewModel.placeName, placeAddress: $viewModel.placeAddress, places: viewModel.places)
+            }
+            .alert("Journal saved successfully!", isPresented: $viewModel.isJournalSaved) {
+                Button("OK") {
+                    showingSheet = false
+                }
             }
         }
         
