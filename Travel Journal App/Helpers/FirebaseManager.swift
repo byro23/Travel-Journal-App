@@ -19,7 +19,7 @@ class FirebaseManager {
     static let shared = FirebaseManager()
     private let db = Firestore.firestore()
     
-    
+    // Simple function that checks with FirebaseAuth if credentials match
     func authenticateUser(email:String, password: String) async throws {
         try await Auth.auth().signIn(withEmail: email, password: password)
     }

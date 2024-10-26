@@ -10,30 +10,36 @@ import SwiftUI
 struct LoginView: View {
     
     @StateObject var viewModel = LoginViewModel()
+    @EnvironmentObject var authController: AuthController
+    @EnvironmentObject var navigationController: NavigationController
     
     var body: some View {
-        NavigationView {
-            VStack {
-                HeaderView()
-                
-                FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
-                    .padding()
-                
-                FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
-                    .padding()
-                
-                AnimatedSignInButton {
-                    
-                }
+        VStack {
+            HeaderView()
+            
+            FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
                 .padding()
-                
-                // Button to RegistrationView
-                HStack {
-                    Text("Haven't got an account?")
-                        .foregroundStyle(.gray)
-                    NavigationLink("Signup") {
-                        RegistrationView()
-                    }
+                .textInputAutocapitalization(.never)
+            
+            FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
+                .padding()
+            
+            AnimatedSignInButton {
+                await authController.signIn(email: viewModel.email, password: viewModel.password)
+            }
+            .disabled(!viewModel.validForm)
+            .opacity(viewModel.validForm ? 1: 0.7)
+            .padding()
+            
+            // Button to RegistrationView
+            HStack {
+                Text("Haven't got an account?")
+                    .foregroundStyle(.gray)
+                Button {
+                    navigationController.push(.registration)
+                } label: {
+                    Text("Signup")
+                        .foregroundStyle(.cyan)
                 }
             }
         }
@@ -42,4 +48,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
+        .environmentObject(AuthController())
 }

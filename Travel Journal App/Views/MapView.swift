@@ -11,6 +11,7 @@ import SwiftData
 
 struct MapView: View {
     @StateObject var viewModel = MapViewModel()
+    @EnvironmentObject var authController: AuthController
     @Environment(\.modelContext) private var context // For using Swift Data
     @Query private var journals: [JournalSwiftData] = []
     
@@ -25,6 +26,9 @@ struct MapView: View {
         
         VStack{
             HeaderView()
+            
+            Text("Hello, \(String(describing: authController.currentUser?.name))")
+            
             MapReader { proxy in
                 Map(initialPosition: initialPosition) {
                     

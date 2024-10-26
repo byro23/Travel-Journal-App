@@ -35,4 +35,11 @@ class RegistrationViewModel: ObservableObject {
     var validForm: Bool {
         passwordsMatch && validEmail && validName && validPassword
     }
+    
+    func resetFields() {
+        email = ""
+        name = ""
+        password = ""
+        confirmPassword = ""
+    }
 }

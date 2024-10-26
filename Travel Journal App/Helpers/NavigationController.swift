@@ -12,10 +12,28 @@ class NavigationController: ObservableObject {
     
     enum AppScreen: Hashable {
         case user
+        case registration
     }
     
     enum Tab {
         case map
+    }
+    
+    // Helper to push a new screen
+    func push(_ screen: AppScreen) {
+        path.append(screen)
+    }
+
+    // Helper to pop the last screen
+    func pop() {
+        if !path.isEmpty {
+            path.removeLast()
+        }
+    }
+
+    // Helper to reset the path (e.g., logout or return to home)
+    func reset() {
+        path = NavigationPath()
     }
     
     @Published var path = NavigationPath()

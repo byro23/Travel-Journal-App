@@ -18,10 +18,19 @@ struct Travel_Journal_AppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack() {
+            NavigationStack(path: $navigationController.path) {
                 LoginView()
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .navigationDestination(for: NavigationController.AppScreen.self) { screen in
+                        switch screen {
+                        case .user:
+                            UserView()
+                        case .registration:
+                            RegistrationView()
+                        }
+                    }
+                    
             }
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
         .modelContainer(for: JournalSwiftData.self) // Stores journals using Swift Data
         .environmentObject(navigationController)
