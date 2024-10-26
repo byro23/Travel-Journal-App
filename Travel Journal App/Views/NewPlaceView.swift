@@ -176,7 +176,7 @@ struct NewPlaceView: View {
                 viewModel.fetchNearbyPlaces()
             }
             .sheet(isPresented: $viewModel.isShowingSuggestionsSheet) {
-                PlaceListView(showSheet: $viewModel.isFetchingSuggestions, placeName: $viewModel.placeName, placeAddress: $viewModel.placeAddress, places: viewModel.places)
+                PlaceListView(showSheet: $viewModel.isShowingSuggestionsSheet, placeName: $viewModel.placeName, placeAddress: $viewModel.placeAddress, places: viewModel.places)
             }
         }
         

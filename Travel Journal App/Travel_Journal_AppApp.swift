@@ -18,7 +18,7 @@ struct Travel_Journal_AppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
+            NavigationStack() {
                 LoginView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
