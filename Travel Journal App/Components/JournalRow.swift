@@ -24,8 +24,8 @@ struct JournalRow: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 
-                Image(systemName: "mappin.circle.fill")
-                    .foregroundStyle(.red)
+                Image(systemName: journal.isFavourite ? "heart.fill" : "mappin.circle.fill")
+                    .foregroundStyle(journal.isFavourite ? Color.red : Color.orange)
                     .font(.title2)
             }
             .frame(width: 70)

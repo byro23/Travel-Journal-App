@@ -47,10 +47,10 @@ struct MapView: View {
                                     }
                                 }()
                                 
-                                Image(systemName: "mappin.circle.fill")
+                                Image(systemName: journal.isFavourite ? "heart.fill" :  "mappin.circle.fill")
                                     .resizable()
                                     .frame(width: size, height: size)
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(journal.isFavourite ? Color.red : Color.orange)
                                     .padding(4)
                             }
                             .animation(.easeInOut(duration: 0.3), value: getZoomLevel(viewModel.region.span))
