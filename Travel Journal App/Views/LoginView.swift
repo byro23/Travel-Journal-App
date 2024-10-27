@@ -52,6 +52,11 @@ struct LoginView: View {
                 }
             }
         }
+        .alert("Invalid credentials. Try again.", isPresented: $viewModel.incorrectCredentials) {
+            Button("Ok", role: .cancel) {
+                viewModel.incorrectCredentials = false
+            }
+        }
     }
 }
 

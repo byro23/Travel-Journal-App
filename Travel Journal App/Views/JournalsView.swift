@@ -30,21 +30,25 @@ struct JournalsView: View {
                     
                     Button("Date") {
                         viewModel.orderState = .date
+                        viewModel.applyFiltersAndSearch()
                     }
                     .disabled(viewModel.orderState == .date)
                   
                     Button("Title") {
                         viewModel.orderState = .title
+                        viewModel.applyFiltersAndSearch()
                     }
                     .disabled(viewModel.orderState == .title)
                     
                     Button("Place name") {
                         viewModel.orderState = .placeName
+                        viewModel.applyFiltersAndSearch()
                     }
                     .disabled((viewModel.orderState == .placeName))
                     
                     Button("Address") {
                         viewModel.orderState = .address
+                        viewModel.applyFiltersAndSearch()
                     }
                     .disabled(viewModel.orderState == .address)
                     
@@ -67,6 +71,7 @@ struct JournalsView: View {
                     
                     Spacer()
                 }
+                .padding()
             }
             
             
