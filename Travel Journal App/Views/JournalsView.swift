@@ -26,27 +26,49 @@ struct JournalsView: View {
                         viewModel.applyFiltersAndSearch()
                     }
                 
-                VStack {
-                    Menu("Filter by") {
-                        Button("Favourites") {
-                            viewModel.updateFilter(to: .favourites)
-                        }
-                        .disabled(viewModel.filterState == .favourites)
-                        
-                        Button("Date") {
-                            viewModel.updateFilter(to: .date)
-                        }
-                        .disabled(viewModel.filterState == .date)
-                    }
+                Menu("Order by") {
                     
-                    Menu("Order by") {
-                        Button("Reset") {
-                            viewModel.updateFilter(to: .none)
-                        }
+                    Button("Date") {
+                        viewModel.orderState = .date
                     }
+                    .disabled(viewModel.orderState == .date)
+                  
+                    Button("Title") {
+                        viewModel.orderState = .title
+                    }
+                    .disabled(viewModel.orderState == .title)
+                    
+                    Button("Place name") {
+                        viewModel.orderState = .placeName
+                    }
+                    .disabled((viewModel.orderState == .placeName))
+                    
+                    Button("Address") {
+                        viewModel.orderState = .address
+                    }
+                    .disabled(viewModel.orderState == .address)
+                    
+                    
                 }
                 .padding()
             }
+            
+            if(!viewModel.journals.isEmpty) {
+                HStack {
+                    FilterButton(title: "All", isSelected: viewModel.filterState == .all) {
+                        viewModel.filterState = .all
+                        viewModel.applyFiltersAndSearch()
+                    }
+                    
+                    FilterButton(title:"Favourites", isSelected: viewModel.filterState == .favourites) {
+                        viewModel.filterState = .favourites
+                        viewModel.applyFiltersAndSearch()
+                    }
+                    
+                    Spacer()
+                }
+            }
+            
             
             // List of Journals
             if !viewModel.journals.isEmpty {
@@ -60,10 +82,14 @@ struct JournalsView: View {
                     }
                 }
             } else {
-                Text("No journals to show.")
-                Button("Go to map?") {
-                    navigationController.currentTab = .map
+                VStack {
+                    Text("No journals to show.")
+                    Button("Go to map?") {
+                        navigationController.currentTab = .map
+                    }
                 }
+                .padding()
+                
             }
             
             Spacer()
@@ -93,5 +119,12 @@ struct JournalsView: View {
             }
         }
     }
+}
+
+#Preview {
+    JournalsView()
+        .environmentObject(NavigationController())
+        .environmentObject(AuthController())
+        .environmentObject(MapViewModel())
 }
 

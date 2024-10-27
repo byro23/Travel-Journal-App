@@ -16,6 +16,7 @@ struct NewPlaceView: View {
     @StateObject var viewModel: NewPlaceViewModel
     @Environment(\.modelContext) private var context // For using Swift Data
     @EnvironmentObject var authController: AuthController
+    @EnvironmentObject var mapViewModel: MapViewModel
     @Binding var showingSheet: Bool
     @FocusState private var focusField: FocusField?
     
@@ -63,7 +64,7 @@ struct NewPlaceView: View {
                     Section {
                         
                     } header: {
-                        Text("Images")
+                        Text("Upload Images")
                     }
                     
                     Section {
@@ -154,6 +155,7 @@ struct NewPlaceView: View {
                         
                         saveJournalSwiftData()
                         
+                        mapViewModel.tappedCoordinates = nil
                         viewModel.isJournalSaved = true
                         
                     }

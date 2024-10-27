@@ -29,6 +29,8 @@ struct LoginView: View {
                 
                 if(authController.authenticationState == .authenticated) {
                     navigationController.push(.user)
+                    viewModel.resetFields()
+                    
                 }
                 else {
                     viewModel.incorrectCredentials = true

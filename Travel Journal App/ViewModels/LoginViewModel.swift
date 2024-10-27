@@ -23,4 +23,9 @@ class LoginViewModel: ObservableObject {
     var validForm: Bool {
         validEmail && validPassword
     }
+    
+    func resetFields() {
+        email = ""
+        password = ""
+    }
 }

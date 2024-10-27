@@ -102,7 +102,12 @@ struct MapView: View {
             if let userId = authController.currentUser?.id {
                 viewModel.fetchJournals(for: userId, context: context)
             }
-            viewModel.tappedCoordinates = nil
+        }
+        .onChange(of: viewModel.showNewPlaceSheet) { oldValue, newValue in
+            if let userId = authController.currentUser?.id {
+                viewModel.fetchJournals(for: userId,context: context)
+            }
+            
         }
     }
 }

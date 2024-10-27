@@ -9,14 +9,23 @@ import Foundation
 import SwiftData
 
 enum FilterState {
-    case date
+    case all
     case favourites
-    case none
+}
+
+enum OrderState {
+    case title
+    case placeName
+    case address
+    case date
+    case custom
+    
 }
 
 class JournalsViewModel: ObservableObject {
     
-    @Published var filterState: FilterState = .none
+    @Published var filterState: FilterState = .all
+    @Published var orderState: OrderState = .date
     @Published var searchText: String = ""
     
     @Published var allJournals: [JournalSwiftData] = [] // Store all journals initially
@@ -45,13 +54,16 @@ class JournalsViewModel: ObservableObject {
         }
         
         // Apply filter state (favorites or date)
-        switch filterState {
-        case .favourites:
-            print("Keeping switch statement happy")
-            // filteredJournals = filteredJournals.filter { $0.isFavourite }
+        switch orderState {
+        case .title:
+            filteredJournals.sort { $0.journalTitle < $1.journalTitle}
         case .date:
             filteredJournals.sort { $0.date > $1.date }
-        case .none:
+        case .address:
+            filteredJournals.sort {$0.address < $1.address}
+        case .placeName:
+            filteredJournals.sort {$0.placeName < $1.placeName}
+        case .custom:
             break
         }
         

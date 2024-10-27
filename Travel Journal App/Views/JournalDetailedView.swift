@@ -31,10 +31,12 @@ struct JournalDetailedView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Header Section
+                
                 VStack(alignment: .leading, spacing: 8) {
+                    /*
                     Text(journal.journalTitle)
                         .font(.largeTitle)
-                        .fontWeight(.bold)
+                        .fontWeight(.bold) */
                     
                     HStack {
                         Image(systemName: "calendar")
@@ -113,7 +115,8 @@ struct JournalDetailedView: View {
             }
             .padding(.vertical)
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(journal.journalTitle)
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
