@@ -7,12 +7,35 @@
 		<key>Share-Extension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Travel Journal App.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+		<key>Widget-ExtensionExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>6BB29E4F2CC8F467001B2127</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6BD9BD2C2CC33DA00077195C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C1D092062CBFC23900E43436</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
