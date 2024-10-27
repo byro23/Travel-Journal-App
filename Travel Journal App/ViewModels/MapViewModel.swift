@@ -21,7 +21,14 @@ class MapViewModel: ObservableObject {
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
     )
-    @Published var cameraPosition: MapCameraPosition = .automatic
+    
+    @Published var cameraPosition = MapCameraPosition.region(
+        MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093),
+            span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
+        )
+    )
+    
     @Published var showNewPlaceSheet = false
     @Published var tappedMap = false
     @Published var journals: [JournalSwiftData] = []

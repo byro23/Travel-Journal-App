@@ -21,6 +21,8 @@ class JournalsViewModel: ObservableObject {
     @Published var searchText: String = ""
     
     @Published var journals: [JournalSwiftData] = []
+    @Published var wasJournalTapped: Bool = false
+    @Published var tappedJournal: JournalSwiftData?
     
     
     func fetchJournals(journals: [JournalSwiftData]) {

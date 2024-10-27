@@ -15,12 +15,6 @@ struct MapView: View {
     @Environment(\.modelContext) private var context
     @Query private var journals: [JournalSwiftData] = []
     
-    let initialPosition = MapCameraPosition.region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093),
-            span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
-        )
-    )
     
     // Compute a simple Double value for animation
     private func getZoomLevel(_ span: MKCoordinateSpan) -> Double {
@@ -34,7 +28,7 @@ struct MapView: View {
             Text("Hello, \(authController.currentUser?.name ?? "Preview name")")
             
             MapReader { proxy in
-                Map(initialPosition: initialPosition) {
+                Map(position: $viewModel.cameraPosition) {
                     ForEach(viewModel.journals, id: \.self) { journal in
                         let coordinate = CLLocationCoordinate2D(
                             latitude: journal.latitude, longitude: journal.longitude
