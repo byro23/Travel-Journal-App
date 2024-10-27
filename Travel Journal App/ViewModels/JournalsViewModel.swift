@@ -24,6 +24,8 @@ class JournalsViewModel: ObservableObject {
     @Published var wasJournalTapped: Bool = false
     @Published var tappedJournal: JournalSwiftData?
     
+    @Published var isNavigateToJournal: Bool = false
+    
     
     func fetchJournals(journals: [JournalSwiftData]) {
         self.journals = journals

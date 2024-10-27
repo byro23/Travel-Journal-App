@@ -76,7 +76,7 @@ struct JournalsView: View {
         }
         .confirmationDialog("Options", isPresented: $viewModel.wasJournalTapped) {
             Button("View Journal", role: .none) {
-                
+                viewModel.isNavigateToJournal = true
             }
             Button("Go to position on map", role: .none) {
                 
@@ -93,6 +93,12 @@ struct JournalsView: View {
                 mapViewModel.cameraPosition = .region(region)
                 navigationController.currentTab = .map
             }
+        }
+        .navigationDestination(isPresented: $viewModel.isNavigateToJournal) {
+            if let journal = viewModel.tappedJournal {
+                JournalDetailedView(journal: journal)
+            }
+            
         }
     }
 }
