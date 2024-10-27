@@ -17,12 +17,33 @@ struct LoginView: View {
         VStack {
             HeaderView()
             
-            FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
-                .padding()
-                .textInputAutocapitalization(.never)
+            ZStack {
+                FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
+                    .padding()
+                    .textInputAutocapitalization(.never)
+                    
+                ClearButton(text: $viewModel.email)
+                    .padding()
+                    .padding(.trailing, 10)
+                    .padding(.top, 18)
+                    .opacity(viewModel.email.count > 3 ? 1 : 0)
+                    .offset(x: viewModel.email.count > 3 ? 0 : 20)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.email.count > 3)
+                
+            }
             
-            FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
-                .padding()
+            ZStack {
+                FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
+                    .padding()
+                
+                ClearButton(text: $viewModel.password)
+                    .padding()
+                    .padding(.trailing, 10)
+                    .padding(.top, 18)
+                    .opacity(viewModel.email.count > 3 ? 1 : 0)
+                    .offset(x: viewModel.email.count > 3 ? 0 : 20)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.email.count > 3)
+            }
             
             AnimatedButton(buttonText: "Login") {
                 await authController.signIn(email: viewModel.email, password: viewModel.password)
