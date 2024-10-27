@@ -17,33 +17,39 @@ struct JournalsView: View {
     @EnvironmentObject var mapViewModel: MapViewModel
     
     var body: some View {
-        VStack() {
+        VStack {
+            // Search and Filter Section
             HStack {
                 FloatingTextField(placeHolder: "Search journals", textInput: $viewModel.searchText)
                     .padding()
+                    .onChange(of: viewModel.searchText) {
+                        viewModel.applyFiltersAndSearch()
+                    }
                 
                 VStack {
                     Menu("Filter by") {
                         Button("Favourites") {
-                            
+                            viewModel.updateFilter(to: .favourites)
                         }
                         .disabled(viewModel.filterState == .favourites)
                         
                         Button("Date") {
-                            
+                            viewModel.updateFilter(to: .date)
                         }
                         .disabled(viewModel.filterState == .date)
-                        
                     }
                     
                     Menu("Order by") {
-                        
+                        Button("Reset") {
+                            viewModel.updateFilter(to: .none)
+                        }
                     }
                 }
                 .padding()
             }
             
-            if(!viewModel.journals.isEmpty) {
+            // List of Journals
+            if !viewModel.journals.isEmpty {
                 List {
                     ForEach(viewModel.journals) { journal in
                         JournalRow(journal: journal)
@@ -53,20 +59,12 @@ struct JournalsView: View {
                             }
                     }
                 }
-            }
-            else {
-                
-                Text("No journals to Show")
-                
-                Button {
+            } else {
+                Text("No journals to show.")
+                Button("Go to map?") {
                     navigationController.currentTab = .map
-                    
-                } label: {
-                    Text("Go to map?")
                 }
-                
             }
-            
             
             Spacer()
         }
@@ -75,36 +73,25 @@ struct JournalsView: View {
             viewModel.fetchJournals(journals: mapViewModel.journals)
         }
         .confirmationDialog("Options", isPresented: $viewModel.wasJournalTapped) {
-            Button("View Journal", role: .none) {
+            Button("View Journal") {
                 viewModel.isNavigateToJournal = true
             }
-            Button("Go to position on map", role: .none) {
-                
-                let region = MKCoordinateRegion(
-                        center: CLLocationCoordinate2D(
-                            latitude: viewModel.tappedJournal!.latitude,
-                            longitude: viewModel.tappedJournal!.longitude
-                        ),
-                        span: MKCoordinateSpan(
-                            latitudeDelta: 0.01,  // Closer zoom level
-                            longitudeDelta: 0.01
-                        )
-                )
-                mapViewModel.cameraPosition = .region(region)
-                navigationController.currentTab = .map
+            Button("Go to position on map") {
+                if let journal = viewModel.tappedJournal {
+                    let region = MKCoordinateRegion(
+                        center: CLLocationCoordinate2D(latitude: journal.latitude, longitude: journal.longitude),
+                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    )
+                    mapViewModel.cameraPosition = .region(region)
+                    navigationController.currentTab = .map
+                }
             }
         }
         .navigationDestination(isPresented: $viewModel.isNavigateToJournal) {
             if let journal = viewModel.tappedJournal {
                 JournalDetailedView(journal: journal)
             }
-            
         }
     }
 }
 
-#Preview {
-    JournalsView()
-        .environmentObject(AuthController())
-        .environmentObject(MapViewModel())
-}
