@@ -32,6 +32,10 @@ class MapViewModel: ObservableObject {
     @Published var showNewPlaceSheet = false
     @Published var tappedMap = false
     @Published var journals: [JournalSwiftData] = []
+    @Published var tappedAnnotation: Bool = false
+    @Published var tappedJournal: JournalSwiftData?
+    
+    @Published var searchText: String = ""
     
     
     

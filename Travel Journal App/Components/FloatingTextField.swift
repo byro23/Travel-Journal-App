@@ -48,7 +48,6 @@ struct FloatingTextField: View {
         }
         // Secure Field
         else {
-            // Then in your view:
             VStack(alignment: .leading) {
                 if(!textInput.isEmpty) {
                     Text(placeHolder)
