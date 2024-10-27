@@ -9,7 +9,6 @@ import SwiftUI
 import MapKit
 
 struct JournalsView: View {
-    
     @StateObject var viewModel = JournalsViewModel()
     @Environment(\.modelContext) private var context
     @EnvironmentObject var authController: AuthController
@@ -27,7 +26,6 @@ struct JournalsView: View {
                     }
                 
                 Menu("Order by") {
-                    
                     Button("Date") {
                         viewModel.orderState = .date
                         viewModel.applyFiltersAndSearch()
@@ -51,8 +49,6 @@ struct JournalsView: View {
                         viewModel.applyFiltersAndSearch()
                     }
                     .disabled(viewModel.orderState == .address)
-                    
-                    
                 }
                 .padding()
             }
@@ -74,8 +70,7 @@ struct JournalsView: View {
                 .padding()
             }
             
-            
-            // List of Journals
+            // Animated List of Journals
             if !viewModel.journals.isEmpty {
                 List {
                     ForEach(viewModel.journals) { journal in
@@ -84,17 +79,25 @@ struct JournalsView: View {
                                 viewModel.wasJournalTapped = true
                                 viewModel.tappedJournal = journal
                             }
+                            .transition(.asymmetric(
+                                insertion: .scale(scale: 0.95).combined(with: .opacity)
+                                    .animation(.spring(response: 0.35, dampingFraction: 0.7)),
+                                removal: .opacity.animation(.easeOut(duration: 0.2))
+                            ))
                     }
                 }
+                .animation(.spring(response: 0.35, dampingFraction: 0.7), value: viewModel.journals)
             } else {
                 VStack {
                     Text("No journals to show.")
+                        .transition(.scale.combined(with: .opacity))
                     Button("Go to map?") {
                         navigationController.currentTab = .map
                     }
                 }
                 .padding()
-                
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.journals.isEmpty)
             }
             
             Spacer()

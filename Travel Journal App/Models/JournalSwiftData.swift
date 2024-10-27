@@ -21,8 +21,9 @@ class JournalSwiftData: Identifiable {
     var longitude: Double
     var userId: String
     var imageReferences: [String]
+    var isFavourite: Bool
     
-    init(id: String = UUID().uuidString, journalTitle: String, journalEntry: String, date: Date, placeName: String, address: String, latitude: Double, longitude: Double, userId: String, imageReferences: [String]) {
+    init(id: String = UUID().uuidString, journalTitle: String, journalEntry: String, date: Date, placeName: String, address: String, latitude: Double, longitude: Double, userId: String, imageReferences: [String], isFavourite: Bool) {
         self.id = id
         self.journalTitle = journalTitle
         self.journalEntry = journalEntry
@@ -33,9 +34,10 @@ class JournalSwiftData: Identifiable {
         self.longitude = longitude
         self.userId = userId
         self.imageReferences = imageReferences
+        self.isFavourite = isFavourite
     }
 }
 
 extension JournalSwiftData {
-    static let MOCK_JOURNAL: JournalSwiftData = JournalSwiftData(journalTitle: "Coastal Drive", journalEntry: "This is a test journal entry", date: Date(), placeName: "Bondi Beach", address: "Bondi Beach, NSW", latitude: 0, longitude: 0, userId: "", imageReferences: [""])
+    static let MOCK_JOURNAL: JournalSwiftData = JournalSwiftData(journalTitle: "Coastal Drive", journalEntry: "This is a test journal entry", date: Date(), placeName: "Bondi Beach", address: "Bondi Beach, NSW", latitude: 0, longitude: 0, userId: "", imageReferences: [""], isFavourite: false)
 }

@@ -90,7 +90,8 @@ struct JournalRow_Previews: PreviewProvider {
                 latitude: -33.8523,
                 longitude: 151.2108,
                 userId: "",
-                imageReferences: ["photo1", "photo2", "photo3"]
+                imageReferences: ["photo1", "photo2", "photo3"],
+                isFavourite : false
             ))
             
             // Another variation
@@ -103,7 +104,8 @@ struct JournalRow_Previews: PreviewProvider {
                 latitude: -33.7971,
                 longitude: 151.2877,
                 userId: "",
-                imageReferences: ["photo1"]
+                imageReferences: ["photo1"],
+                isFavourite: true
             ))
         }
         .padding()

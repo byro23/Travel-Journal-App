@@ -19,8 +19,9 @@ class Journal: Identifiable, Encodable {
     var longitude: Double
     var userId: String
     var imageReferences: [String]
+    var isFavourite: Bool
     
-    init(id: String = UUID().uuidString, journalTitle: String, journalEntry: String, date: Date, placeName: String, address: String, latitude: Double, longitude: Double, userId: String, imageReferences: [String]) {
+    init(id: String = UUID().uuidString, journalTitle: String, journalEntry: String, date: Date, placeName: String, address: String, latitude: Double, longitude: Double, userId: String, imageReferences: [String], isFavourite: Bool) {
         self.id = id
         self.journalTitle = journalTitle
         self.journalEntry = journalEntry
@@ -31,6 +32,7 @@ class Journal: Identifiable, Encodable {
         self.longitude = longitude
         self.userId = userId
         self.imageReferences = imageReferences
+        self.isFavourite = isFavourite
     }
 }
 
