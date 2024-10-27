@@ -50,6 +50,13 @@
             ReferencedContainer = "container:Travel Journal App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "PLACES_API_KEY"
+            value = "AIzaSyDcoWqB9uQQ-bdklcirGOynHL7lxXMbUmE"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
