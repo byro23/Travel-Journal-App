@@ -10,9 +10,9 @@ import MapKit
 import SwiftData
 
 struct MapView: View {
-    @StateObject var viewModel = MapViewModel()
+    @EnvironmentObject var viewModel: MapViewModel
     @EnvironmentObject var authController: AuthController
-    @Environment(\.modelContext) private var context // For using Swift Data
+    @Environment(\.modelContext) private var context
     @Query private var journals: [JournalSwiftData] = []
     
     let initialPosition = MapCameraPosition.region(
@@ -22,57 +22,44 @@ struct MapView: View {
         )
     )
     
+    // Compute a simple Double value for animation
+    private func getZoomLevel(_ span: MKCoordinateSpan) -> Double {
+        return span.latitudeDelta + span.longitudeDelta
+    }
+    
     var body: some View {
-        
-        VStack{
+        VStack {
             HeaderView()
             
             Text("Hello, \(authController.currentUser?.name ?? "Preview name")")
             
             MapReader { proxy in
                 Map(initialPosition: initialPosition) {
-                    
-                    
                     ForEach(viewModel.journals, id: \.self) { journal in
-                            let coordinate = CLLocationCoordinate2D(
-                                latitude: journal.latitude, longitude: journal.longitude
-                            )
+                        let coordinate = CLLocationCoordinate2D(
+                            latitude: journal.latitude, longitude: journal.longitude
+                        )
                         
                         Annotation(journal.journalTitle, coordinate: coordinate) {
-                            
-                            // Determine annotation size based on map zoom level.
-                            let size: CGFloat = {
-                                let delta = viewModel.region.span.latitudeDelta
-                                if delta > 1.0 {
-                                    return 8 // Small size for zoomed-out view.
-                                } else if delta > 0.1 {
-                                    return 20 // Medium size for mid-zoom view.
-                                } else {
-                                    return 30 // Larger size for zoomed-in view.
-                                }
-                            }()
-                            
                             VStack {
-                                if(viewModel.region.span.latitudeDelta > 1.0 || viewModel.region.span.longitudeDelta > 1.0) {
-                                    Image(systemName: "mappin.circle.fill")
-                                        .resizable()
-                                        .frame(width: size, height: size)
-                                        .foregroundStyle(.red)
-                                }
-                                else if(viewModel.region.span.latitudeDelta > 0.1 || viewModel.region.span.longitudeDelta > 0.1) {
-                                    Image(systemName: "mappin.circle.fill")
-                                        .resizable()
-                                        .frame(width: size, height: size)
-                                        .foregroundStyle(.red)
-                                }
-                                else {
-                                    Image(systemName: "mappin.circle.fill")
-                                        .resizable() // Make the image scalable
-                                        .foregroundStyle(.red)
-                                        .frame(width: size, height: size) // Set the desired size
-                                        .padding(4) // Optional padding for a better touch area
-                                }
+                                let size: CGFloat = {
+                                    let zoomLevel = getZoomLevel(viewModel.region.span)
+                                    if zoomLevel > 2.0 {
+                                        return 8
+                                    } else if zoomLevel > 0.2 {
+                                        return 20
+                                    } else {
+                                        return 30
+                                    }
+                                }()
+                                
+                                Image(systemName: "mappin.circle.fill")
+                                    .resizable()
+                                    .frame(width: size, height: size)
+                                    .foregroundStyle(.red)
+                                    .padding(4)
                             }
+                            .animation(.easeInOut(duration: 0.3), value: getZoomLevel(viewModel.region.span))
                         }
                     }
                     
@@ -84,7 +71,6 @@ struct MapView: View {
                                 .frame(width: 25, height: 25)
                         }
                     }
-                    
                 }
                 .onTapGesture { position in
                     if let coordinate = proxy.convert(position, from: .local) {
@@ -93,7 +79,9 @@ struct MapView: View {
                     }
                 }
                 .onMapCameraChange { context in
-                    viewModel.region = context.region
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        viewModel.region = context.region
+                    }
                 }
             }
             
@@ -104,7 +92,6 @@ struct MapView: View {
             }
             .padding(.top)
             .padding(.bottom)
-            
         }
         .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap, actions: {
             Button("Create journal at this location", role: .none) {
@@ -122,15 +109,11 @@ struct MapView: View {
                 viewModel.fetchJournals(for: userId, context: context)
             }
             viewModel.tappedCoordinates = nil
-            
         }
-        
-        
-        
     }
 }
 
 #Preview {
     MapView()
-    .environmentObject(AuthController())
+        .environmentObject(AuthController())
 }

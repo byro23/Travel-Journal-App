@@ -24,6 +24,7 @@ struct Travel_Journal_AppApp: App {
                         switch screen {
                         case .user:
                             UserView()
+                                .navigationBarBackButtonHidden(true)
                         case .registration:
                             RegistrationView()
                         }

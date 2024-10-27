@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UserView: View {
     @EnvironmentObject var navigationController: NavigationController
+    @StateObject var mapViewModel: MapViewModel = MapViewModel()
     
     var body: some View {
         // A TabView for navigating between different app sections.
@@ -18,10 +19,21 @@ struct UserView: View {
                     Label("Map", systemImage: "map")
                 }
                 .tag(NavigationController.Tab.map)
+                .environmentObject(mapViewModel)
+            JournalsView()
+                .tabItem {
+                    Label("Journals", systemImage: "book.fill")
+                }
+                .tag(NavigationController.Tab.journal)
+                .environmentObject(mapViewModel)
+            
         }
+        .tabViewStyle(.automatic)
     }
+
 }
 
 #Preview {
-    UserView()
+    UserView(mapViewModel: MapViewModel())
+        .environmentObject(MapViewModel())
 }

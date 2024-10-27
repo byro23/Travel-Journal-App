@@ -35,3 +35,7 @@ class JournalSwiftData: Identifiable {
         self.imageReferences = imageReferences
     }
 }
+
+extension JournalSwiftData {
+    static let MOCK_JOURNAL: JournalSwiftData = JournalSwiftData(journalTitle: "Coastal Drive", journalEntry: "This is a test journal entry", date: Date(), placeName: "Bondi Beach", address: "Bondi Beach, NSW", latitude: 0, longitude: 0, userId: "", imageReferences: [""])
+}

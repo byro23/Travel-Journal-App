@@ -33,3 +33,5 @@ class Journal: Identifiable, Encodable {
         self.imageReferences = imageReferences
     }
 }
+
+
