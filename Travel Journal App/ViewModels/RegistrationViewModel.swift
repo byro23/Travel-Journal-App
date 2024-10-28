@@ -29,7 +29,7 @@ class RegistrationViewModel: ObservableObject {
     }
     
     var validPassword: Bool {
-        !password.isEmpty && password.count >= 8
+        !password.isEmpty && password.count >= 6
     }
     
     var validForm: Bool {
