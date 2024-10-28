@@ -35,34 +35,8 @@ class JournalsViewModel: ObservableObject {
     @Published var tappedJournal: JournalSwiftData?
     
     @Published var isNavigateToJournal: Bool = false
-    
-    @Published var firebaseJournals : [Journal] = []
-    
-    
-    // fetch Journals from firebase
-    func fetchJournalsFromFirebase(for userId: String, completion: (() -> Void)? = nil) {
-        let db = Firestore.firestore()
 
-        db.collection("users").document(userId).collection("journals")
-            .order(by: "date", descending: true)
-            .getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents else {
-                    print("Error fetching journals: \(String(describing: error))")
-                    return
-                }
 
-                self.firebaseJournals = documents.compactMap { doc -> Journal? in
-                    try? doc.data(as: Journal.self)
-                }
-
-                // Print inside the completion handler to ensure firebaseJournals is populated
-                print("Fetched journals: \(self.firebaseJournals.count) entries")
-                print("first journal is \(self.firebaseJournals.first?.journalTitle ?? "")")
-
-                // Call the completion handler if provided
-                completion?()
-            }
-    }
 
     
     // Fetch and assign journals from the map view
