@@ -97,5 +97,9 @@ class AuthController: ObservableObject { // This class is used to manage the use
         }
     }
     
+    func updateProfile(newEmail: String, newName: String) async throws {
+        try await FirebaseManager.shared.updateUserProfile(newEmail: newEmail, newName: newName)
+    }
+    
     
 }

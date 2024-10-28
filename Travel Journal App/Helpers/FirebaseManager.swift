@@ -112,4 +112,17 @@ class FirebaseManager {
         try await documentRef.delete()
     }
     
+    func updateUserProfile(newEmail: String, newName: String) async throws {
+        if let user = Auth.auth().currentUser {
+            let userRef = db.collection(FirestoreCollection.users.rawValue).document(user.uid)
+            
+            try await userRef.updateData([
+                "email": newEmail,
+                "name": newName
+            ])
+        }
+        
+        
+    }
+    
 }

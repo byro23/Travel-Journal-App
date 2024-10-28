@@ -105,10 +105,7 @@ struct SettingsView: View {
             }
         }
         .sheet(isPresented: $viewModel.showingEditProfile) {
-            /*EditProfileView(
-                name: authController.currentUser?.name ?? "",
-                email: authController.currentUser?.email ?? ""
-            )*/
+            EditProfileView()
         }
         .sheet(isPresented: $viewModel.showingChangePassword) {
             // ChangePasswordView()

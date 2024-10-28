@@ -21,6 +21,8 @@ struct LoginView: View {
                 FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
                     .padding()
                     .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textContentType(.emailAddress)
                     
                 ClearButton(text: $viewModel.email)
                     .padding()
@@ -35,6 +37,7 @@ struct LoginView: View {
             ZStack {
                 FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
                     .padding()
+                    .textContentType(.password)
                 
                 ClearButton(text: $viewModel.password)
                     .padding()
