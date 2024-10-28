@@ -101,6 +101,7 @@
 				Views/NewPlaceView.swift,
 				Views/PlaceListView.swift,
 				Views/RegistrationView.swift,
+				Views/SettingsView.swift,
 				Views/UserView.swift,
 			);
 			target = 6BEF9AB82CCF11580072B869 /* Share-Extension */;
