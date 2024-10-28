@@ -22,6 +22,14 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
     )
+    
+    @Published var previousRegion: MKCoordinateRegion?
+    
+    let worldwideRegion = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+        span: MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
+    )
+    
     @Published var cameraPosition = MapCameraPosition.region(
         MKCoordinateRegion(
             center: defaultRegion,
@@ -48,12 +56,22 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var searchText: String = "" {
         didSet {
             if searchText.isEmpty {
-                searchSuggestions = []  // Clear suggestions when search text is empty
+                searchSuggestions = []  // Clear suggestions
+                
+                // Restore the previous region if available
+                if let previousRegion = previousRegion {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        region = previousRegion
+                        cameraPosition = .region(region)
+                    }
+                    self.previousRegion = nil  // Clear previous region to avoid unintended reuse
+                }
             } else {
                 searchCompleter.queryFragment = searchText
             }
         }
     }
+
     
     @Published var searchSuggestions: [MKLocalSearchCompletion] = []
 
@@ -80,7 +98,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     private func setupSearchCompleter() {
         searchCompleter.delegate = self
         searchCompleter.resultTypes = [.address, .pointOfInterest]
-        searchCompleter.region = region
+        searchCompleter.region = worldwideRegion
     }
 
     // Delegate method to handle search results
@@ -117,6 +135,9 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         search.start { [weak self] response, error in
             guard let self = self,
                   let coordinate = response?.mapItems.first?.placemark.coordinate else { return }
+            
+            // Store the current region before moving to the new one
+            self.previousRegion = self.region
             
             // Run all UI updates on main thread
             DispatchQueue.main.async {
