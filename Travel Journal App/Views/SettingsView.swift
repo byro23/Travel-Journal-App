@@ -108,7 +108,7 @@ struct SettingsView: View {
             EditProfileView()
         }
         .sheet(isPresented: $viewModel.showingChangePassword) {
-            // ChangePasswordView()
+            ChangePasswordView()
         }
         .alert("Log Out", isPresented: $viewModel.showingLogoutAlert) {
             Button("Cancel", role: .cancel) { }

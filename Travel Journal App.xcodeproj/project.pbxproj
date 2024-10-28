@@ -80,6 +80,7 @@
 				Models/JournalSwiftData.swift,
 				Models/Place.swift,
 				Models/User.swift,
+				ViewModels/ChangePasswordViewModel.swift,
 				ViewModels/EditProfileViewModel.swift,
 				ViewModels/JournalsViewModel.swift,
 				ViewModels/LoginViewModel.swift,

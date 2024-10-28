@@ -10,37 +10,23 @@ import SwiftUI
 struct ChangePasswordView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authController: AuthController
-    
-    @State private var currentPassword = ""
-    @State private var newPassword = ""
-    @State private var confirmPassword = ""
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
-    @State private var isLoading = false
-    
-    var isValid: Bool {
-        !currentPassword.isEmpty &&
-        !newPassword.isEmpty &&
-        !confirmPassword.isEmpty &&
-        newPassword == confirmPassword &&
-        newPassword.count >= 6
-    }
+    @StateObject var viewModel = ChangePasswordViewModel()
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    SecureField("Current Password", text: $currentPassword)
+                    SecureField("Current Password", text: $viewModel.currentPassword)
                         .textContentType(.password)
                 } footer: {
                     Text("Enter your current password to verify your identity")
                 }
                 
                 Section {
-                    SecureField("New Password", text: $newPassword)
+                    SecureField("New Password", text: $viewModel.newPassword)
                         .textContentType(.newPassword)
                     
-                    SecureField("Confirm New Password", text: $confirmPassword)
+                    SecureField("Confirm New Password", text: $viewModel.confirmPassword)
                         .textContentType(.newPassword)
                 } footer: {
                     Text("Password must be at least 8 characters long")
@@ -49,18 +35,18 @@ struct ChangePasswordView: View {
                 Section {
                     Button {
                         Task {
-                            await changePassword()
+                            await viewModel.changePassword(authController: authController)
                         }
                     } label: {
                         HStack {
                             Text("Update Password")
-                            if isLoading {
+                            if viewModel.isLoading {
                                 Spacer()
                                 ProgressView()
                             }
                         }
                     }
-                    .disabled(!isValid || isLoading)
+                    .disabled(!viewModel.isValid || viewModel.isLoading)
                 }
             }
             .navigationTitle("Change Password")
@@ -72,33 +58,19 @@ struct ChangePasswordView: View {
                     }
                 }
             }
-            .alert("Change Password", isPresented: $showingAlert) {
+            .alert("Change Password", isPresented: $viewModel.showingAlert) {
                 Button("OK") {
-                    if alertMessage.contains("successfully") {
+                    if viewModel.alertMessage.contains("successfully") {
                         dismiss()
                     }
                 }
             } message: {
-                Text(alertMessage)
+                Text(viewModel.alertMessage)
             }
         }
     }
-    
-    private func changePassword() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
-            // Implement your password change logic here
-            // try await authController.changePassword(current: currentPassword, new: newPassword)
-            alertMessage = "Password changed successfully!"
-            showingAlert = true
-        } catch {
-            alertMessage = "Failed to change password: \(error.localizedDescription)"
-            showingAlert = true
-        }
-    }
 }
+
 #Preview {
     ChangePasswordView()
 }

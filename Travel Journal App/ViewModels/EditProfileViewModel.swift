@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+@MainActor
 class EditProfileViewModel: ObservableObject {
     
     @Published var name: String = ""

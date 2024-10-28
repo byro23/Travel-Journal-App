@@ -121,8 +121,6 @@ class FirebaseManager {
                 "name": newName
             ])
         }
-        
-        
     }
     
 }

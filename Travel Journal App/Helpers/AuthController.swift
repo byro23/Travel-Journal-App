@@ -17,6 +17,29 @@ enum AuthenticationState {
     case incorrect
 }
 
+enum AuthError: LocalizedError {
+    case userNotFound
+    case incorrectPassword
+    case weakPassword
+    case emailVerificationRequired
+    case unknownError(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .userNotFound:
+            return "User not found. Please sign in again."
+        case .incorrectPassword:
+            return "Current password is incorrect"
+        case .weakPassword:
+            return "New password is too weak. Please use at least 6 characters"
+        case .emailVerificationRequired:
+            return "Please verify your email address"
+        case .unknownError(let error):
+            return error.localizedDescription
+        }
+    }
+}
+
 // MARK: - AuthController
 @MainActor
 class AuthController: ObservableObject { // This class is used to manage the user session
@@ -102,4 +125,34 @@ class AuthController: ObservableObject { // This class is used to manage the use
     }
     
     
+}
+
+extension AuthController {
+    func changePassword(currentPassword: String, newPassword: String) async throws {
+        guard let user = Auth.auth().currentUser,
+              let email = user.email else {
+            throw AuthError.userNotFound
+        }
+        
+        // First, re-authenticate the user with their current password
+        let credential = EmailAuthProvider.credential(withEmail: email,
+                                                    password: currentPassword)
+        
+        do {
+            // Re-authenticate
+            try await user.reauthenticate(with: credential)
+            
+            // If re-authentication successful, update password
+            try await user.updatePassword(to: newPassword)
+        } catch let error as NSError {
+            switch error.code {
+            case AuthErrorCode.wrongPassword.rawValue:
+                throw AuthError.incorrectPassword
+            case AuthErrorCode.weakPassword.rawValue:
+                throw AuthError.weakPassword
+            default:
+                throw AuthError.unknownError(error)
+            }
+        }
+    }
 }
