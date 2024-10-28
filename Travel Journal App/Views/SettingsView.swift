@@ -125,7 +125,7 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) { }
             Button("Log Out", role: .destructive) {
                 navigationController.reset()
-                navigationController.currentTab = .home
+                navigationController.currentTab = .map
                 authController.signOut()
             }
         } message: {
