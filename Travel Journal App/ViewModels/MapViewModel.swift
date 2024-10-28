@@ -12,6 +12,7 @@ import SwiftData
 import Combine
 import SwiftUICore
 
+@MainActor
 class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
@@ -99,19 +100,37 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     }
     
     func goToSuggestion(suggestion: MKLocalSearchCompletion) {
-        print("Got here")
         let searchRequest = MKLocalSearch.Request(completion: suggestion)
         let search = MKLocalSearch(request: searchRequest)
         
-        search.start { response, error in
-            guard let coordinate = response?.mapItems.first?.placemark.coordinate else { return }
-            withAnimation(.easeInOut(duration: 0.3)) {
-                self.region = MKCoordinateRegion(
-                    center: coordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-                )
-                self.searchText = ""
-                self.cameraPosition = .region(self.region)
+        search.start { [weak self] response, error in
+            guard let self = self,
+                  let coordinate = response?.mapItems.first?.placemark.coordinate else { return }
+            
+            // Run all UI updates on main thread
+            DispatchQueue.main.async {
+                // First clear suggestions to trigger list dismissal animation
+                withAnimation(.easeOut(duration: 0.2)) {
+                    self.searchSuggestions = []
+                }
+                
+                // Short delay before moving map
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                        self.region = MKCoordinateRegion(
+                            center: coordinate,
+                            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                        )
+                        self.cameraPosition = .region(self.region)
+                    }
+                    
+                    // Clear search text after map movement starts
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            self.searchText = ""
+                        }
+                    }
+                }
             }
         }
     }

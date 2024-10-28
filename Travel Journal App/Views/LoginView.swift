@@ -69,7 +69,8 @@ struct LoginView: View {
                     navigationController.push(.registration)
                 } label: {
                     Text("Signup")
-                        .foregroundStyle(.cyan)
+                        .foregroundStyle(.blue)
+                        .fontWeight(.semibold)
                 }
             }
         }

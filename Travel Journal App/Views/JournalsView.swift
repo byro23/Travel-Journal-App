@@ -67,7 +67,8 @@ struct JournalsView: View {
                     
                     Spacer()
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.bottom)
             }
             
             // Animated List of Journals
