@@ -53,6 +53,13 @@ class JournalsViewModel: ObservableObject {
             }
         }
         
+        // Filter by favourites
+        if filterState != .all {
+            filteredJournals = filteredJournals.filter { journal in
+                journal.isFavourite == true
+            }
+        }
+        
         // Apply filter state (favorites or date)
         switch orderState {
         case .title:
