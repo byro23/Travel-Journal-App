@@ -49,6 +49,12 @@ struct JournalsView: View {
                         viewModel.applyFiltersAndSearch()
                     }
                     .disabled(viewModel.orderState == .address)
+                    
+                    Button("Custom order") {
+                        viewModel.orderState = .custom
+                        viewModel.applyFiltersAndSearch()
+                    }
+                    .disabled(viewModel.orderState == .custom)
                 }
                 .padding()
             }
@@ -66,9 +72,17 @@ struct JournalsView: View {
                     }
                     
                     Spacer()
+                    
+                    if viewModel.orderState == .custom {
+                        Text("Drag to reorder")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .transition(.opacity)
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.bottom)
+                .animation(.easeInOut, value: viewModel.orderState)
             }
             
             // Animated List of Journals
@@ -86,8 +100,12 @@ struct JournalsView: View {
                                 removal: .opacity.animation(.easeOut(duration: 0.2))
                             ))
                     }
+                    .if(viewModel.orderState == .custom) { view in
+                        view.onMove(perform: viewModel.moveItem)
+                    }
                 }
                 .animation(.spring(response: 0.35, dampingFraction: 0.7), value: viewModel.journals)
+                .environment(\.editMode, viewModel.orderState == .custom ? .constant(.active) : .constant(.inactive))
             } else {
                 VStack {
                     Text("No journals to show.")
@@ -130,10 +148,20 @@ struct JournalsView: View {
     }
 }
 
+// Helper extension for conditional modifiers
+extension View {
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
 #Preview {
     JournalsView()
         .environmentObject(NavigationController())
         .environmentObject(AuthController())
         .environmentObject(MapViewModel())
 }
-
