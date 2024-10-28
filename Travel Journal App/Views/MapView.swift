@@ -138,7 +138,7 @@ struct MapView: View {
                                                     .frame(width: size * 0.8, height: size * 0.8)
                                                     .foregroundStyle(.red)
                                                     .shadow(radius: 2)
-                                                    .offset(y: -size * 0.4)
+                                                    .offset(y: -size * 0.1)
                                                     .onTapGesture {
                                                         viewModel.tappedAnnotation = true
                                                         viewModel.tappedJournal = journal
@@ -168,6 +168,7 @@ struct MapView: View {
                                 if let coordinate = viewModel.tappedCoordinates {
                                     let size: CGFloat = {
                                         let zoomLevel = getZoomLevel(viewModel.region.span)
+                                        print(zoomLevel)
                                         if zoomLevel > 2.0 {
                                             return 10
                                         } else if zoomLevel > 0.2 {
