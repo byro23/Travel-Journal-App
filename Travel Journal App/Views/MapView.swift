@@ -211,7 +211,7 @@ struct MapView: View {
             Text("Would you like to create a new journal entry at this location?")
         }
         .sheet(isPresented: $viewModel.showNewPlaceSheet) {
-            NewPlaceView(showingSheet: $viewModel.showNewPlaceSheet,
+            NewJournalView(showingSheet: $viewModel.showNewPlaceSheet,
                         longitude: viewModel.tappedCoordinates?.longitude ?? 0.0,
                         latitude: viewModel.tappedCoordinates?.latitude ?? 0.0)
         }

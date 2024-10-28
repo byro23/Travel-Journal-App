@@ -9,7 +9,7 @@ import SwiftUI
 
 import PhotosUI
 
-struct NewPlaceView: View {
+struct NewJournalView: View {
 
     enum FocusField: Hashable {
         case title, placeName, placeAddress, journalEntry
@@ -363,5 +363,5 @@ struct NewPlaceView: View {
 }
 
 #Preview {
-    NewPlaceView(showingSheet: .constant(true), longitude: 0.0, latitude: 0.0)
+    NewJournalView(showingSheet: .constant(true), longitude: 0.0, latitude: 0.0)
 }
