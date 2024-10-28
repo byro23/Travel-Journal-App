@@ -19,6 +19,10 @@ struct ShareView: View {
         
         var body: some View {
             NavigationStack{
+                
+                NewPlaceView(showingSheet: .constant(true), longitude: 0.0, latitude: 0.0)
+
+                /*
                 VStack(spacing: 20){
                     if let imageData = image.pngData(),
                        let uiImage = UIImage(data: imageData) {
@@ -52,6 +56,7 @@ struct ShareView: View {
                         close()
                     }
                 }
+                */
             }
         }
     
