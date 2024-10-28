@@ -64,18 +64,21 @@ struct MapView: View {
             
             // Enhanced Search Area
             VStack(spacing: 0) {
-                ZStack {
-                    NonFloatingTextField(placeHolder: "Search", textInput: $viewModel.searchText)
-                        .padding()
-                        .matchedGeometryEffect(id: "searchField", in: animation)
-                    
-                    ClearButton(text: $viewModel.searchText)
-                        .padding(.top, 18)
-                        .padding(.trailing, 10)
-                        .opacity(viewModel.searchText.count > 2 ? 1 : 0)
-                    
+                HStack {
+                    ZStack {
+                        NonFloatingTextField(placeHolder: "Search", textInput: $viewModel.searchText)
+                            .padding()
+                            .matchedGeometryEffect(id: "searchField", in: animation)
+                        
+                        ClearButton(text: $viewModel.searchText)
+                            .padding()
+                            .padding(.trailing, 10)
+                            .opacity(viewModel.searchText.count > 2 ? 1 : 0)
+                        
+                    }
+                    .animation(.easeInOut(duration: 0.2), value: viewModel.searchText)
                 }
-                .animation(.easeInOut(duration: 0.2), value: viewModel.searchText)
+                
                 
                 // Search Results with enhanced animations
                 if viewModel.searchSuggestions.count > 3 {
