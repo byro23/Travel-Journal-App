@@ -33,6 +33,17 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var journals: [JournalSwiftData] = []
     @Published var tappedAnnotation = false
     @Published var tappedJournal: JournalSwiftData?
+    
+    var annotationSize: CGFloat {
+        let zoomLevel = getZoomLevel(self.region.span)
+        if zoomLevel > 2.0 {
+            return 10
+        } else if zoomLevel > 0.2 {
+            return 20
+        } else {
+            return 30
+        }
+    }
 
     @Published var searchText: String = "" {
         didSet {
@@ -119,7 +130,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                     withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                         self.region = MKCoordinateRegion(
                             center: coordinate,
-                            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                         )
                         self.cameraPosition = .region(self.region)
                     }
@@ -133,5 +144,9 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                 }
             }
         }
+    }
+    
+    func getZoomLevel(_ span: MKCoordinateSpan) -> Double {
+        return span.latitudeDelta + span.longitudeDelta
     }
 }

@@ -11,7 +11,6 @@ import MapKit
 struct JournalDetailedView: View {
     let journal: JournalSwiftData
     
-    @StateObject var viewModel = JournalDetailedViewModel()
     @Environment(\.modelContext) private var context
     
     // Add state for favorite status

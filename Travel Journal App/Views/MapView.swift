@@ -19,10 +19,6 @@ struct MapView: View {
     @Namespace private var animation
     @State private var isSearching = false
     
-    private func getZoomLevel(_ span: MKCoordinateSpan) -> Double {
-        return span.latitudeDelta + span.longitudeDelta
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             // Welcome Card
@@ -120,69 +116,41 @@ struct MapView: View {
                                     )
                                     
                                     Annotation(journal.journalTitle, coordinate: coordinate) {
-                                        VStack(spacing: 4) {
-                                            let size: CGFloat = {
-                                                let zoomLevel = getZoomLevel(viewModel.region.span)
-                                                if zoomLevel > 2.0 {
-                                                    return 8
-                                                } else if zoomLevel > 0.2 {
-                                                    return 20
-                                                } else {
-                                                    return 30
-                                                }
-                                            }()
+                                        VStack {
                                             
                                             if journal.isFavourite {
                                                 Image(systemName: "heart.fill")
                                                     .resizable()
-                                                    .frame(width: size * 0.8, height: size * 0.8)
+                                                    .frame(width: viewModel.annotationSize * 0.8, height: viewModel.annotationSize * 0.8)
                                                     .foregroundStyle(.red)
                                                     .shadow(radius: 2)
-                                                    .offset(y: -size * 0.1)
-                                                    .onTapGesture {
-                                                        viewModel.tappedAnnotation = true
-                                                        viewModel.tappedJournal = journal
-                                                    }
+                                                    .offset(y: -viewModel.annotationSize * 0.1)
                                             }
                                             
                                             Image(systemName: "mappin.circle.fill")
                                                 .resizable()
-                                                .frame(width: size, height: size)
+                                                .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
                                                 .foregroundStyle(journal.isFavourite ? .red : .orange)
                                                 .shadow(radius: 2)
-                                                .overlay(
-                                                    Circle()
-                                                        .stroke(Color.white, lineWidth: size * 0.1)
-                                                )
+                                                .background(Color.clear)  // Ensure padding area is invisible
+                                                .contentShape(Circle())  // Define the tappable shape as a circle
                                                 .onTapGesture {
                                                     viewModel.tappedAnnotation = true
                                                     viewModel.tappedJournal = journal
                                                 }
                                         }
-                                        .padding()
                                         .animation(.spring(response: 0.3, dampingFraction: 0.7),
-                                                 value: getZoomLevel(viewModel.region.span))
+                                                   value: viewModel.getZoomLevel(viewModel.region.span))
                                     }
                                 }
                                 
                                 if let coordinate = viewModel.tappedCoordinates {
-                                    let size: CGFloat = {
-                                        let zoomLevel = getZoomLevel(viewModel.region.span)
-                                        print(zoomLevel)
-                                        if zoomLevel > 2.0 {
-                                            return 10
-                                        } else if zoomLevel > 0.2 {
-                                            return 20
-                                        } else {
-                                            return 30
-                                        }
-                                    }()
                                     
                                     Annotation("New Journal", coordinate: coordinate) {
                                         VStack {
                                             Image(systemName: "plus.circle.fill")
                                                 .resizable()
-                                                .frame(width: size, height: size)
+                                                .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
                                                 .foregroundStyle(.blue)
                                                 .background(Circle().fill(.white))
                                                 .shadow(radius: 2)
