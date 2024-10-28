@@ -53,7 +53,6 @@ class JournalsViewModel: ObservableObject {
         // Update the custom order
         if orderState == .custom {
             customOrder = journals.map { $0.id }
-            // Here you would typically persist the custom order
             saveCustomOrder()
         }
     }
