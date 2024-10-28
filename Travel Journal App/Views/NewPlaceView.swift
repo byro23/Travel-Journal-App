@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NewPlaceView: View {
+public struct NewPlaceView: View {
     enum FocusField: Hashable {
         case title, placeName, placeAddress, journalEntry
     }
@@ -86,7 +86,7 @@ struct NewPlaceView: View {
         }
     }
     
-    var body: some View {
+    public var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
