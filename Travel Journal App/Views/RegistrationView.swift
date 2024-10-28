@@ -19,6 +19,8 @@ struct RegistrationView: View {
                 FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
                     .padding()
                     .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textContentType(.emailAddress)
                 
                 if(viewModel.email.count > 3) {
                     ClearButton(text: $viewModel.email)
@@ -31,6 +33,8 @@ struct RegistrationView: View {
             ZStack {
                 FloatingTextField(placeHolder: "Name", textInput: $viewModel.name)
                     .padding()
+                    .autocorrectionDisabled()
+                    .textContentType(.name)
                 
                 if(viewModel.name.count > 3) {
                     ClearButton(text: $viewModel.name)
@@ -44,6 +48,7 @@ struct RegistrationView: View {
                 ZStack {
                     FloatingTextField(placeHolder: "Password", textInput: $viewModel.password, isSecureField: true)
                         .padding()
+                        .textContentType(.password)
                     
                     if(viewModel.password.count > 3) {
                         ClearButton(text: $viewModel.password)
@@ -61,6 +66,7 @@ struct RegistrationView: View {
             ZStack {
                 FloatingTextField(placeHolder: "Confirm Password", textInput: $viewModel.confirmPassword, isSecureField: true)
                     .padding()
+                    .textContentType(.password)
                 
                 if(viewModel.confirmPassword.count > 3) {
                     ClearButton(text: $viewModel.confirmPassword)
