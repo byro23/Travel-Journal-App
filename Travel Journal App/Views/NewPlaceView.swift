@@ -8,10 +8,8 @@
 import SwiftUI
 
 import PhotosUI
+
 struct NewPlaceView: View {
-
-
-public struct NewPlaceView: View {
 
     enum FocusField: Hashable {
         case title, placeName, placeAddress, journalEntry
