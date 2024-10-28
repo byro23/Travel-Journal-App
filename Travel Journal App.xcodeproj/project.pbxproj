@@ -83,7 +83,7 @@
 				ViewModels/JournalsViewModel.swift,
 				ViewModels/LoginViewModel.swift,
 				ViewModels/MapViewModel.swift,
-				ViewModels/NewPlaceViewModel.swift,
+				ViewModels/NewJournalViewModel.swift,
 				ViewModels/RegistrationViewModel.swift,
 				ViewModels/SettingsViewModel.swift,
 				Views/JournalDetailedView.swift,

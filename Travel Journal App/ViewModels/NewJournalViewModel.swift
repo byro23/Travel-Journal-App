@@ -12,7 +12,7 @@ import FirebaseStorage
 import SwiftUI
 
 
-class NewPlaceViewModel: ObservableObject {
+class NewJournalViewModel: ObservableObject {
     
 
     @Published var journalTitle: String = ""

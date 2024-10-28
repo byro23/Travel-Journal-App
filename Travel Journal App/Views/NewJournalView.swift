@@ -15,7 +15,7 @@ struct NewJournalView: View {
         case title, placeName, placeAddress, journalEntry
     }
     
-    @StateObject var viewModel: NewPlaceViewModel
+    @StateObject var viewModel: NewJournalViewModel
     @Environment(\.modelContext) private var context
     @EnvironmentObject var authController: AuthController
     @EnvironmentObject var mapViewModel: MapViewModel
@@ -36,7 +36,7 @@ struct NewJournalView: View {
 
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
         self._showingSheet = showingSheet
-        _viewModel = StateObject(wrappedValue: NewPlaceViewModel(longitude: longitude, latitude: latitude))
+        _viewModel = StateObject(wrappedValue: NewJournalViewModel(longitude: longitude, latitude: latitude))
     }
     
     var placeNameField: some View {
