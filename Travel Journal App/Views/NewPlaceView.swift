@@ -8,11 +8,9 @@
 import SwiftUI
 
 import PhotosUI
-struct NewPlaceView: View {
-
 
 public struct NewPlaceView: View {
-
+    
     enum FocusField: Hashable {
         case title, placeName, placeAddress, journalEntry
     }
@@ -35,7 +33,9 @@ public struct NewPlaceView: View {
     @State var images: [UIImage] = []
     @State var photosPickerItems : [PhotosPickerItem]  = []
     
-
+    // variable for loading feedback
+    @State var isSaving : Bool = false
+    
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
         self._showingSheet = showingSheet
         _viewModel = StateObject(wrappedValue: NewPlaceViewModel(longitude: longitude, latitude: latitude))
@@ -98,188 +98,228 @@ public struct NewPlaceView: View {
     }
     
     public var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Header Card
-                    VStack(spacing: 16) {
-                        HStack {
-                            TextField("Journal title", text: $viewModel.journalTitle)
-                                .font(.title2.bold())
-                                .focused($focusField, equals: .title)
-                                .padding(.horizontal)
-                            
-                            Button(action: {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                    viewModel.isFavourite.toggle()
-                                }
-                            }) {
-                                Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
-                                    .font(.title2)
-                                    .foregroundColor(viewModel.isFavourite ? .red : .gray)
-                                    .scaleEffect(viewModel.isFavourite ? 1.1 : 1.0)
-                            }
-                            .padding(.trailing)
-                        }
-                        
-                        DatePicker("Date", selection: $viewModel.journalDate, displayedComponents: [.date])
-                            .padding(.horizontal)
-                    }
-                    .padding(.vertical)
-                    .background(Color(.systemBackground))
-                    .cornerRadius(15)
-                    .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-                    
-                    // Journal Entry Card
-                    VStack(alignment: .leading, spacing: 12) {
-                        Label("Journal Entry", systemImage: "pencil.line")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        TextEditor(text: $viewModel.journalEntry)
-                            .frame(minHeight: 150)
-                            .padding(8)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8)
-                    }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(15)
-                    .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-                    
-                    
-                    // upload photo
-                    VStack{
-                        PhotosPicker(selection: $photosPickerItems){
+        ZStack{
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Header Card
+                        VStack(spacing: 16) {
                             HStack {
-                                Image(systemName: "photo.on.rectangle.angled")
-                                Text("Upload Image")
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
-                        }
-                        
-                        
-                    }
-                    // Location Card
-                    VStack(alignment: .leading, spacing: 16) {
-                        Label("Location Details", systemImage: "mappin.circle.fill")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        placeNameField
-                        addressField
-                    }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(15)
-                    .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-                    
-                    // Suggestions Card
-                    if !viewModel.places.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Label("Nearby Places", systemImage: "location.circle.fill")
-                                    .font(.headline)
+                                TextField("Journal title", text: $viewModel.journalTitle)
+                                    .font(.title2.bold())
+                                    .focused($focusField, equals: .title)
+                                    .padding(.horizontal)
                                 
-                                Spacer()
-                                
-                                if viewModel.places.count > 3 {
-                                    Button("Show all") {
-                                        viewModel.showSuggestionsSheet()
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                        viewModel.isFavourite.toggle()
                                     }
-                                    .font(.subheadline)
-                                    .foregroundColor(.blue)
+                                }) {
+                                    Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
+                                        .font(.title2)
+                                        .foregroundColor(viewModel.isFavourite ? .red : .gray)
+                                        .scaleEffect(viewModel.isFavourite ? 1.1 : 1.0)
                                 }
+                                .padding(.trailing)
                             }
                             
-                            if viewModel.isFetchingSuggestions {
-                                HStack {
-                                    Text("Fetching suggestions")
-                                    ProgressView()
-                                }
-                                .frame(maxWidth: .infinity)
-                            } else {
-                                ForEach(viewModel.places.prefix(3)) { place in
-                                    PlaceRow(place: place)
-                                        .contentShape(Rectangle())
-                                        .onTapGesture {
-                                            focusField = nil
-                                            viewModel.autofillPlace(placeName: place.placeName, placeAddress: place.placeAddress)
-                                            animateAutoFill()
-                                        }
-                                        .transition(.scale.combined(with: .opacity))
-                                }
-                            }
+                            DatePicker("Date", selection: $viewModel.journalDate, displayedComponents: [.date])
+                                .padding(.horizontal)
+                        }
+                        .padding(.vertical)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(15)
+                        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                        
+                        // Journal Entry Card
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Journal Entry", systemImage: "pencil.line")
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            
+                            TextEditor(text: $viewModel.journalEntry)
+                                .frame(minHeight: 150)
+                                .padding(8)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
                         }
                         .padding()
                         .background(Color(.systemBackground))
                         .cornerRadius(15)
                         .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-                    }
-                    
-                    // Save Button
-                    Button(action: {
-                        uploadImagesAndSaveJournal()
                         
-                        mapViewModel.tappedCoordinates = nil
                         
-                    }) {
-                        HStack {
-                            Image(systemName: "square.and.arrow.down")
-                            Text("Save Journal")
+                        // upload photo
+                        VStack{
+                            PhotosPicker(selection: $photosPickerItems){
+                                HStack {
+                                    Image(systemName: "photo.on.rectangle.angled")
+                                    Text("Add Image")
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                            }
+                            
+                            
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(viewModel.validForm ? Color.blue : Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
-                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-                    }
-                    .disabled(!viewModel.validForm)
-                    .padding(.horizontal)
-                    .opacity(viewModel.validForm ? 1 : 0.7)
-                }
-                .padding()
-            }
-            
-            .navigationTitle("New Journal")
-            .background(Color(.systemGroupedBackground))
-            .onAppear {
-                viewModel.fetchNearbyPlaces()
-            }
-            // append selected images to images array
-            .onChange(of: photosPickerItems){ _, _ in
-                Task{
-                    
-                    for item in photosPickerItems{
-                        if let data = try? await item.loadTransferable(type: Data.self){
-                            if let image = UIImage(data: data){
-                                
-                                images.append(image)
+                        
+                        // Display selected photo thumbnails
+                        if !images.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 10) {
+                                    ForEach(images.indices, id: \.self) { index in
+                                        ZStack(alignment: .topTrailing) {
+                                            Image(uiImage: images[index])
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 70, height: 70)
+                                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                            
+                                            // Delete icon overlay
+                                            Button(action: {
+                                                images.remove(at: index) // Remove image from array
+                                            }) {
+                                                Image(systemName: "xmark.circle.fill")
+                                                    .foregroundColor(.red)
+                                                    .background(Color.white)
+                                                    .clipShape(Circle())
+                                                    .offset(x: 5, y: -5) // Positioning the icon
+                                            }
+                                            .buttonStyle(PlainButtonStyle()) // Remove button tap animation
+                                        }
+                                    }
+                                }
+                                .padding(.top, 10)
                             }
                         }
-                    }
-                    photosPickerItems.removeAll()
 
+                        // Location Card
+                        VStack(alignment: .leading, spacing: 16) {
+                            Label("Location Details", systemImage: "mappin.circle.fill")
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            
+                            placeNameField
+                            addressField
+                        }
+                        .padding()
+                        .background(Color(.systemBackground))
+                        .cornerRadius(15)
+                        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                        
+                        // Suggestions Card
+                        if !viewModel.places.isEmpty {
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    Label("Nearby Places", systemImage: "location.circle.fill")
+                                        .font(.headline)
+                                    
+                                    Spacer()
+                                    
+                                    if viewModel.places.count > 3 {
+                                        Button("Show all") {
+                                            viewModel.showSuggestionsSheet()
+                                        }
+                                        .font(.subheadline)
+                                        .foregroundColor(.blue)
+                                    }
+                                }
+                                
+                                if viewModel.isFetchingSuggestions {
+                                    HStack {
+                                        Text("Fetching suggestions")
+                                        ProgressView()
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                } else {
+                                    ForEach(viewModel.places.prefix(3)) { place in
+                                        PlaceRow(place: place)
+                                            .contentShape(Rectangle())
+                                            .onTapGesture {
+                                                focusField = nil
+                                                viewModel.autofillPlace(placeName: place.placeName, placeAddress: place.placeAddress)
+                                                animateAutoFill()
+                                            }
+                                            .transition(.scale.combined(with: .opacity))
+                                    }
+                                }
+                            }
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .cornerRadius(15)
+                            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                        }
+                        
+                        // Save Button
+                        Button(action: {
+                            isSaving = true
+                            uploadImagesAndSaveJournal()
+                            
+                            mapViewModel.tappedCoordinates = nil
+                            
+                            
+                        }) {
+                            HStack {
+                                Image(systemName: "square.and.arrow.down")
+                                Text("Save Journal")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(viewModel.validForm ? Color.blue : Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                        }
+                        .disabled(!viewModel.validForm)
+                        .padding(.horizontal)
+                        .opacity(viewModel.validForm ? 1 : 0.7)
+                    }
+                    .padding()
+                }
+                
+                .navigationTitle("New Journal")
+                .background(Color(.systemGroupedBackground))
+                .onAppear {
+                    viewModel.fetchNearbyPlaces()
+                }
+                // append selected images to images array
+                .onChange(of: photosPickerItems){ _, _ in
+                    Task{
+                        
+                        for item in photosPickerItems{
+                            if let data = try? await item.loadTransferable(type: Data.self){
+                                if let image = UIImage(data: data){
+                                    
+                                    images.append(image)
+                                }
+                            }
+                        }
+                        photosPickerItems.removeAll()
+                        
+                    }
+                }
+                .sheet(isPresented: $viewModel.isShowingSuggestionsSheet) {
+                    PlaceListView(showSheet: $viewModel.isShowingSuggestionsSheet,
+                                  placeName: $viewModel.placeName,
+                                  placeAddress: $viewModel.placeAddress,
+                                  places: viewModel.places)
+                }
+                .alert("Journal saved successfully!", isPresented: $viewModel.isJournalSaved) {
+                    Button("OK") {
+                        showingSheet = false
+                    }
                 }
             }
-            .sheet(isPresented: $viewModel.isShowingSuggestionsSheet) {
-                PlaceListView(showSheet: $viewModel.isShowingSuggestionsSheet,
-                            placeName: $viewModel.placeName,
-                            placeAddress: $viewModel.placeAddress,
-                            places: viewModel.places)
+            // Show loading indicator
+            if isSaving {
+                LoadingOverlayView()
             }
-            .alert("Journal saved successfully!", isPresented: $viewModel.isJournalSaved) {
-                Button("OK") {
-                    showingSheet = false
-                }
-            }
-        }
+        
     }
+}
     
     // Upload images, populate imageReferences, then save the journal
     func uploadImagesAndSaveJournal() {
@@ -309,7 +349,9 @@ public struct NewPlaceView: View {
          if let userId = authController.currentUser?.id {
              viewModel.saveJournalFirestore(userId: userId)
              saveJournalSwiftData()
+             isSaving = false
              viewModel.isJournalSaved = true
+             
          }
      }
     
@@ -363,6 +405,8 @@ public struct NewPlaceView: View {
         }
     }
 }
+
+
 
 #Preview {
     NewPlaceView(showingSheet: .constant(true), longitude: 0.0, latitude: 0.0)
