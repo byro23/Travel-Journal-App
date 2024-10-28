@@ -106,13 +106,7 @@ struct JournalsView: View {
         .navigationTitle("All Journals")
         .onAppear {
             viewModel.fetchJournals(journals: mapViewModel.journals)
-//            if let userId = authController.currentUser?.id{
-//                viewModel.fetchJournalsFromFirebase(for: userId){
-//                    // testing fetchJournalFromFirebase
-//                    print ("these are journals from firebase \(viewModel.firebaseJournals)")
-//                }
-//               
-//            }
+
         }
         .confirmationDialog("Options", isPresented: $viewModel.wasJournalTapped) {
             Button("View Journal") {

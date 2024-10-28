@@ -9,10 +9,12 @@ import Foundation
 import MapKit
 import PhotosUI
 import FirebaseStorage
+import SwiftUI
 
 
 class NewPlaceViewModel: ObservableObject {
     
+
     @Published var journalTitle: String = ""
     @Published var journalDate: Date = Date()
     @Published var placeName: String = ""
@@ -28,7 +30,7 @@ class NewPlaceViewModel: ObservableObject {
     var placeLongitude: Double = 0.0
     var placeLatitude: Double = 0.0
     
-    private var imageReferences: [String] = []
+    @Published var imageReferences: [String] = []
 
     
 
@@ -102,6 +104,7 @@ class NewPlaceViewModel: ObservableObject {
         self.placeAddress = placeAddress
     }
     
+    // upload images to storage and add references in imageReferences array
     func uploadImage(selectedImage: UIImage, completion: @escaping (Bool) -> Void) {
         guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
             completion(false)
@@ -161,6 +164,7 @@ class NewPlaceViewModel: ObservableObject {
         }
         
     }
+
     
     func resetFields() {
         journalTitle = ""

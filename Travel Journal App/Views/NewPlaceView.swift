@@ -219,7 +219,7 @@ struct NewPlaceView: View {
                     // Save Button
                     Button(action: {
                         uploadImagesAndSaveJournal()
-                        saveJournalSwiftData()
+                        
                         mapViewModel.tappedCoordinates = nil
                         
                     }) {
@@ -303,9 +303,11 @@ struct NewPlaceView: View {
     func saveJournalToFirestore() {
          if let userId = authController.currentUser?.id {
              viewModel.saveJournalFirestore(userId: userId)
+             saveJournalSwiftData()
              viewModel.isJournalSaved = true
          }
      }
+    
     
     func saveJournalSwiftData() {
         if let userId = authController.currentUser?.id {
@@ -318,12 +320,14 @@ struct NewPlaceView: View {
                 latitude: viewModel.placeLatitude,
                 longitude: viewModel.placeLongitude,
                 userId: userId,
-                imageReferences: [""],
+                imageReferences: viewModel.imageReferences,
                 isFavourite: viewModel.isFavourite
             )
             context.insert(journal)
         }
+        
     }
+
     
     func animateAutoFill() {
         // Reset any existing animations
