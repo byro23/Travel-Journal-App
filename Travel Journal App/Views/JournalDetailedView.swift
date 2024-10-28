@@ -11,10 +11,16 @@ import MapKit
 struct JournalDetailedView: View {
     let journal: JournalSwiftData
     
+    @StateObject var viewModel = JournalDetailedViewModel()
+    @Environment(\.modelContext) private var context
+    
+    // Add state for favorite status
+    @State private var isFavorite: Bool
     @State private var region: MKCoordinateRegion
     
     init(journal: JournalSwiftData) {
         self.journal = journal
+        _isFavorite = State(initialValue: journal.isFavourite) // Initialize with current favorite status
         _region = State(initialValue: MKCoordinateRegion(
             center: CLLocationCoordinate2D(
                 latitude: journal.latitude,
@@ -31,13 +37,7 @@ struct JournalDetailedView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Header Section
-                
                 VStack(alignment: .leading, spacing: 8) {
-                    /*
-                    Text(journal.journalTitle)
-                        .font(.largeTitle)
-                        .fontWeight(.bold) */
-                    
                     HStack {
                         Image(systemName: "calendar")
                         Text(journal.date.formatted(date: .long, time: .shortened))
@@ -89,8 +89,6 @@ struct JournalDetailedView: View {
                     Text(journal.address)
                         .foregroundColor(.secondary)
                     
-                    
-                    
                     Map(coordinateRegion: $region, annotationItems: [journal]) { journal in
                         MapMarker(coordinate: CLLocationCoordinate2D(
                             latitude: journal.latitude,
@@ -117,6 +115,23 @@ struct JournalDetailedView: View {
         }
         .navigationTitle(journal.journalTitle)
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    toggleFavorite()
+                } label: {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundColor(isFavorite ? .red : .gray)
+                }
+            }
+        }
+    }
+    
+    private func toggleFavorite() {
+        isFavorite.toggle()
+        journal.isFavourite = isFavorite
+        // Save changes to SwiftData
+        try? context.save()
     }
 }
 
