@@ -9,16 +9,9 @@ import SwiftUI
 import PhotosUI
 
 struct SettingsView: View {
-    
     @StateObject var viewModel = SettingsViewModel()
     @EnvironmentObject var authController: AuthController
     @EnvironmentObject var navigationController: NavigationController
-    @State private var showingImagePicker = false
-    @State private var selectedItem: PhotosPickerItem?
-    @State private var profileImage: Image?
-    @State private var showingLogoutAlert = false
-    @State private var showingEditProfile = false
-    @State private var showingChangePassword = false
     
     var body: some View {
         List {
@@ -53,7 +46,7 @@ struct SettingsView: View {
                             .offset(x: 26, y: 26)
                     }
                     .onTapGesture {
-                        showingImagePicker = true
+                        viewModel.showingImagePicker = true
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
@@ -79,7 +72,7 @@ struct SettingsView: View {
                 }
                 
                 Button {
-                    showingChangePassword = true
+                    viewModel.showingChangePassword = true
                 } label: {
                     HStack {
                         Image(systemName: "lock.rotation")
@@ -88,7 +81,7 @@ struct SettingsView: View {
                 }
                 
                 Button(role: .destructive) {
-                    showingLogoutAlert = true
+                    viewModel.showingLogoutAlert = true
                 } label: {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -98,30 +91,29 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings")
-        .photosPicker(isPresented: $showingImagePicker,
-                     selection: $selectedItem,
+        .photosPicker(isPresented: $viewModel.showingImagePicker,
+                     selection: $viewModel.selectedItem,
                      matching: .images)
-        .onChange(of: selectedItem) { oldValue, newValue in
+        .onChange(of: viewModel.selectedItem) { oldValue, newValue in
             Task {
                 if let data = try? await newValue?.loadTransferable(type: Data.self) {
                     if let uiImage = UIImage(data: data) {
-                        profileImage = Image(uiImage: uiImage)
-                        // Here you would typically save the image data to your storage
+                        viewModel.profileImage = Image(uiImage: uiImage)
                         // await saveProfileImage(data)
                     }
                 }
             }
         }
-        .sheet(isPresented: $showingEditProfile) {
+        .sheet(isPresented: $viewModel.showingEditProfile) {
             /*EditProfileView(
                 name: authController.currentUser?.name ?? "",
                 email: authController.currentUser?.email ?? ""
             )*/
         }
-        .sheet(isPresented: $showingChangePassword) {
+        .sheet(isPresented: $viewModel.showingChangePassword) {
             // ChangePasswordView()
         }
-        .alert("Log Out", isPresented: $showingLogoutAlert) {
+        .alert("Log Out", isPresented: $viewModel.showingLogoutAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Log Out", role: .destructive) {
                 navigationController.reset()
