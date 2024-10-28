@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseStorage
 import MapKit
 
 struct JournalDetailedView: View {
@@ -16,6 +17,7 @@ struct JournalDetailedView: View {
     // Add state for favorite status
     @State private var isFavorite: Bool
     @State private var region: MKCoordinateRegion
+    @State private var images: [UIImage] = []
     
     init(journal: JournalSwiftData) {
         self.journal = journal
@@ -46,31 +48,22 @@ struct JournalDetailedView: View {
                 .padding(.horizontal)
                 
                 // Images Section
-                if !journal.imageReferences.isEmpty {
+                if !images.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            ForEach(journal.imageReferences, id: \.self) { imageRef in
-                                AsyncImage(url: URL(string: imageRef)) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        ProgressView()
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                    case .failure:
-                                        Image(systemName: "photo")
-                                            .imageScale(.large)
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                                .frame(width: 280, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                            ForEach(images, id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 280, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                         }
                         .padding(.horizontal)
                     }
+                } else {
+                    ProgressView()
+                        .padding(.horizontal)
                 }
                 
                 // Location Section
@@ -112,6 +105,9 @@ struct JournalDetailedView: View {
             }
             .padding(.vertical)
         }
+        .onAppear {
+            fetchImages()
+        }
         .navigationTitle(journal.journalTitle)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
@@ -131,6 +127,33 @@ struct JournalDetailedView: View {
         journal.isFavourite = isFavorite
         // Save changes to SwiftData
         try? context.save()
+    }
+    
+    private func fetchImages() {
+        let storage = Storage.storage()
+        var loadedImages: [UIImage] = []
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for imageRef in journal.imageReferences {
+            dispatchGroup.enter()
+            let storageRef = storage.reference().child(imageRef)
+            
+            // Fetch the image data from Firebase Storage
+            storageRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print("Error fetching image data: \(error.localizedDescription)")
+                } else if let data = data, let image = UIImage(data: data) {
+                    loadedImages.append(image)
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        // Update the images array after all downloads complete
+        dispatchGroup.notify(queue: .main) {
+            self.images = loadedImages
+        }
     }
 }
 

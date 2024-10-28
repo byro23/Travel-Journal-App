@@ -17,6 +17,7 @@
 		C1D092212CC3748F00E43436 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092202CC3748F00E43436 /* FirebaseAnalytics */; };
 		C1D092232CC3748F00E43436 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092222CC3748F00E43436 /* FirebaseAuth */; };
 		C1D092252CC3748F00E43436 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092242CC3748F00E43436 /* FirebaseFirestore */; };
+		CF55BF0F2CCF507100929F6B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CF55BF0E2CCF507100929F6B /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1D092212CC3748F00E43436 /* FirebaseAnalytics in Frameworks */,
+				CF55BF0F2CCF507100929F6B /* FirebaseStorage in Frameworks */,
 				C1D092232CC3748F00E43436 /* FirebaseAuth in Frameworks */,
 				C1D092252CC3748F00E43436 /* FirebaseFirestore in Frameworks */,
 			);
@@ -278,6 +280,7 @@
 				C1D092202CC3748F00E43436 /* FirebaseAnalytics */,
 				C1D092222CC3748F00E43436 /* FirebaseAuth */,
 				C1D092242CC3748F00E43436 /* FirebaseFirestore */,
+				CF55BF0E2CCF507100929F6B /* FirebaseStorage */,
 			);
 			productName = "Travel Journal App";
 			productReference = C1D092072CBFC23900E43436 /* Travel Journal App.app */;
@@ -749,6 +752,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		CF55BF0E2CCF507100929F6B /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

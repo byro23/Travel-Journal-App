@@ -85,6 +85,7 @@ struct JournalsView: View {
                 .animation(.easeInOut, value: viewModel.orderState)
             }
             
+            
             // Animated List of Journals
             if !viewModel.journals.isEmpty {
                 List {
@@ -124,6 +125,7 @@ struct JournalsView: View {
         .navigationTitle("All Journals")
         .onAppear {
             viewModel.fetchJournals(journals: mapViewModel.journals)
+
         }
         .confirmationDialog("Options", isPresented: $viewModel.wasJournalTapped) {
             Button("View Journal") {

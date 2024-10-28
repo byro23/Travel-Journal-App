@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Journal: Identifiable, Encodable {
+class Journal: Identifiable, Encodable, Decodable {
     
     var id = UUID().uuidString
     var journalTitle: String

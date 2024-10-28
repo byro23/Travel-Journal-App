@@ -7,10 +7,14 @@
 
 import Foundation
 import MapKit
+import PhotosUI
+import FirebaseStorage
+import SwiftUI
 
 
 class NewPlaceViewModel: ObservableObject {
     
+
     @Published var journalTitle: String = ""
     @Published var journalDate: Date = Date()
     @Published var placeName: String = ""
@@ -25,6 +29,11 @@ class NewPlaceViewModel: ObservableObject {
     
     var placeLongitude: Double = 0.0
     var placeLatitude: Double = 0.0
+    
+    @Published var imageReferences: [String] = []
+
+    
+
     
     var validForm: Bool {
         !journalTitle.isEmpty && !placeName.isEmpty && !placeAddress.isEmpty && !journalEntry.isEmpty
@@ -95,9 +104,57 @@ class NewPlaceViewModel: ObservableObject {
         self.placeAddress = placeAddress
     }
     
+    // upload images to storage and add references in imageReferences array
+    func uploadImage(selectedImage: UIImage, completion: @escaping (Bool) -> Void) {
+        guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
+            completion(false)
+            return
+        }
+        
+        let storageRef = Storage.storage().reference()
+        let path = "images/\(UUID().uuidString).jpg"
+        let fileRef = storageRef.child(path)
+        
+        fileRef.putData(imageData, metadata: nil) { metadata, error in
+            if error == nil && metadata != nil {
+                // Save file path to imageReferences array
+                self.imageReferences.append(path)
+                completion(true)  // Upload succeeded
+            } else {
+                completion(false)  // Upload failed
+            }
+        }
+    }
+
+//    func uploadImage(_ selectedImage: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
+//            // Create storage reference
+//            let storageRef = Storage.storage().reference()
+//            let imageData = selectedImage.jpegData(compressionQuality: 0.8)
+//            
+//            guard let imageData = imageData else {
+//                completion(.failure(NSError(domain: "ImageError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Image data is nil"])))
+//                return
+//            }
+//            
+//            // Specify file path and name
+//            let path = "images/\(UUID().uuidString).jpg"
+//            let fileRef = storageRef.child(path)
+//            
+//            // Upload data to storage
+//            fileRef.putData(imageData, metadata: nil) { metadata, error in
+//                if let error = error {
+//                    completion(.failure(error))
+//                } else {
+//                    // Append the image reference (path) to the array
+//                    self.imageReferences.append(path)
+//                    completion(.success(path))
+//                }
+//            }
+//        }
+    
     func saveJournalFirestore(userId: String) {
         let journal = Journal(journalTitle: journalTitle, journalEntry: journalEntry, date: journalDate,
-                              placeName: placeName, address: placeAddress, latitude: placeLatitude, longitude: placeLongitude, userId: userId, imageReferences: [""], isFavourite: isFavourite)
+                              placeName: placeName, address: placeAddress, latitude: placeLatitude, longitude: placeLongitude, userId: userId, imageReferences: imageReferences, isFavourite: isFavourite)
         
         do {
             try FirebaseManager.shared.addDocument(object: journal, toCollection: FirestoreCollection.journals.rawValue, forUserId: userId)
@@ -107,6 +164,7 @@ class NewPlaceViewModel: ObservableObject {
         }
         
     }
+
     
     func resetFields() {
         journalTitle = ""

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import FirebaseFirestore
 
 enum FilterState {
     case all
@@ -31,6 +32,9 @@ class JournalsViewModel: ObservableObject {
     @Published var wasJournalTapped: Bool = false
     @Published var tappedJournal: JournalSwiftData?
     @Published var isNavigateToJournal: Bool = false
+
+
+
     
     // Add custom order array
     @Published var customOrder: [String] = [] // Store journal IDs in custom order
