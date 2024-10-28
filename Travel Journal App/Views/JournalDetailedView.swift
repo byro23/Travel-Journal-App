@@ -12,11 +12,16 @@ import MapKit
 struct JournalDetailedView: View {
     let journal: JournalSwiftData
     
+    @Environment(\.modelContext) private var context
+    
+    // Add state for favorite status
+    @State private var isFavorite: Bool
     @State private var region: MKCoordinateRegion
     @State private var images: [UIImage] = []
     
     init(journal: JournalSwiftData) {
         self.journal = journal
+        _isFavorite = State(initialValue: journal.isFavourite) // Initialize with current favorite status
         _region = State(initialValue: MKCoordinateRegion(
             center: CLLocationCoordinate2D(
                 latitude: journal.latitude,
@@ -105,6 +110,23 @@ struct JournalDetailedView: View {
         }
         .navigationTitle(journal.journalTitle)
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    toggleFavorite()
+                } label: {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundColor(isFavorite ? .red : .gray)
+                }
+            }
+        }
+    }
+    
+    private func toggleFavorite() {
+        isFavorite.toggle()
+        journal.isFavourite = isFavorite
+        // Save changes to SwiftData
+        try? context.save()
     }
     
     private func fetchImages() {

@@ -26,6 +26,12 @@ struct UserView: View {
                 }
                 .tag(NavigationController.Tab.journal)
                 .environmentObject(mapViewModel)
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
+                .tag(NavigationController.Tab.settings)
+                .environmentObject(mapViewModel)
             
         }
         .tabViewStyle(.automatic)

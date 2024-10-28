@@ -40,9 +40,9 @@ struct LoginView: View {
                     .padding()
                     .padding(.trailing, 10)
                     .padding(.top, 18)
-                    .opacity(viewModel.email.count > 3 ? 1 : 0)
-                    .offset(x: viewModel.email.count > 3 ? 0 : 20)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.email.count > 3)
+                    .opacity(viewModel.password.count > 3 ? 1 : 0)
+                    .offset(x: viewModel.password.count > 3 ? 0 : 20)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.password.count > 3)
             }
             
             AnimatedButton(buttonText: "Login") {
@@ -69,7 +69,8 @@ struct LoginView: View {
                     navigationController.push(.registration)
                 } label: {
                     Text("Signup")
-                        .foregroundStyle(.cyan)
+                        .foregroundStyle(.blue)
+                        .fontWeight(.semibold)
                 }
             }
         }

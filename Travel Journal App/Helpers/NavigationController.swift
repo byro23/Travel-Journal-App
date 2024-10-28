@@ -18,7 +18,7 @@ class NavigationController: ObservableObject {
     enum Tab {
         case map
         case journal
-        case journalDetails
+        case settings
     }
     
     // Helper to push a new screen
