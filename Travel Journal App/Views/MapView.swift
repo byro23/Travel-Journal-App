@@ -16,6 +16,8 @@ struct MapView: View {
     @Environment(\.modelContext) private var context
     @Query private var journals: [JournalSwiftData] = []
     @Environment(\.colorScheme) var colorScheme
+    @Namespace private var animation
+    @State private var isSearching = false
     
     private func getZoomLevel(_ span: MKCoordinateSpan) -> Double {
         return span.latitudeDelta + span.longitudeDelta
@@ -64,99 +66,161 @@ struct MapView: View {
             .background(Color(.systemBackground))
             .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
             
-            FloatingTextField(placeHolder: "Search", textInput: $viewModel.searchText)
-                .padding()
-            
-            // Map
-            MapReader { proxy in
-                Map(position: $viewModel.cameraPosition) {
-                    ForEach(viewModel.journals, id: \.self) { journal in
-                        let coordinate = CLLocationCoordinate2D(
-                            latitude: journal.latitude, longitude: journal.longitude
-                        )
-                        
-                        Annotation(journal.journalTitle, coordinate: coordinate) {
-                            VStack(spacing: 4) {
-                                let size: CGFloat = {
-                                    let zoomLevel = getZoomLevel(viewModel.region.span)
-                                    print("Zoom level: \(zoomLevel)")
-                                    if zoomLevel > 2.0 {
-                                        return 8
-                                    } else if zoomLevel > 0.2 {
-                                        return 20
-                                    } else {
-                                        return 30
+            // Enhanced Search Area
+            VStack(spacing: 0) {
+                ZStack {
+                    NonFloatingTextField(placeHolder: "Search", textInput: $viewModel.searchText)
+                        .padding()
+                        .matchedGeometryEffect(id: "searchField", in: animation)
+                    
+                    ClearButton(text: $viewModel.searchText)
+                        .padding(.top, 18)
+                        .padding(.trailing, 10)
+                        .opacity(viewModel.searchText.count > 2 ? 1 : 0)
+                    
+                }
+                .animation(.easeInOut(duration: 0.2), value: viewModel.searchText)
+                
+                // Search Results with enhanced animations
+                if viewModel.searchSuggestions.count > 3 {
+                    VStack(spacing: 0) {
+                        List(viewModel.searchSuggestions, id: \.self) { suggestion in
+                            PlaceRow(place: Place(placeName: suggestion.title,
+                                                placeAddress: suggestion.subtitle,
+                                                latitude: 0.0,
+                                                longitude: 0.0))
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                        isSearching = false
+                                        viewModel.goToSuggestion(suggestion: suggestion)
                                     }
-                                }()
-                                
-                                if journal.isFavourite {
-                                    Image(systemName: "heart.fill")
-                                        .resizable()
-                                        .frame(width: size * 0.8, height: size * 0.8)
-                                        .foregroundStyle(.red)
-                                        .shadow(radius: 2)
-                                        .offset(y: -size * 0.4)
+                                }
+                                .transition(.asymmetric(
+                                    insertion: .scale(scale: 0.95).combined(with: .opacity),
+                                    removal: .scale(scale: 0.95).combined(with: .opacity)
+                                ))
+                                .listRowBackground(Color.clear)
+                        }
+                        .listStyle(PlainListStyle())
+                    }
+                    .background(Color(.systemBackground))
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity),
+                        removal: .move(edge: .top).combined(with: .opacity)
+                    ))
+                } else {
+                    // Map Area
+                    ZStack {
+                        MapReader { proxy in
+                            Map(position: $viewModel.cameraPosition) {
+                                ForEach(viewModel.journals, id: \.self) { journal in
+                                    let coordinate = CLLocationCoordinate2D(
+                                        latitude: journal.latitude, longitude: journal.longitude
+                                    )
+                                    
+                                    Annotation(journal.journalTitle, coordinate: coordinate) {
+                                        VStack(spacing: 4) {
+                                            let size: CGFloat = {
+                                                let zoomLevel = getZoomLevel(viewModel.region.span)
+                                                if zoomLevel > 2.0 {
+                                                    return 8
+                                                } else if zoomLevel > 0.2 {
+                                                    return 20
+                                                } else {
+                                                    return 30
+                                                }
+                                            }()
+                                            
+                                            if journal.isFavourite {
+                                                Image(systemName: "heart.fill")
+                                                    .resizable()
+                                                    .frame(width: size * 0.8, height: size * 0.8)
+                                                    .foregroundStyle(.red)
+                                                    .shadow(radius: 2)
+                                                    .offset(y: -size * 0.1)
+                                                    .onTapGesture {
+                                                        viewModel.tappedAnnotation = true
+                                                        viewModel.tappedJournal = journal
+                                                    }
+                                            }
+                                            
+                                            Image(systemName: "mappin.circle.fill")
+                                                .resizable()
+                                                .frame(width: size, height: size)
+                                                .foregroundStyle(journal.isFavourite ? .red : .orange)
+                                                .shadow(radius: 2)
+                                                .overlay(
+                                                    Circle()
+                                                        .stroke(Color.white, lineWidth: size * 0.1)
+                                                )
+                                                .onTapGesture {
+                                                    viewModel.tappedAnnotation = true
+                                                    viewModel.tappedJournal = journal
+                                                }
+                                        }
+                                        .padding()
+                                        .animation(.spring(response: 0.3, dampingFraction: 0.7),
+                                                 value: getZoomLevel(viewModel.region.span))
+                                    }
                                 }
                                 
-                                Image(systemName: "mappin.circle.fill")
-                                    .resizable()
-                                    .frame(width: size, height: size)
-                                    .foregroundStyle(journal.isFavourite ? .red : .orange)
-                                    .shadow(radius: 2)
-                                    .overlay(
-                                        Circle()
-                                            .stroke(Color.white, lineWidth: size * 0.1)
-                                    )
+                                if let coordinate = viewModel.tappedCoordinates {
+                                    let size: CGFloat = {
+                                        let zoomLevel = getZoomLevel(viewModel.region.span)
+                                        print(zoomLevel)
+                                        if zoomLevel > 2.0 {
+                                            return 10
+                                        } else if zoomLevel > 0.2 {
+                                            return 20
+                                        } else {
+                                            return 30
+                                        }
+                                    }()
+                                    
+                                    Annotation("New Journal", coordinate: coordinate) {
+                                        VStack {
+                                            Image(systemName: "plus.circle.fill")
+                                                .resizable()
+                                                .frame(width: size, height: size)
+                                                .foregroundStyle(.blue)
+                                                .background(Circle().fill(.white))
+                                                .shadow(radius: 2)
+                                        }
+                                    }
+                                }
                             }
-                            .padding()
-                            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: getZoomLevel(viewModel.region.span))
-                            .onTapGesture {
-                                viewModel.tappedAnnotation = true
-                                viewModel.tappedJournal = journal
+                            .mapStyle(.standard(elevation: .realistic))
+                            .onTapGesture { position in
+                                if let coordinate = proxy.convert(position, from: .local) {
+                                    withAnimation(.spring(response: 0.3)) {
+                                        viewModel.tappedCoordinates = coordinate
+                                        viewModel.tappedMap = true
+                                    }
+                                }
+                            }
+                            .onMapCameraChange { context in
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    viewModel.region = context.region
+                                }
                             }
                         }
-                    }
-                    
-                    if let coordinate = viewModel.tappedCoordinates {
+                        .opacity(viewModel.searchSuggestions.count > 3 ? 0.3 : 1)
+                        .animation(.easeInOut(duration: 0.3),
+                                 value: viewModel.searchSuggestions.count > 3)
                         
-                        let size: CGFloat = {
-                            let zoomLevel = getZoomLevel(viewModel.region.span)
-                            if zoomLevel > 2.0 {
-                                return 10
-                            } else if zoomLevel > 0.2 {
-                                return 20
-                            } else {
-                                return 30
-                            }
-                        }()
-                        
-                        Annotation("New Journal", coordinate: coordinate) {
-                            VStack {
-                                Image(systemName: "plus.circle.fill")
-                                    .resizable()
-                                    .frame(width: size, height: size)
-                                    .foregroundStyle(.blue)
-                                    .background(Circle().fill(.white))
-                                    .shadow(radius: 2)
-                            }
+                        // Overlay blur when searching
+                        if viewModel.searchSuggestions.count > 3 {
+                            Rectangle()
+                                .fill(.ultraThinMaterial)
+                                .ignoresSafeArea()
+                                .transition(.opacity)
                         }
-                    }
-                }
-                .mapStyle(.standard(elevation: .realistic))
-                .onTapGesture { position in
-                    if let coordinate = proxy.convert(position, from: .local) {
-                        withAnimation(.spring(response: 0.3)) {
-                            viewModel.tappedCoordinates = coordinate
-                            viewModel.tappedMap = true
-                        }
-                    }
-                }
-                .onMapCameraChange { context in
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.region = context.region
                     }
                 }
             }
+            .animation(.spring(response: 0.3, dampingFraction: 0.8),
+                      value: viewModel.searchSuggestions.count > 3)
         }
         .confirmationDialog("Create new journal?", isPresented: $viewModel.tappedMap) {
             Button {
@@ -193,6 +257,11 @@ struct MapView: View {
         .navigationDestination(isPresented: $viewModel.tappedAnnotation) {
             if let tappedJournal = viewModel.tappedJournal {
                 JournalDetailedView(journal: tappedJournal)
+            }
+        }
+        .onChange(of: viewModel.searchText) { oldValue, newValue in
+            withAnimation(.easeInOut(duration: 0.3)) {
+                isSearching = !newValue.isEmpty
             }
         }
     }
