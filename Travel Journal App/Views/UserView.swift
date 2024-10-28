@@ -20,7 +20,7 @@ struct UserView: View {
                 }
                 .tag(NavigationController.Tab.map)
                 .environmentObject(mapViewModel)
-            JournalsView()
+            JournalsFirebaseView()
                 .tabItem {
                     Label("Journals", systemImage: "book.fill")
                 }

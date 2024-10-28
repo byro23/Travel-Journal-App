@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import PhotosUI
 struct NewPlaceView: View {
     enum FocusField: Hashable {
         case title, placeName, placeAddress, journalEntry
@@ -25,6 +25,12 @@ struct NewPlaceView: View {
     @State private var addressScale: CGFloat = 1.0
     @State private var autofillBackgroundOpacity: Double = 0
     
+    
+    //image
+    @State var images: [UIImage] = []
+    @State var photosPickerItems : [PhotosPickerItem]  = []
+    
+
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
         self._showingSheet = showingSheet
         _viewModel = StateObject(wrappedValue: NewPlaceViewModel(longitude: longitude, latitude: latitude))
@@ -136,6 +142,23 @@ struct NewPlaceView: View {
                     .cornerRadius(15)
                     .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
                     
+                    
+                    // upload photo
+                    VStack{
+                        PhotosPicker(selection: $photosPickerItems){
+                            HStack {
+                                Image(systemName: "photo.on.rectangle.angled")
+                                Text("Upload Image")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                        }
+                        
+                        
+                    }
                     // Location Card
                     VStack(alignment: .leading, spacing: 16) {
                         Label("Location Details", systemImage: "mappin.circle.fill")
@@ -195,12 +218,10 @@ struct NewPlaceView: View {
                     
                     // Save Button
                     Button(action: {
-                        if let userId = authController.currentUser?.id {
-                            viewModel.saveJournalFirestore(userId: userId)
-                        }
+                        uploadImagesAndSaveJournal()
                         saveJournalSwiftData()
                         mapViewModel.tappedCoordinates = nil
-                        viewModel.isJournalSaved = true
+                        
                     }) {
                         HStack {
                             Image(systemName: "square.and.arrow.down")
@@ -219,10 +240,27 @@ struct NewPlaceView: View {
                 }
                 .padding()
             }
+            
             .navigationTitle("New Journal")
             .background(Color(.systemGroupedBackground))
             .onAppear {
                 viewModel.fetchNearbyPlaces()
+            }
+            // append selected images to images array
+            .onChange(of: photosPickerItems){ _, _ in
+                Task{
+                    
+                    for item in photosPickerItems{
+                        if let data = try? await item.loadTransferable(type: Data.self){
+                            if let image = UIImage(data: data){
+                                
+                                images.append(image)
+                            }
+                        }
+                    }
+                    photosPickerItems.removeAll()
+
+                }
             }
             .sheet(isPresented: $viewModel.isShowingSuggestionsSheet) {
                 PlaceListView(showSheet: $viewModel.isShowingSuggestionsSheet,
@@ -237,6 +275,37 @@ struct NewPlaceView: View {
             }
         }
     }
+    
+    // Upload images, populate imageReferences, then save the journal
+    func uploadImagesAndSaveJournal() {
+        guard !images.isEmpty else {
+            saveJournalToFirestore()
+            return
+        }
+        
+        var uploadedImagesCount = 0
+        for image in images {
+            viewModel.uploadImage(selectedImage: image) { success in
+                if success {
+                    uploadedImagesCount += 1
+                    // Check if all images are uploaded
+                    if uploadedImagesCount == images.count {
+                        // Once all images are uploaded, save the journal to Firestore
+                        saveJournalToFirestore()
+                    }
+                } else {
+                    print("Failed to upload an image")
+                }
+            }
+        }
+    }
+    
+    func saveJournalToFirestore() {
+         if let userId = authController.currentUser?.id {
+             viewModel.saveJournalFirestore(userId: userId)
+             viewModel.isJournalSaved = true
+         }
+     }
     
     func saveJournalSwiftData() {
         if let userId = authController.currentUser?.id {

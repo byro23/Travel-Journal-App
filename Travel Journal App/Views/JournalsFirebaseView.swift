@@ -1,14 +1,16 @@
 //
-//  JournalsView.swift
+//  JournalsFirebaseView.swift
 //  Travel Journal App
 //
-//  Created by Byron Lester on 27/10/2024.
+//  Created by Ali Agha Jafari on 28/10/2024.
 //
+
 
 import SwiftUI
 import MapKit
 
-struct JournalsView: View {
+
+struct JournalsFirebaseView: View {
     @StateObject var viewModel = JournalsViewModel()
     @Environment(\.modelContext) private var context
     @EnvironmentObject var authController: AuthController
@@ -72,13 +74,13 @@ struct JournalsView: View {
             
             
             // Animated List of Journals
-            if !viewModel.journals.isEmpty {
+            if !viewModel.firebaseJournals.isEmpty {
                 List {
-                    ForEach(viewModel.journals) { journal in
-                        JournalRow(journal: journal)
+                    ForEach(viewModel.firebaseJournals) { journal in
+                        JournalRowFirebase(journal: journal)
                             .onTapGesture {
                                 viewModel.wasJournalTapped = true
-                                viewModel.tappedJournal = journal
+//                                viewModel.tappedJournal = journal
                             }
                             .transition(.asymmetric(
                                 insertion: .scale(scale: 0.95).combined(with: .opacity)
@@ -106,13 +108,13 @@ struct JournalsView: View {
         .navigationTitle("All Journals")
         .onAppear {
             viewModel.fetchJournals(journals: mapViewModel.journals)
-//            if let userId = authController.currentUser?.id{
-//                viewModel.fetchJournalsFromFirebase(for: userId){
-//                    // testing fetchJournalFromFirebase
-//                    print ("these are journals from firebase \(viewModel.firebaseJournals)")
-//                }
-//               
-//            }
+            if let userId = authController.currentUser?.id{
+                viewModel.fetchJournalsFromFirebase(for: userId){
+                    // testing fetchJournalFromFirebase
+                    print ("these are journals from firebase \(viewModel.firebaseJournals)")
+                }
+               
+            }
         }
         .confirmationDialog("Options", isPresented: $viewModel.wasJournalTapped) {
             Button("View Journal") {
