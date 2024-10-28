@@ -79,6 +79,7 @@ struct RegistrationView: View {
             .opacity(viewModel.validForm ? 1.0 : 0.5)
             .padding()
         }
+        .navigationBarTitleDisplayMode(.large)
         .navigationTitle("Registration")
         .alert("Email already exists. Please try again", isPresented: $authController.isEmailTaken) {
             Button("Understood", role: .cancel) {
