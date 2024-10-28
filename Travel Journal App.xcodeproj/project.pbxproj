@@ -71,6 +71,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Components/AnimatedButton.swift,
+				Components/CircularProfileImage.swift,
 				Components/ClearButton.swift,
 				Components/FilterButton.swift,
 				Components/FloatingTextField.swift,
@@ -92,6 +93,7 @@
 				ViewModels/MapViewModel.swift,
 				ViewModels/NewPlaceViewModel.swift,
 				ViewModels/RegistrationViewModel.swift,
+				ViewModels/SettingsViewModel.swift,
 				Views/JournalDetailedView.swift,
 				Views/JournalsView.swift,
 				Views/LoginView.swift,

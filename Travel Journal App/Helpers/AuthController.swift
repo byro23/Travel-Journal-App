@@ -56,11 +56,13 @@ class AuthController: ObservableObject { // This class is used to manage the use
         if(isEmailTaken == false) {
             await FirebaseManager.shared.createUser(email: email, password: password, name: name)
             
+            await signIn(email: email, password: password)
             authenticationState = .authenticated
         }
         else {
             authenticationState = .unauthenticated
         }
+        
     }
     
     // Fetches authenticated user from Firestore Db
