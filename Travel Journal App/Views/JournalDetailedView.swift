@@ -22,6 +22,9 @@ struct JournalDetailedView: View {
     // State for fullscreen image view
     @State private var selectedImage: IdentifiableImage? = nil
     
+    // State for presenting edit view
+    @State private var isPresentingEditView = false
+    
     init(journal: JournalSwiftData) {
         self.journal = journal
         _isFavorite = State(initialValue: journal.isFavourite)
@@ -126,18 +129,29 @@ struct JournalDetailedView: View {
         .navigationTitle(journal.journalTitle)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {
                     toggleFavorite()
                 } label: {
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .foregroundColor(isFavorite ? .red : .gray)
                 }
+                
+                Button("Edit") { // Add Edit button
+                    isPresentingEditView = true
+                }
+                .foregroundColor(.blue)
             }
         }
         // Full-screen cover for displaying selected image
         .fullScreenCover(item: $selectedImage) { identifiableImage in
             FullScreenImageView(image: identifiableImage.image, isPresented: $selectedImage)
+        }
+        // Sheet for editing journal
+        .sheet(isPresented: $isPresentingEditView) {
+            NavigationView {
+                EditJournalView(journal: journal)
+            }
         }
     }
     
