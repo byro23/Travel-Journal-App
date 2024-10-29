@@ -259,6 +259,7 @@ struct NewJournalView: View {
                             isSaving = true
                             uploadImagesAndSaveJournal()
                             
+                            
                             mapViewModel.tappedCoordinates = nil
                             
                             
@@ -374,6 +375,15 @@ struct NewJournalView: View {
                 isFavourite: viewModel.isFavourite
             )
             context.insert(journal)
+            
+            do {
+                try context.save()  // Ensure the data is saved
+                print("Journal saved for: \(userId)")
+            } catch {
+                print("Failed to save journal: \(error)")
+            }
+            
+            print("Journal saved for: \(userId)")
         }
         
     }
