@@ -140,19 +140,3 @@ struct LoadingOverlayViewUpdate: View {
     }
 }
 
-//#Preview {
-//    // Sample JournalSwiftData for preview
-//    let sampleJournal = JournalSwiftData(
-//        journalTitle: "Sample Title",
-//        journalEntry: "This is a sample journal entry.",
-//        date: Date(),
-//        placeName: "Sample Place",
-//        address: "123 Sample Street",
-//        latitude: 0.0,
-//        longitude: 0.0,
-//        userId: "user123",
-//        imageReferences: [],
-//        isFavourite: false
-//    )
-//    EditJournalView(journal: .constant(sampleJournal))
-//}
