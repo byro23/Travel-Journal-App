@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class JournalDetailedViewModel: ObservableObject {
     
     @Published var isFavourite: Bool = false

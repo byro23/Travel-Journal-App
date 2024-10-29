@@ -11,7 +11,7 @@ import PhotosUI
 import FirebaseStorage
 import SwiftUI
 
-
+@MainActor
 class NewJournalViewModel: ObservableObject {
     
 

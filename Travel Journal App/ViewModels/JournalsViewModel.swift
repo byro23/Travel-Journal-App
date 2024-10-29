@@ -22,6 +22,7 @@ enum OrderState {
     case custom
 }
 
+@MainActor
 class JournalsViewModel: ObservableObject {
     @Published var filterState: FilterState = .all
     @Published var orderState: OrderState = .date
