@@ -29,7 +29,7 @@ struct ChangePasswordView: View {
                     SecureField("Confirm New Password", text: $viewModel.confirmPassword)
                         .textContentType(.newPassword)
                 } footer: {
-                    Text("Password must be at least 8 characters long")
+                    Text("Password must be at least 6 characters long")
                 }
                 
                 Section {
