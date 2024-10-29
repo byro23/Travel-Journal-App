@@ -28,6 +28,8 @@ struct NewJournalView: View {
     @State private var addressScale: CGFloat = 1.0
     @State private var autofillBackgroundOpacity: Double = 0
     
+    // variable for loading feedback
+    @State var isSaving : Bool = false
     
     //image
     @State var images: [UIImage] = []
@@ -39,7 +41,11 @@ struct NewJournalView: View {
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double, selectedImage: UIImage? = nil) {
         self._showingSheet = showingSheet
         _viewModel = StateObject(wrappedValue: NewJournalViewModel(longitude: longitude, latitude: latitude))
-        images.append(selectedImage!) //Import image from share extension
+        //Import image from share extension
+        if let image = selectedImage {
+            images.append(image)
+        }
+        print("Images list size is: \($images.count)")
     }
     
     var placeNameField: some View {
