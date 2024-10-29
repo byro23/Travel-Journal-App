@@ -50,16 +50,19 @@ class ShareViewController: SLComposeServiceViewController {
                             if let image = providedImage as? UIImage {
                                 self.selectedImage = image
                                 self.extractLocationData(from: image)
+                                print("Saved selectedImage from type UIImage")
                             }
                             // Check if providedImage is a file URL to the image
                             else if let url = providedImage as? URL, let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData) {
                                 self.selectedImage = image
                                 self.extractLocationData(from: image)
+                                print("Saved selectedImage from type file URl")
                             }
                             // Check if providedImage is NSData and convert to UIImage
                             else if let imageData = providedImage as? Data, let image = UIImage(data: imageData) {
                                 self.selectedImage = image
                                 self.extractLocationData(from: image)
+                                print("Saved selectedImage from type NSData")
                             }
                     }
                 }

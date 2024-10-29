@@ -41,11 +41,6 @@ struct NewJournalView: View {
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double, selectedImage: UIImage? = nil) {
         self._showingSheet = showingSheet
         _viewModel = StateObject(wrappedValue: NewJournalViewModel(longitude: longitude, latitude: latitude))
-        //Import image from share extension
-        if let image = selectedImage {
-            images.append(image)
-        }
-        print("Images list size is: \($images.count)")
     }
     
     var placeNameField: some View {
@@ -293,6 +288,7 @@ struct NewJournalView: View {
                 .onAppear {
                     viewModel.fetchNearbyPlaces()
                     mapViewModel.tappedCoordinates = nil
+                    addSelectedImage()
                 }
                 // append selected images to images array
                 .onChange(of: photosPickerItems){ _, _ in
@@ -425,8 +421,21 @@ struct NewJournalView: View {
             }
         }
     }
+    
+    func addSelectedImage() {
+        if (selectedImage == nil) {
+            print("SelectedImage is NIL")
+        }
+        if let image = selectedImage {
+            images.append(image)
+            print("Successfully added selected image")
+        } else {
+            print("No selected image found")
+        }
+        print("Images list size is: \(images.count)")
+    }
+    
 }
-
 
 
 #Preview {
