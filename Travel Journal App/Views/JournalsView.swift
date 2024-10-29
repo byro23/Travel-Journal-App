@@ -125,6 +125,7 @@ struct JournalsView: View {
         .navigationTitle("All Journals")
         .onAppear {
             viewModel.fetchJournals(journals: mapViewModel.journals)
+            mapViewModel.tappedCoordinates = nil
 
         }
         .confirmationDialog("Options", isPresented: $viewModel.wasJournalTapped) {
