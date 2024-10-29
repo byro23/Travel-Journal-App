@@ -62,31 +62,7 @@ class JournalsViewModel: ObservableObject {
         }
     }
     
-    func deleteJournal(_ journal: JournalSwiftData, context: ModelContext) {
-        // Delete from SwiftData context
-        context.delete(journal)
-        
-        // Remove from all arrays
-        if let index = allJournals.firstIndex(where: { $0.id == journal.id }) {
-            allJournals.remove(at: index)
-        }
-        
-        if let index = journals.firstIndex(where: { $0.id == journal.id }) {
-            journals.remove(at: index)
-        }
-        
-        // Remove from custom order if present
-        if let index = customOrder.firstIndex(of: journal.id) {
-            customOrder.remove(at: index)
-            saveCustomOrder()
-        }
-        
-        // Delete from Firestore if needed
-        // deleteJournalFromFirestore(journalId: journal.id)
-        
-        // Reapply filters to update the view
-        applyFiltersAndSearch()
-    }
+    
     
     private func saveCustomOrder() {
         // Save custom order to UserDefaults or your preferred storage
@@ -140,5 +116,28 @@ class JournalsViewModel: ObservableObject {
         
         journals = filteredJournals
     }
+    // delete journals
+    func deleteJournals(at offsets: IndexSet, context: ModelContext) {
+        // Iterate over the offsets to delete journals
+        for index in offsets {
+            let journal = journals[index]
+            context.delete(journal) // Delete from SwiftData context
+            if let allIndex = allJournals.firstIndex(of: journal) {
+                allJournals.remove(at: allIndex) // Remove from allJournals
+            }
+        }
+        
+        // Apply filters and search to update the journals list
+        applyFiltersAndSearch()
+        
+        // Save the context to persist deletion
+        do {
+            try context.save()
+        } catch {
+            print("Failed to delete journals: \(error.localizedDescription)")
+            // Optionally, handle the error (e.g., show an alert to the user)
+        }
+    }
+
 }
 
