@@ -19,6 +19,8 @@ struct JournalDetailedView: View {
     @State private var region: MKCoordinateRegion
     @State private var images: [UIImage] = []
     
+    @State private var isLoadingImages = true  // State to track image loading
+
     init(journal: JournalSwiftData) {
         self.journal = journal
         _isFavorite = State(initialValue: journal.isFavourite) // Initialize with current favorite status
@@ -48,7 +50,15 @@ struct JournalDetailedView: View {
                 .padding(.horizontal)
                 
                 // Images Section
-                if !images.isEmpty {
+                if isLoadingImages {
+                    ProgressView("Loading images...")
+                        .padding()
+                } else if images.isEmpty {
+                    Text("No Images Available")
+                        .foregroundColor(.secondary)
+                        .padding()
+                }
+                else{
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(images, id: \.self) { image in
@@ -61,9 +71,6 @@ struct JournalDetailedView: View {
                         }
                         .padding(.horizontal)
                     }
-                } else {
-                    ProgressView()
-                        .padding(.horizontal)
                 }
                 
                 // Location Section
@@ -153,6 +160,8 @@ struct JournalDetailedView: View {
         // Update the images array after all downloads complete
         dispatchGroup.notify(queue: .main) {
             self.images = loadedImages
+            self.isLoadingImages = false  // Set to false after loading completes
+
         }
     }
 }
