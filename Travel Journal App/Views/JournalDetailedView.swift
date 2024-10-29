@@ -4,7 +4,6 @@
 //
 //  Created by Byron Lester on 27/10/2024.
 //
-
 import SwiftUI
 import FirebaseStorage
 import MapKit
@@ -14,14 +13,18 @@ struct JournalDetailedView: View {
     
     @Environment(\.modelContext) private var context
     
-    // Add state for favorite status
+    // State for favorite status, map region, and images
     @State private var isFavorite: Bool
     @State private var region: MKCoordinateRegion
     @State private var images: [UIImage] = []
+    @State private var isLoadingImages = true
+    
+    // State for fullscreen image view
+    @State private var selectedImage: IdentifiableImage? = nil
     
     init(journal: JournalSwiftData) {
         self.journal = journal
-        _isFavorite = State(initialValue: journal.isFavourite) // Initialize with current favorite status
+        _isFavorite = State(initialValue: journal.isFavourite)
         _region = State(initialValue: MKCoordinateRegion(
             center: CLLocationCoordinate2D(
                 latitude: journal.latitude,
@@ -48,22 +51,34 @@ struct JournalDetailedView: View {
                 .padding(.horizontal)
                 
                 // Images Section
-                if !images.isEmpty {
+                if isLoadingImages {
+                    ProgressView("Loading images...")
+                        .padding()
+                } else if images.isEmpty {
+                    Text("No Images Available")
+                        .foregroundColor(.secondary)
+                        .padding()
+                } else {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(images, id: \.self) { image in
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 280, height: 200)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                Button(action: {
+                                    print("Image tapped")
+                                    selectedImage = IdentifiableImage(image: image)
+                                    print("Selected image set, opening fullscreen")
+                                    print("Selected image is \(selectedImage)")
+                                }) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 280, height: 200)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                }
                             }
                         }
                         .padding(.horizontal)
                     }
-                } else {
-                    ProgressView()
-                        .padding(.horizontal)
                 }
                 
                 // Location Section
@@ -120,13 +135,41 @@ struct JournalDetailedView: View {
                 }
             }
         }
+        // Full-screen cover for displaying selected image
+        .fullScreenCover(item: $selectedImage) { identifiableImage in
+            FullScreenImageView(image: identifiableImage.image, isPresented: $selectedImage)
+        }
+    }
+    
+    struct FullScreenImageView: View {
+        let image: UIImage
+        @Binding var isPresented: IdentifiableImage?
+        
+        var body: some View {
+            ZStack(alignment: .topTrailing) {
+                Color.black.ignoresSafeArea()
+                
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                Button(action: {
+                    isPresented = nil
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 30))
+                        .foregroundColor(.white)
+                        .padding()
+                }
+            }
+        }
     }
     
     private func toggleFavorite() {
         isFavorite.toggle()
         journal.isFavourite = isFavorite
-        // Save changes to SwiftData
-        try? context.save()
+        try? context.save()  // Save changes to SwiftData
     }
     
     private func fetchImages() {
@@ -139,7 +182,6 @@ struct JournalDetailedView: View {
             dispatchGroup.enter()
             let storageRef = storage.reference().child(imageRef)
             
-            // Fetch the image data from Firebase Storage
             storageRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                 if let error = error {
                     print("Error fetching image data: \(error.localizedDescription)")
@@ -150,11 +192,19 @@ struct JournalDetailedView: View {
             }
         }
         
-        // Update the images array after all downloads complete
         dispatchGroup.notify(queue: .main) {
             self.images = loadedImages
+            self.isLoadingImages = false  // Update loading state after loading completes
+            print("Images loaded: \(self.images.count)")
         }
     }
+}
+
+// model for displaying image in fullScreen
+
+struct IdentifiableImage: Identifiable {
+    let id = UUID()
+    let image: UIImage
 }
 
 #Preview {

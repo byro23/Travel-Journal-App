@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 
+@MainActor
 class SettingsViewModel: ObservableObject {
     @Published var profileImage: Image?
     @Published var selectedItem: PhotosPickerItem?

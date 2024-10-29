@@ -17,3 +17,5 @@ extension MKCoordinateRegion: Equatable {
                lhs.span.longitudeDelta == rhs.span.longitudeDelta
     }
 }
+
+

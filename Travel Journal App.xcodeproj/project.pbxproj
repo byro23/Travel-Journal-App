@@ -127,27 +127,8 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6BC735D72CCF12210017B13A /* Widget-Extension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				6BC735E62CCF12230017B13A /* Exceptions for "Widget-Extension" folder in "Widget-ExtensionExtension" target */,
-			);
-			path = "Widget-Extension";
-			sourceTree = "<group>";
-		};
-		6BEF9ABA2CCF11580072B869 /* Share-Extension */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				6BEF9AC72CCF11590072B869 /* Exceptions for "Share-Extension" folder in "Share-Extension" target */,
-			);
-			path = "Share-Extension";
-			sourceTree = "<group>";
-		};
 		C1D092092CBFC23900E43436 /* Travel Journal App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				6BE872A92CCF1B0A00CECCC9 /* Exceptions for "Travel Journal App" folder in "Share-Extension" target */,
-			);
 			path = "Travel Journal App";
 			sourceTree = "<group>";
 		};
@@ -188,23 +169,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6BC735D22CCF12210017B13A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				6BC735D32CCF12210017B13A /* WidgetKit.framework */,
-				6BC735D52CCF12210017B13A /* SwiftUI.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		C1D091FE2CBFC23900E43436 = {
 			isa = PBXGroup;
 			children = (
 				6B9F66DF2CD0661800109133 /* Widget-ExtensionExtension.entitlements */,
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
-				6BEF9ABA2CCF11580072B869 /* Share-Extension */,
-				6BC735D72CCF12210017B13A /* Widget-Extension */,
-				6BC735D22CCF12210017B13A /* Frameworks */,
 				C1D092082CBFC23900E43436 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -213,8 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				C1D092072CBFC23900E43436 /* Travel Journal App.app */,
-				6BEF9AB92CCF11580072B869 /* Share-Extension.appex */,
-				6BC735D12CCF12210017B13A /* Widget-ExtensionExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -277,7 +244,6 @@
 				C1D092032CBFC23900E43436 /* Sources */,
 				C1D092042CBFC23900E43436 /* Frameworks */,
 				C1D092052CBFC23900E43436 /* Resources */,
-				6BEF9AC42CCF11590072B869 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -309,12 +275,6 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
-					6BC735D02CCF12210017B13A = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					6BEF9AB82CCF11580072B869 = {
-						CreatedOnToolsVersion = 16.0;
-					};
 					C1D092062CBFC23900E43436 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -338,27 +298,11 @@
 			projectRoot = "";
 			targets = (
 				C1D092062CBFC23900E43436 /* Travel Journal App */,
-				6BEF9AB82CCF11580072B869 /* Share-Extension */,
-				6BC735D02CCF12210017B13A /* Widget-ExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6BC735CF2CCF12210017B13A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6BEF9AB72CCF11580072B869 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C1D092052CBFC23900E43436 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -369,20 +313,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6BC735CD2CCF12210017B13A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6BEF9AB52CCF11580072B869 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C1D092032CBFC23900E43436 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -704,24 +634,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6BC735E72CCF12230017B13A /* Build configuration list for PBXNativeTarget "Widget-ExtensionExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6BC735E42CCF12230017B13A /* Debug */,
-				6BC735E52CCF12230017B13A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6BEF9AC82CCF11590072B869 /* Build configuration list for PBXNativeTarget "Share-Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6BEF9AC52CCF11590072B869 /* Debug */,
-				6BEF9AC62CCF11590072B869 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C1D092022CBFC23900E43436 /* Build configuration list for PBXProject "Travel Journal App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
