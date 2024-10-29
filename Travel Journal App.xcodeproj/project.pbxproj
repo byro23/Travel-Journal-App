@@ -10,9 +10,11 @@
 		6BC735D42CCF12210017B13A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC735D32CCF12210017B13A /* WidgetKit.framework */; };
 		6BC735D62CCF12210017B13A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC735D52CCF12210017B13A /* SwiftUI.framework */; };
 		6BC735E32CCF12230017B13A /* Widget-ExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6BC735D12CCF12210017B13A /* Widget-ExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6BC82E512CD06AE800FDB8C8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC82E502CD06AE800FDB8C8 /* FirebaseStorage */; };
+		6BC82E532CD06AFC00FDB8C8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC82E522CD06AFC00FDB8C8 /* FirebaseFirestore */; };
+		6BC82E542CD06BC500FDB8C8 /* Share-Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6BEF9AB92CCF11580072B869 /* Share-Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6BE872B12CCF1DDB00CECCC9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6BE872B02CCF1DDB00CECCC9 /* FirebaseAuth */; };
 		6BE872B32CCF1DED00CECCC9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6BE872B22CCF1DED00CECCC9 /* FirebaseAnalytics */; };
-		6BE872B52CCF1DED00CECCC9 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6BE872B42CCF1DED00CECCC9 /* FirebaseFirestore */; };
 		C1D092212CC3748F00E43436 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092202CC3748F00E43436 /* FirebaseAnalytics */; };
 		C1D092232CC3748F00E43436 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092222CC3748F00E43436 /* FirebaseAuth */; };
 		C1D092252CC3748F00E43436 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092242CC3748F00E43436 /* FirebaseFirestore */; };
@@ -27,6 +29,13 @@
 			remoteGlobalIDString = 6BC735D02CCF12210017B13A;
 			remoteInfo = "Widget-ExtensionExtension";
 		};
+		6BC82E552CD06BC500FDB8C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1D091FF2CBFC23900E43436 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BEF9AB82CCF11580072B869;
+			remoteInfo = "Share-Extension";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				6BC82E542CD06BC500FDB8C8 /* Share-Extension.appex in Embed Foundation Extensions */,
 				6BC735E32CCF12230017B13A /* Widget-ExtensionExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -44,6 +54,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B9F66DF2CD0661800109133 /* Widget-ExtensionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Widget-ExtensionExtension.entitlements"; sourceTree = "<group>"; };
 		6BC735D12CCF12210017B13A /* Widget-ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget-ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BC735D32CCF12210017B13A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6BC735D52CCF12210017B13A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -62,6 +73,7 @@
 		6BE872A92CCF1B0A00CECCC9 /* Exceptions for "Travel Journal App" folder in "Share-Extension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AppDelegate.swift,
 				Components/AnimatedButton.swift,
 				Components/CircularProfileImage.swift,
 				Components/ClearButton.swift,
@@ -71,6 +83,7 @@
 				Components/JournalRow.swift,
 				Components/NonFloatingTextField.swift,
 				Components/PlaceRow.swift,
+				"GoogleService-Info.plist",
 				Helpers/AuthController.swift,
 				Helpers/Debouncer.swift,
 				Helpers/Extensions.swift,
@@ -92,13 +105,6 @@
 				ViewModels/SettingsViewModel.swift,
 				Views/ChangePasswordView.swift,
 				Views/EditProfileView.swift,
-				Persistence.swift,
-				Travel_Journal_App.xcdatamodeld,
-				ViewModels/JournalsViewModel.swift,
-				ViewModels/LoginViewModel.swift,
-				ViewModels/MapViewModel.swift,
-				ViewModels/NewPlaceViewModel.swift,
-				ViewModels/RegistrationViewModel.swift,
 				Views/JournalDetailedView.swift,
 				Views/JournalsView.swift,
 				Views/LoginView.swift,
@@ -107,9 +113,6 @@
 				Views/PlaceListView.swift,
 				Views/RegistrationView.swift,
 				Views/SettingsView.swift,
-				Views/NewPlaceView.swift,
-				Views/PlaceListView.swift,
-				Views/RegistrationView.swift,
 				Views/UserView.swift,
 			);
 			target = 6BEF9AB82CCF11580072B869 /* Share-Extension */;
@@ -165,8 +168,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BE872B32CCF1DED00CECCC9 /* FirebaseAnalytics in Frameworks */,
+				6BC82E532CD06AFC00FDB8C8 /* FirebaseFirestore in Frameworks */,
 				6BE872B12CCF1DDB00CECCC9 /* FirebaseAuth in Frameworks */,
-				6BE872B52CCF1DED00CECCC9 /* FirebaseFirestore in Frameworks */,
+				6BC82E512CD06AE800FDB8C8 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +200,7 @@
 		C1D091FE2CBFC23900E43436 = {
 			isa = PBXGroup;
 			children = (
+				6B9F66DF2CD0661800109133 /* Widget-ExtensionExtension.entitlements */,
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
 				6BEF9ABA2CCF11580072B869 /* Share-Extension */,
 				6BC735D72CCF12210017B13A /* Widget-Extension */,
@@ -258,7 +263,8 @@
 			packageProductDependencies = (
 				6BE872B02CCF1DDB00CECCC9 /* FirebaseAuth */,
 				6BE872B22CCF1DED00CECCC9 /* FirebaseAnalytics */,
-				6BE872B42CCF1DED00CECCC9 /* FirebaseFirestore */,
+				6BC82E502CD06AE800FDB8C8 /* FirebaseStorage */,
+				6BC82E522CD06AFC00FDB8C8 /* FirebaseFirestore */,
 			);
 			productName = "Share-Extension";
 			productReference = 6BEF9AB92CCF11580072B869 /* Share-Extension.appex */;
@@ -277,6 +283,7 @@
 			);
 			dependencies = (
 				6BC735E22CCF12230017B13A /* PBXTargetDependency */,
+				6BC82E562CD06BC500FDB8C8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
@@ -391,6 +398,11 @@
 			target = 6BC735D02CCF12210017B13A /* Widget-ExtensionExtension */;
 			targetProxy = 6BC735E12CCF12230017B13A /* PBXContainerItemProxy */;
 		};
+		6BC82E562CD06BC500FDB8C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6BEF9AB82CCF11580072B869 /* Share-Extension */;
+			targetProxy = 6BC82E552CD06BC500FDB8C8 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -399,8 +411,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "Widget-ExtensionExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 993QTXD76Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Widget-Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Widget-Extension";
@@ -425,8 +439,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "Widget-ExtensionExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 993QTXD76Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Widget-Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Widget-Extension";
@@ -732,6 +748,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6BC82E502CD06AE800FDB8C8 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		6BC82E522CD06AFC00FDB8C8 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		6BE872B02CCF1DDB00CECCC9 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -741,11 +767,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
-		};
-		6BE872B42CCF1DED00CECCC9 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
 		};
 		C1D092202CC3748F00E43436 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

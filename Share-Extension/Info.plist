@@ -9,7 +9,7 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>4</integer>
+				<integer>1</integer>
 			</dict>
 		</dict>
 		<key>NSExtensionPrincipalClass</key>
