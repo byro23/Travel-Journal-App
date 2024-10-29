@@ -327,6 +327,9 @@ struct NewJournalView: View {
     func uploadImagesAndSaveJournal() {
         guard !images.isEmpty else {
             saveJournalToFirestore()
+            saveJournalSwiftData()
+            isSaving = false
+            viewModel.isJournalSaved = true
             return
         }
         
@@ -337,8 +340,11 @@ struct NewJournalView: View {
                     uploadedImagesCount += 1
                     // Check if all images are uploaded
                     if uploadedImagesCount == images.count {
-                        // Once all images are uploaded, save the journal to Firestore
+                        // Once all images are uploaded, save the journal to Firestore and Swift Data
                         saveJournalToFirestore()
+                        saveJournalSwiftData()
+                        isSaving = false
+                        viewModel.isJournalSaved = true
                     }
                 } else {
                     print("Failed to upload an image")
@@ -350,10 +356,6 @@ struct NewJournalView: View {
     func saveJournalToFirestore() {
          if let userId = authController.currentUser?.id {
              viewModel.saveJournalFirestore(userId: userId)
-             saveJournalSwiftData()
-             isSaving = false
-             viewModel.isJournalSaved = true
-             
          }
      }
     
