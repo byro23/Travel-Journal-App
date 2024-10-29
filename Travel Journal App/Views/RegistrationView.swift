@@ -15,19 +15,26 @@ struct RegistrationView: View {
     var body: some View {
         VStack(alignment: .leading) {
             // Email Field
-            ZStack {
-                FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
-                    .padding()
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .textContentType(.emailAddress)
                 
-                if(viewModel.email.count > 3) {
+            HStack {
+               
+                ZStack {
+                    FloatingTextField(placeHolder: "Email", textInput: $viewModel.email)
+                        .padding()
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .textContentType(.emailAddress)
+                    
                     ClearButton(text: $viewModel.email)
-                        .padding(.trailing, 22)
-                        .padding(.top, 18)
+                        .opacity(viewModel.email.count > 3 ? 1 : 0)
+                        .offset(x: viewModel.email.count > 3 ? -20 : 0, y: 10)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.email.count > 3)
                 }
+                
+                
             }
+                
+                
             
             // Name Field
             ZStack {
@@ -36,11 +43,10 @@ struct RegistrationView: View {
                     .autocorrectionDisabled()
                     .textContentType(.name)
                 
-                if(viewModel.name.count > 3) {
-                    ClearButton(text: $viewModel.name)
-                        .padding(.trailing, 22)
-                        .padding(.top, 18)
-                }
+                ClearButton(text: $viewModel.name)
+                    .opacity(viewModel.name.count > 3 ? 1 : 0)
+                    .offset(x: viewModel.name.count > 3 ? -20 : 0, y: 10)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.name.count > 3)
             }
             
             // Password Field with Requirements
@@ -50,11 +56,10 @@ struct RegistrationView: View {
                         .padding()
                         .textContentType(.password)
                     
-                    if(viewModel.password.count > 3) {
-                        ClearButton(text: $viewModel.password)
-                            .padding(.trailing, 22)
-                            .padding(.top, 18)
-                    }
+                    ClearButton(text: $viewModel.password)
+                        .opacity(viewModel.password.count > 3 ? 1 : 0)
+                        .offset(x: viewModel.password.count > 3 ? -20 : 0, y: 10)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.password.count > 3)
                 }
                 
                 // Password Requirements Indicator
@@ -68,11 +73,10 @@ struct RegistrationView: View {
                     .padding()
                     .textContentType(.password)
                 
-                if(viewModel.confirmPassword.count > 3) {
-                    ClearButton(text: $viewModel.confirmPassword)
-                        .padding(.trailing, 22)
-                        .padding(.top, 18)
-                }
+                ClearButton(text: $viewModel.confirmPassword)
+                    .opacity(viewModel.confirmPassword.count > 3 ? 1 : 0)
+                    .offset(x: viewModel.confirmPassword.count > 3 ? -20 : 0, y: 10)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.confirmPassword.count > 3)
             }
             
             AnimatedButton(buttonText: "Register now") {
