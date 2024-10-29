@@ -34,8 +34,6 @@ struct MapView: View {
                         Image(systemName: "hand.wave.fill")
                             .foregroundStyle(.yellow)
                             .symbolEffect(.bounce, options: .repeating)
-                    } else {
-                        // Fallback on earlier versions
                     }
                 }
                 .font(.title3)
@@ -74,11 +72,9 @@ struct MapView: View {
                             .padding()
                             .padding(.trailing, 10)
                             .opacity(viewModel.searchText.count > 2 ? 1 : 0)
-                        
                     }
                     .animation(.easeInOut(duration: 0.2), value: viewModel.searchText)
                 }
-                
                 
                 // Search Results with enhanced animations
                 if viewModel.searchSuggestions.count > 3 {
@@ -121,39 +117,25 @@ struct MapView: View {
                                     Annotation(journal.journalTitle, coordinate: coordinate) {
                                         if journal.isFavourite {
                                             VStack(spacing: viewModel.annotationSize * 0.1) {
-                                                Image(systemName: "heart.fill")
-                                                    .resizable()
-                                                    .frame(width: viewModel.annotationSize * 0.5, height: viewModel.annotationSize * 0.5)
-                                                    .foregroundStyle(.red)
-                                                    .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-                                                    .offset(y: viewModel.annotationSize * 0.1)
-                                                    .zIndex(1)
-                                                
-                                                Image(systemName: "mappin.circle.fill")
-                                                    .resizable()
-                                                    .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
-                                                    .foregroundStyle(.red)
-                                                    .background(
-                                                        Circle()
-                                                            .fill(.white)
-                                                            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
-                                                            .padding(-4)
-                                                    )
-                                                    .contentShape(Circle())
-                                                    .padding(12)
-                                                    .onTapGesture {
-                                                        viewModel.tappedAnnotation = true
-                                                        viewModel.tappedJournal = journal
+                                                Button {
+                                                    viewModel.tappedAnnotation = true
+                                                    viewModel.tappedJournal = journal
+                                                } label: {
+                                                    VStack(spacing: viewModel.annotationSize * 0.1) {
+                                                        Image(systemName: "heart.fill")
+                                                            .resizable()
+                                                            .frame(width: viewModel.annotationSize * 0.5, height: viewModel.annotationSize * 0.5)
+                                                            .foregroundStyle(.red)
+                                                            .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+                                                            .offset(y: viewModel.annotationSize * 0.1)
+                                                            .zIndex(1)
+                                                        
+                                                        Image(systemName: "mappin.circle.fill")
+                                                            .resizable()
+                                                            .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
+                                                            .foregroundStyle(.red)
                                                     }
-                                                    .padding(-12)
-                                            }
-                                            .animation(.spring(response: 0.3, dampingFraction: 0.7),
-                                                      value: viewModel.getZoomLevel(viewModel.region.span))
-                                        } else {
-                                            Image(systemName: "mappin.circle.fill")
-                                                .resizable()
-                                                .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
-                                                .foregroundStyle(.orange)
+                                                }
                                                 .background(
                                                     Circle()
                                                         .fill(.white)
@@ -161,32 +143,51 @@ struct MapView: View {
                                                         .padding(-4)
                                                 )
                                                 .padding(12)
-                                                .contentShape(Circle())
-                                                .onTapGesture {
-                                                    viewModel.tappedAnnotation = true
-                                                    viewModel.tappedJournal = journal
-                                                }
-                                                .padding(-12)
-                                                .animation(.spring(response: 0.3, dampingFraction: 0.7),
-                                                          value: viewModel.getZoomLevel(viewModel.region.span))
-                                        }
-                                    }
-                                }
-
-                                // Journal Annotation
-                                if let coordinate = viewModel.tappedCoordinates {
-                                    Annotation("New Journal", coordinate: coordinate) {
-                                        Image(systemName: "plus.circle.fill")
-                                            .resizable()
-                                            .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
-                                            .foregroundStyle(.blue)
+                                            }
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.7),
+                                                      value: viewModel.getZoomLevel(viewModel.region.span))
+                                        } else {
+                                            Button {
+                                                viewModel.tappedAnnotation = true
+                                                viewModel.tappedJournal = journal
+                                            } label: {
+                                                Image(systemName: "mappin.circle.fill")
+                                                    .resizable()
+                                                    .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
+                                                    .foregroundStyle(.orange)
+                                            }
                                             .background(
                                                 Circle()
                                                     .fill(.white)
                                                     .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
                                                     .padding(-4)
                                             )
-                                            .contentShape(Circle())
+                                            .padding(12)
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.7),
+                                                      value: viewModel.getZoomLevel(viewModel.region.span))
+                                        }
+                                    }
+                                }
+
+                                // New Journal Annotation
+                                if let coordinate = viewModel.tappedCoordinates {
+                                    Annotation("New Journal", coordinate: coordinate) {
+                                        Button {
+                                            withAnimation {
+                                                viewModel.showNewPlaceSheet = true
+                                            }
+                                        } label: {
+                                            Image(systemName: "plus.circle.fill")
+                                                .resizable()
+                                                .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
+                                                .foregroundStyle(.blue)
+                                        }
+                                        .background(
+                                            Circle()
+                                                .fill(.white)
+                                                .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                                .padding(-4)
+                                        )
                                     }
                                 }
                             }
