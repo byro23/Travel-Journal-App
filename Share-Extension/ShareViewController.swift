@@ -8,91 +8,67 @@
 import UIKit
 import Social
 import UniformTypeIdentifiers
+import FirebaseAuth
 import SwiftUI
 
 class ShareViewController: SLComposeServiceViewController {
-
+    
+    let authController = AuthController()
+    
     override func viewDidLoad() {
-            super.viewDidLoad()
+        super.viewDidLoad()
         
-        guard
-            let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = extensionItem.attachments?.first else {
-                close()
+        // Sign in user and load the view
+        retrieveIDTokenFromSharedFile { [weak self] token in
+            guard let self = self, let token = token else {
+                print("No valid ID token found.")
+                DispatchQueue.main.async {
+                    self?.presentErrorView()
+                }
                 return
             }
-        
-                // Check type identifier
-                let imageDataType = UTType.image.identifier
-                if itemProvider.hasItemConformingToTypeIdentifier(imageDataType) {
-                    
-                    // Load the item from itemProvider
-                    itemProvider.loadItem(forTypeIdentifier: imageDataType , options: nil) { (providedImage, error) in
-                        if let error {
-                            print("Error loading image: \(error)")
-                            self.close()
-                            return
-                        }
-                        
-                        // Check if providedImage is a UIImage
-                            if let image = providedImage as? UIImage {
-                                // Display UIImage
-                                DispatchQueue.main.async {
-                                    let contentView = UIHostingController(rootView: ShareView(image: image))
-                                    self.addChild(contentView)
-                                    self.view.addSubview(contentView.view)
-                                    self.setupConstraints(for: contentView)
-                                }
-                            }
-                            // Check if providedImage is a file URL to the image
-                            else if let url = providedImage as? URL, let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData) {
-                                // Display image from URL
-                                DispatchQueue.main.async {
-                                    let contentView = UIHostingController(rootView: ShareView(image: image))
-                                    self.addChild(contentView)
-                                    self.view.addSubview(contentView.view)
-                                    self.setupConstraints(for: contentView)
-                                }
-                            }
-                            // Check if providedImage is NSData and convert to UIImage
-                            else if let imageData = providedImage as? Data, let image = UIImage(data: imageData) {
-                                // Display image from NSData
-                                DispatchQueue.main.async {
-                                    let contentView = UIHostingController(rootView: ShareView(image: image))
-                                    self.addChild(contentView)
-                                    self.view.addSubview(contentView.view)
-                                    self.setupConstraints(for: contentView)
-                                }
-                            }
-                            else {
-                                self.close()
-                                return
-                            }
-                    }
-                } else {
-                    close()
-                    return
-                }
-                
-                // Listens for ShareView to notify to close the view
-                NotificationCenter.default.addObserver(forName: NSNotification.Name("close"), object: nil, queue: nil) { _ in
-                    DispatchQueue.main.async {
-                        self.close()
-                    }
-                }
+            
+            self.authController.signIn(with: token)
+            
+            guard let currentUser = authController.currentUser else {
+                print("No user returned after authentication.")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.presentShareView(with: currentUser)
+            }
+        }
     }
-       
-    func setupConstraints(for contentView: UIHostingController<ShareView>) {
-        contentView.view.translatesAutoresizingMaskIntoConstraints = false
-        contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        contentView.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        contentView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+    
+    private func retrieveIDTokenFromSharedFile(completion: @escaping (String?) -> Void) {
+        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let tokenFilePath = documentsDirectory.appendingPathComponent("firebaseIDToken.txt")
+            
+            do {
+                let token = try String(contentsOf: tokenFilePath, encoding: .utf8)
+                completion(token)
+            } catch {
+                print("Error reading ID token: \(error)")
+                completion(nil)
+            }
+        } else {
+            completion(nil)
+        }
+    }
+    
+    private func presentShareView(with user: User) {
+        let contentView = UIHostingController(rootView: NewPlaceView(showingSheet: .constant(true), longitude: 0.0, latitude: 0.0).environmentObject(authController))
+        self.addChild(contentView)
+        self.view.addSubview(contentView.view)
+    }
+    
+    private func presentErrorView() {
+        let contentView = UIHostingController(rootView: ErrorView())
+        self.addChild(contentView)
+        contentView.view.frame = self.view.bounds
+        self.view.addSubview(contentView.view)
+        contentView.didMove(toParent: self)
     }
 
-    
-    // Close the Share Extension
-    func close() {
-        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-    }
 }
