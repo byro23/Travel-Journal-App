@@ -56,17 +56,22 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var searchText: String = "" {
         didSet {
             if searchText.isEmpty {
-                searchSuggestions = []  // Clear suggestions
-                
-                // Restore the previous region if available
-                if let previousRegion = previousRegion {
-                    withAnimation(.easeOut(duration: 0.3)) {
-                        region = previousRegion
-                        cameraPosition = .region(region)
+                // Only restore previous region if we're clearing from an active search
+                if !searchSuggestions.isEmpty {
+                    searchSuggestions = []  // Clear suggestions first
+                    if let previousRegion = previousRegion {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            region = previousRegion
+                            cameraPosition = .region(previousRegion)
+                        }
+                        self.previousRegion = nil
                     }
-                    self.previousRegion = nil  // Clear previous region to avoid unintended reuse
                 }
             } else {
+                // Store current region only when starting a new search
+                if searchSuggestions.isEmpty {
+                    previousRegion = region
+                }
                 searchCompleter.queryFragment = searchText
             }
         }
@@ -136,29 +141,28 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             guard let self = self,
                   let coordinate = response?.mapItems.first?.placemark.coordinate else { return }
             
-            // Store the current region before moving to the new one
-            self.previousRegion = self.region
-            
             // Run all UI updates on main thread
             DispatchQueue.main.async {
-                // First clear suggestions to trigger list dismissal animation
+                // Clear suggestions first
                 withAnimation(.easeOut(duration: 0.2)) {
                     self.searchSuggestions = []
                 }
                 
-                // Short delay before moving map
+                // Move to the new location
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                        self.region = MKCoordinateRegion(
+                        let newRegion = MKCoordinateRegion(
                             center: coordinate,
                             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                         )
-                        self.previousRegion = nil
-                        self.cameraPosition = .region(self.region)
+                        self.region = newRegion
+                        self.cameraPosition = .region(newRegion)
                     }
                     
                     // Clear search text after map movement starts
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        // Don't restore previous region when clearing after successful search
+                        self.previousRegion = nil
                         withAnimation(.easeOut(duration: 0.2)) {
                             self.searchText = ""
                         }
