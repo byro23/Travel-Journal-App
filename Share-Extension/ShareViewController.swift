@@ -7,6 +7,7 @@
 
 import UIKit
 import Social
+import Photos
 import UniformTypeIdentifiers
 import FirebaseAuth
 import FirebaseCore
@@ -18,11 +19,50 @@ class ShareViewController: SLComposeServiceViewController {
     let authController = AuthController()
     var loadingView: UIHostingController<LoadingView>?
     
+    var selectedImage: UIImage?
+    var selectedCoordinates: (latitude: Double, longitude: Double) = (1, 1)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         FirebaseApp.configure()
         showLoadingView()
+        
+        // Get selected image
+        guard
+            let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
+            let itemProvider = extensionItem.attachments?.first else {
+                return
+            }
+        
+                // Check type identifier
+                let imageDataType = UTType.image.identifier
+                if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                    
+                    // Load the item from itemProvider
+                    itemProvider.loadItem(forTypeIdentifier: imageDataType , options: nil) { (providedImage, error) in
+                        if let error {
+                            print("Error loading image: \(error)")
+                            return
+                        }
+                        
+                            // Check if providedImage is a UIImage
+                            if let image = providedImage as? UIImage {
+                                self.selectedImage = image
+                                self.extractLocationData(from: image)
+                            }
+                            // Check if providedImage is a file URL to the image
+                            else if let url = providedImage as? URL, let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData) {
+                                self.selectedImage = image
+                                self.extractLocationData(from: image)
+                            }
+                            // Check if providedImage is NSData and convert to UIImage
+                            else if let imageData = providedImage as? Data, let image = UIImage(data: imageData) {
+                                self.selectedImage = image
+                                self.extractLocationData(from: image)
+                            }
+                    }
+                }
         
         // Retrieve email and password
         retrieveCredentialsFromSharedFile { [weak self] email, password in
@@ -79,7 +119,7 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     private func presentShareView(with user: User) {
-            let contentView = UIHostingController(rootView: NewJournalView(showingSheet: .constant(true), longitude: 0.0, latitude: 0.0)
+        let contentView = UIHostingController(rootView: NewJournalView(showingSheet: .constant(true), longitude: selectedCoordinates.longitude, latitude: selectedCoordinates.latitude, selectedImage: selectedImage)
                 .environmentObject(authController)
                 .environmentObject(mapViewModel))
             self.addChild(contentView)
@@ -120,6 +160,23 @@ class ShareViewController: SLComposeServiceViewController {
         
         loadingView!.didMove(toParent: self)
     }
+    
+    private func extractLocationData(from image: UIImage) {
+            // Convert UIImage to PHAsset to get location data
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
+            
+            let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
+            guard let asset = fetchResult.firstObject else { return }
+            
+            // Check for location data
+            if let location = asset.location {
+                selectedCoordinates = (latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                print("Extracted coordinates: \(selectedCoordinates)")
+            } else {
+                print("No location data found in the image.")
+            }
+        }
 
 }
 

@@ -33,10 +33,13 @@ struct NewJournalView: View {
     @State var images: [UIImage] = []
     @State var photosPickerItems : [PhotosPickerItem]  = []
     
+    // Optional image for Share Extension to provide
+    var selectedImage: UIImage?
 
-    init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
+    init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double, selectedImage: UIImage? = nil) {
         self._showingSheet = showingSheet
         _viewModel = StateObject(wrappedValue: NewJournalViewModel(longitude: longitude, latitude: latitude))
+        images.append(selectedImage!) //Import image from share extension
     }
     
     var placeNameField: some View {
@@ -243,11 +246,13 @@ struct NewJournalView: View {
                 }
                 .padding()
             }
-            
             .navigationTitle("New Journal")
             .background(Color(.systemGroupedBackground))
             .onAppear {
                 viewModel.fetchNearbyPlaces()
+                if let image = selectedImage {
+                    images.append(image)
+                }
             }
             // append selected images to images array
             .onChange(of: photosPickerItems){ _, _ in
@@ -283,6 +288,7 @@ struct NewJournalView: View {
     func uploadImagesAndSaveJournal() {
         guard !images.isEmpty else {
             saveJournalToFirestore()
+            print("Images is empty")
             return
         }
         
