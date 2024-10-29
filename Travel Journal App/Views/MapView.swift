@@ -62,7 +62,7 @@ struct MapView: View {
             .background(Color(.systemBackground))
             .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
             
-            // Enhanced Search Area
+            // Search Area
             VStack(spacing: 0) {
                 HStack {
                     ZStack {
@@ -119,65 +119,70 @@ struct MapView: View {
                                     )
                                     
                                     Annotation(journal.journalTitle, coordinate: coordinate) {
-                                        
                                         if journal.isFavourite {
-                                            VStack {
-                                                
-                                                if journal.isFavourite {
-                                                    Image(systemName: "heart.fill")
-                                                        .resizable()
-                                                        .frame(width: viewModel.annotationSize * 0.8, height: viewModel.annotationSize * 0.8)
-                                                        .foregroundStyle(.red)
-                                                        .shadow(radius: 2)
-                                                        .offset(y: -viewModel.annotationSize * 0.1)
-                                                }
+                                            VStack(spacing: viewModel.annotationSize * 0.1) {
+                                                Image(systemName: "heart.fill")
+                                                    .resizable()
+                                                    .frame(width: viewModel.annotationSize * 0.5, height: viewModel.annotationSize * 0.5)
+                                                    .foregroundStyle(.red)
+                                                    .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+                                                    .offset(y: viewModel.annotationSize * 0.1)
+                                                    .zIndex(1)
                                                 
                                                 Image(systemName: "mappin.circle.fill")
                                                     .resizable()
                                                     .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
-                                                    .foregroundStyle(journal.isFavourite ? .red : .orange)
-                                                    .shadow(radius: 2)
-                                                    .background(Color.clear)  // Ensure padding area is invisible
-                                                    .contentShape(Circle())  // Define the tappable shape as a circle
+                                                    .foregroundStyle(.red)
+                                                    .background(
+                                                        Circle()
+                                                            .fill(.white)
+                                                            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                                            .padding(-4)
+                                                    )
+                                                    .contentShape(Circle())
                                                     .onTapGesture {
                                                         viewModel.tappedAnnotation = true
                                                         viewModel.tappedJournal = journal
                                                     }
                                             }
                                             .animation(.spring(response: 0.3, dampingFraction: 0.7),
-                                                       value: viewModel.getZoomLevel(viewModel.region.span))
-                                        }
-                                        else {
+                                                      value: viewModel.getZoomLevel(viewModel.region.span))
+                                        } else {
                                             Image(systemName: "mappin.circle.fill")
                                                 .resizable()
                                                 .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
-                                                .foregroundStyle(journal.isFavourite ? .red : .orange)
-                                                .shadow(radius: 2)
-                                                .background(Color.clear)  // Ensure padding area is invisible
-                                                .contentShape(Circle())  // Define the tappable shape as a circle
+                                                .foregroundStyle(.orange)
+                                                .background(
+                                                    Circle()
+                                                        .fill(.white)
+                                                        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                                        .padding(-4)
+                                                )
+                                                .contentShape(Circle())
                                                 .onTapGesture {
                                                     viewModel.tappedAnnotation = true
                                                     viewModel.tappedJournal = journal
                                                 }
                                                 .animation(.spring(response: 0.3, dampingFraction: 0.7),
-                                                           value: viewModel.getZoomLevel(viewModel.region.span))
+                                                          value: viewModel.getZoomLevel(viewModel.region.span))
                                         }
-                                        
-                                        
                                     }
                                 }
-                                
+
+                                // Journal Annotation
                                 if let coordinate = viewModel.tappedCoordinates {
-                                    
                                     Annotation("New Journal", coordinate: coordinate) {
-                                        VStack {
-                                            Image(systemName: "plus.circle.fill")
-                                                .resizable()
-                                                .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
-                                                .foregroundStyle(.blue)
-                                                .background(Circle().fill(.white))
-                                                .shadow(radius: 2)
-                                        }
+                                        Image(systemName: "plus.circle.fill")
+                                            .resizable()
+                                            .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
+                                            .foregroundStyle(.blue)
+                                            .background(
+                                                Circle()
+                                                    .fill(.white)
+                                                    .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                                    .padding(-4)
+                                            )
+                                            .contentShape(Circle())
                                     }
                                 }
                             }
