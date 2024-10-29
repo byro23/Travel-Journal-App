@@ -81,7 +81,6 @@ struct RegistrationView: View {
                 if(authController.authenticationState == .authenticated) {
                     viewModel.navigateToHome = true
                     viewModel.resetFields()
-                    navigationController.path.removeLast()
                 }
                 else if(authController.isEmailTaken == false && authController.authenticationState == .unauthenticated) {
                     viewModel.networkError = true
