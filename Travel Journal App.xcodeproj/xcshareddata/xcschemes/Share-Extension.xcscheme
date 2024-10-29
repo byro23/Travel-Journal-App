@@ -16,7 +16,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6BEF9AB82CCF11580072B869"
+               BlueprintIdentifier = "6BE3E7E12CD0AE85002DB617"
                BuildableName = "Share-Extension.appex"
                BlueprintName = "Share-Extension"
                ReferencedContainer = "container:Travel Journal App.xcodeproj">

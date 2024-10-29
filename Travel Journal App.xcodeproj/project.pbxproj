@@ -7,12 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B0D19C82CD0AEF3008147F3 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B0D19C72CD0AEF2008147F3 /* WidgetKit.framework */; };
+		6B0D19CA2CD0AEF3008147F3 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B0D19C92CD0AEF3008147F3 /* SwiftUI.framework */; };
+		6B0D19D72CD0AEF4008147F3 /* Widget-ExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6B0D19C52CD0AEF2008147F3 /* Widget-ExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6BC735D42CCF12210017B13A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC735D32CCF12210017B13A /* WidgetKit.framework */; };
 		6BC735D62CCF12210017B13A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC735D52CCF12210017B13A /* SwiftUI.framework */; };
-		6BC735E32CCF12230017B13A /* Widget-ExtensionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6BC735D12CCF12210017B13A /* Widget-ExtensionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6BC82E512CD06AE800FDB8C8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC82E502CD06AE800FDB8C8 /* FirebaseStorage */; };
+		6BC82E532CD06AFC00FDB8C8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC82E522CD06AFC00FDB8C8 /* FirebaseFirestore */; };
+		6BCDB5512CD0AFA0003BB1FE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6BCDB5502CD0AFA0003BB1FE /* FirebaseAuth */; };
+		6BCDB5532CD0AFAB003BB1FE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6BCDB5522CD0AFAB003BB1FE /* FirebaseAnalytics */; };
+		6BCDB5552CD0AFB7003BB1FE /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6BCDB5542CD0AFB7003BB1FE /* FirebaseStorage */; };
+		6BCDB5572CD0AFBC003BB1FE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6BCDB5562CD0AFBC003BB1FE /* FirebaseFirestore */; };
+		6BE3E7EC2CD0AE85002DB617 /* Share-Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6BE3E7E22CD0AE85002DB617 /* Share-Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6BE872B12CCF1DDB00CECCC9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6BE872B02CCF1DDB00CECCC9 /* FirebaseAuth */; };
 		6BE872B32CCF1DED00CECCC9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6BE872B22CCF1DED00CECCC9 /* FirebaseAnalytics */; };
-		6BE872B52CCF1DED00CECCC9 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6BE872B42CCF1DED00CECCC9 /* FirebaseFirestore */; };
 		C1D092212CC3748F00E43436 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092202CC3748F00E43436 /* FirebaseAnalytics */; };
 		C1D092232CC3748F00E43436 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092222CC3748F00E43436 /* FirebaseAuth */; };
 		C1D092252CC3748F00E43436 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C1D092242CC3748F00E43436 /* FirebaseFirestore */; };
@@ -20,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6B0D19D52CD0AEF4008147F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1D091FF2CBFC23900E43436 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6B0D19C42CD0AEF2008147F3;
+			remoteInfo = "Widget-ExtensionExtension";
+		};
 		6BC735E12CCF12230017B13A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C1D091FF2CBFC23900E43436 /* Project object */;
@@ -27,16 +42,31 @@
 			remoteGlobalIDString = 6BC735D02CCF12210017B13A;
 			remoteInfo = "Widget-ExtensionExtension";
 		};
+		6BC82E552CD06BC500FDB8C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1D091FF2CBFC23900E43436 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BEF9AB82CCF11580072B869;
+			remoteInfo = "Share-Extension";
+		};
+		6BE3E7EA2CD0AE85002DB617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C1D091FF2CBFC23900E43436 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BE3E7E12CD0AE85002DB617;
+			remoteInfo = "Share-Extension";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		6BEF9AC42CCF11590072B869 /* Embed Foundation Extensions */ = {
+		6BE3E7ED2CD0AE85002DB617 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				6BC735E32CCF12230017B13A /* Widget-ExtensionExtension.appex in Embed Foundation Extensions */,
+				6B0D19D72CD0AEF4008147F3 /* Widget-ExtensionExtension.appex in Embed Foundation Extensions */,
+				6BE3E7EC2CD0AE85002DB617 /* Share-Extension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -44,20 +74,30 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B0D19C52CD0AEF2008147F3 /* Widget-ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget-ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B0D19C72CD0AEF2008147F3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		6B0D19C92CD0AEF3008147F3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		6B9F66DF2CD0661800109133 /* Widget-ExtensionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Widget-ExtensionExtension.entitlements"; sourceTree = "<group>"; };
+		6BC735D32CCF12210017B13A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		6BC735D52CCF12210017B13A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		6BE3E7732CD0AB12002DB617 /* Widget-ExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Widget-ExtensionExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BE3E7742CD0AB12002DB617 /* Share-Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share-Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BE3E7E22CD0AE85002DB617 /* Share-Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share-Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1D092072CBFC23900E43436 /* Travel Journal App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Travel Journal App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6BC735E62CCF12230017B13A /* Exceptions for "Widget-Extension" folder in "Widget-ExtensionExtension" target */ = {
+		6B0D19D82CD0AEF4008147F3 /* Exceptions for "Widget-Extension" folder in "Widget-ExtensionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 6BC735D02CCF12210017B13A /* Widget-ExtensionExtension */;
+			target = 6B0D19C42CD0AEF2008147F3 /* Widget-ExtensionExtension */;
 		};
-		6BE872A92CCF1B0A00CECCC9 /* Exceptions for "Travel Journal App" folder in "Share-Extension" target */ = {
+		6BCDB54F2CD0AF81003BB1FE /* Exceptions for "Travel Journal App" folder in "Share-Extension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AppDelegate.swift,
 				Components/AnimatedButton.swift,
 				Components/CircularProfileImage.swift,
 				Components/ClearButton.swift,
@@ -65,8 +105,10 @@
 				Components/FloatingTextField.swift,
 				Components/HeaderView.swift,
 				Components/JournalRow.swift,
+				Components/JournalRowFirebase.swift,
 				Components/NonFloatingTextField.swift,
 				Components/PlaceRow.swift,
+				"GoogleService-Info.plist",
 				Helpers/AuthController.swift,
 				Helpers/Debouncer.swift,
 				Helpers/Extensions.swift,
@@ -78,6 +120,7 @@
 				Models/User.swift,
 				ViewModels/ChangePasswordViewModel.swift,
 				ViewModels/EditProfileViewModel.swift,
+				ViewModels/JournalDetailedViewModel.swift,
 				ViewModels/JournalsViewModel.swift,
 				ViewModels/LoginViewModel.swift,
 				ViewModels/MapViewModel.swift,
@@ -88,6 +131,7 @@
 				Views/EditProfileView.swift,
 				Views/JournalDetailedView.swift,
 				Views/JournalsView.swift,
+				Views/LoadingViews/LoadingOverLayView.swift,
 				Views/LoginView.swift,
 				Views/MapView.swift,
 				Views/NewJournalView.swift,
@@ -96,26 +140,85 @@
 				Views/SettingsView.swift,
 				Views/UserView.swift,
 			);
-			target = 6BEF9AB82CCF11580072B869 /* Share-Extension */;
+			target = 6BE3E7E12CD0AE85002DB617 /* Share-Extension */;
 		};
-		6BEF9AC72CCF11590072B869 /* Exceptions for "Share-Extension" folder in "Share-Extension" target */ = {
+		6BE3E7F02CD0AE85002DB617 /* Exceptions for "Share-Extension" folder in "Share-Extension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 6BEF9AB82CCF11580072B869 /* Share-Extension */;
+			target = 6BE3E7E12CD0AE85002DB617 /* Share-Extension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6B0D19CB2CD0AEF3008147F3 /* Widget-Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6B0D19D82CD0AEF4008147F3 /* Exceptions for "Widget-Extension" folder in "Widget-ExtensionExtension" target */,
+			);
+			path = "Widget-Extension";
+			sourceTree = "<group>";
+		};
+		6BE3E7E32CD0AE85002DB617 /* Share-Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6BE3E7F02CD0AE85002DB617 /* Exceptions for "Share-Extension" folder in "Share-Extension" target */,
+			);
+			path = "Share-Extension";
+			sourceTree = "<group>";
+		};
 		C1D092092CBFC23900E43436 /* Travel Journal App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6BCDB54F2CD0AF81003BB1FE /* Exceptions for "Travel Journal App" folder in "Share-Extension" target */,
+			);
 			path = "Travel Journal App";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6B0D19C22CD0AEF2008147F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B0D19CA2CD0AEF3008147F3 /* SwiftUI.framework in Frameworks */,
+				6B0D19C82CD0AEF3008147F3 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BC735CE2CCF12210017B13A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BC735D62CCF12210017B13A /* SwiftUI.framework in Frameworks */,
+				6BC735D42CCF12210017B13A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BE3E7DF2CD0AE85002DB617 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BCDB5532CD0AFAB003BB1FE /* FirebaseAnalytics in Frameworks */,
+				6BCDB5572CD0AFBC003BB1FE /* FirebaseFirestore in Frameworks */,
+				6BCDB5512CD0AFA0003BB1FE /* FirebaseAuth in Frameworks */,
+				6BCDB5552CD0AFB7003BB1FE /* FirebaseStorage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BEF9AB62CCF11580072B869 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BE872B32CCF1DED00CECCC9 /* FirebaseAnalytics in Frameworks */,
+				6BC82E532CD06AFC00FDB8C8 /* FirebaseFirestore in Frameworks */,
+				6BE872B12CCF1DDB00CECCC9 /* FirebaseAuth in Frameworks */,
+				6BC82E512CD06AE800FDB8C8 /* FirebaseStorage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1D092042CBFC23900E43436 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -130,10 +233,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B0D19C62CD0AEF2008147F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6B0D19C72CD0AEF2008147F3 /* WidgetKit.framework */,
+				6B0D19C92CD0AEF3008147F3 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C1D091FE2CBFC23900E43436 = {
 			isa = PBXGroup;
 			children = (
+				6B9F66DF2CD0661800109133 /* Widget-ExtensionExtension.entitlements */,
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
+				6BE3E7E32CD0AE85002DB617 /* Share-Extension */,
+				6B0D19CB2CD0AEF3008147F3 /* Widget-Extension */,
+				6B0D19C62CD0AEF2008147F3 /* Frameworks */,
 				C1D092082CBFC23900E43436 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -142,6 +258,10 @@
 			isa = PBXGroup;
 			children = (
 				C1D092072CBFC23900E43436 /* Travel Journal App.app */,
+				6BE3E7732CD0AB12002DB617 /* Widget-ExtensionExtension.appex */,
+				6BE3E7742CD0AB12002DB617 /* Share-Extension.appex */,
+				6BE3E7E22CD0AE85002DB617 /* Share-Extension.appex */,
+				6B0D19C52CD0AEF2008147F3 /* Widget-ExtensionExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,6 +269,92 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6B0D19C42CD0AEF2008147F3 /* Widget-ExtensionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6B0D19D92CD0AEF4008147F3 /* Build configuration list for PBXNativeTarget "Widget-ExtensionExtension" */;
+			buildPhases = (
+				6B0D19C12CD0AEF2008147F3 /* Sources */,
+				6B0D19C22CD0AEF2008147F3 /* Frameworks */,
+				6B0D19C32CD0AEF2008147F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6B0D19CB2CD0AEF3008147F3 /* Widget-Extension */,
+			);
+			name = "Widget-ExtensionExtension";
+			packageProductDependencies = (
+			);
+			productName = "Widget-ExtensionExtension";
+			productReference = 6B0D19C52CD0AEF2008147F3 /* Widget-ExtensionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		6BC735D02CCF12210017B13A /* Widget-ExtensionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BE3E7F22CD0AE85002DB617 /* Build configuration list for PBXNativeTarget "Widget-ExtensionExtension" */;
+			buildPhases = (
+				6BC735CE2CCF12210017B13A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Widget-ExtensionExtension";
+			packageProductDependencies = (
+			);
+			productName = "Widget-ExtensionExtension";
+			productReference = 6BE3E7732CD0AB12002DB617 /* Widget-ExtensionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		6BE3E7E12CD0AE85002DB617 /* Share-Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BE3E7F12CD0AE85002DB617 /* Build configuration list for PBXNativeTarget "Share-Extension" */;
+			buildPhases = (
+				6BE3E7DE2CD0AE85002DB617 /* Sources */,
+				6BE3E7DF2CD0AE85002DB617 /* Frameworks */,
+				6BE3E7E02CD0AE85002DB617 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6BE3E7E32CD0AE85002DB617 /* Share-Extension */,
+			);
+			name = "Share-Extension";
+			packageProductDependencies = (
+				6BCDB5502CD0AFA0003BB1FE /* FirebaseAuth */,
+				6BCDB5522CD0AFAB003BB1FE /* FirebaseAnalytics */,
+				6BCDB5542CD0AFB7003BB1FE /* FirebaseStorage */,
+				6BCDB5562CD0AFBC003BB1FE /* FirebaseFirestore */,
+			);
+			productName = "Share-Extension";
+			productReference = 6BE3E7E22CD0AE85002DB617 /* Share-Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		6BEF9AB82CCF11580072B869 /* Share-Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BE3E7F52CD0AE85002DB617 /* Build configuration list for PBXNativeTarget "Share-Extension" */;
+			buildPhases = (
+				6BEF9AB62CCF11580072B869 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Share-Extension";
+			packageProductDependencies = (
+				6BE872B02CCF1DDB00CECCC9 /* FirebaseAuth */,
+				6BE872B22CCF1DED00CECCC9 /* FirebaseAnalytics */,
+				6BC82E502CD06AE800FDB8C8 /* FirebaseStorage */,
+				6BC82E522CD06AFC00FDB8C8 /* FirebaseFirestore */,
+			);
+			productName = "Share-Extension";
+			productReference = 6BE3E7742CD0AB12002DB617 /* Share-Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C1D092062CBFC23900E43436 /* Travel Journal App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C1D0921A2CBFC23A00E43436 /* Build configuration list for PBXNativeTarget "Travel Journal App" */;
@@ -156,11 +362,15 @@
 				C1D092032CBFC23900E43436 /* Sources */,
 				C1D092042CBFC23900E43436 /* Frameworks */,
 				C1D092052CBFC23900E43436 /* Resources */,
+				6BE3E7ED2CD0AE85002DB617 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				6BC735E22CCF12230017B13A /* PBXTargetDependency */,
+				6BC82E562CD06BC500FDB8C8 /* PBXTargetDependency */,
+				6BE3E7EB2CD0AE85002DB617 /* PBXTargetDependency */,
+				6B0D19D62CD0AEF4008147F3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C1D092092CBFC23900E43436 /* Travel Journal App */,
@@ -186,6 +396,12 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					6B0D19C42CD0AEF2008147F3 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					6BE3E7E12CD0AE85002DB617 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 					C1D092062CBFC23900E43436 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -209,11 +425,27 @@
 			projectRoot = "";
 			targets = (
 				C1D092062CBFC23900E43436 /* Travel Journal App */,
+				6BE3E7E12CD0AE85002DB617 /* Share-Extension */,
+				6B0D19C42CD0AEF2008147F3 /* Widget-ExtensionExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6B0D19C32CD0AEF2008147F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BE3E7E02CD0AE85002DB617 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1D092052CBFC23900E43436 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +456,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6B0D19C12CD0AEF2008147F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BE3E7DE2CD0AE85002DB617 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C1D092032CBFC23900E43436 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,14 +480,173 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6B0D19D62CD0AEF4008147F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6B0D19C42CD0AEF2008147F3 /* Widget-ExtensionExtension */;
+			targetProxy = 6B0D19D52CD0AEF4008147F3 /* PBXContainerItemProxy */;
+		};
 		6BC735E22CCF12230017B13A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6BC735D02CCF12210017B13A /* Widget-ExtensionExtension */;
 			targetProxy = 6BC735E12CCF12230017B13A /* PBXContainerItemProxy */;
 		};
+		6BC82E562CD06BC500FDB8C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6BEF9AB82CCF11580072B869 /* Share-Extension */;
+			targetProxy = 6BC82E552CD06BC500FDB8C8 /* PBXContainerItemProxy */;
+		};
+		6BE3E7EB2CD0AE85002DB617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6BE3E7E12CD0AE85002DB617 /* Share-Extension */;
+			targetProxy = 6BE3E7EA2CD0AE85002DB617 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		6B0D19DA2CD0AEF4008147F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 993QTXD76Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Widget-Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Widget-Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Travel-Journal-App.Widget-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6B0D19DB2CD0AEF4008147F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 993QTXD76Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Widget-Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Widget-Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Travel-Journal-App.Widget-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6BE3E7EE2CD0AE85002DB617 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Share-Extension/Share-Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 993QTXD76Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Share-Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Share-Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Travel-Journal-App.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6BE3E7EF2CD0AE85002DB617 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Share-Extension/Share-Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 993QTXD76Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Share-Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Share-Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Travel-Journal-App.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6BE3E7F32CD0AE85002DB617 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Widget-ExtensionExtension";
+			};
+			name = Debug;
+		};
+		6BE3E7F42CD0AE85002DB617 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				PRODUCT_NAME = "Widget-ExtensionExtension";
+			};
+			name = Release;
+		};
+		6BE3E7F62CD0AE85002DB617 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Share-Extension";
+			};
+			name = Debug;
+		};
+		6BE3E7F72CD0AE85002DB617 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				PRODUCT_NAME = "Share-Extension";
+			};
+			name = Release;
+		};
 		C1D092182CBFC23A00E43436 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -366,11 +771,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Travel Journal App/Travel Journal App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Travel Journal App/Preview Content\"";
+				DEVELOPMENT_TEAM = 993QTXD76Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Travel-Journal-App-Info.plist";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to your photo library to allow you to upload photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -395,11 +804,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Travel Journal App/Travel Journal App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Travel Journal App/Preview Content\"";
+				DEVELOPMENT_TEAM = 993QTXD76Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Travel-Journal-App-Info.plist";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to your photo library to allow you to upload photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -422,6 +835,42 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6B0D19D92CD0AEF4008147F3 /* Build configuration list for PBXNativeTarget "Widget-ExtensionExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B0D19DA2CD0AEF4008147F3 /* Debug */,
+				6B0D19DB2CD0AEF4008147F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6BE3E7F12CD0AE85002DB617 /* Build configuration list for PBXNativeTarget "Share-Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BE3E7EE2CD0AE85002DB617 /* Debug */,
+				6BE3E7EF2CD0AE85002DB617 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6BE3E7F22CD0AE85002DB617 /* Build configuration list for PBXNativeTarget "Widget-ExtensionExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BE3E7F32CD0AE85002DB617 /* Debug */,
+				6BE3E7F42CD0AE85002DB617 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6BE3E7F52CD0AE85002DB617 /* Build configuration list for PBXNativeTarget "Share-Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BE3E7F62CD0AE85002DB617 /* Debug */,
+				6BE3E7F72CD0AE85002DB617 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C1D092022CBFC23900E43436 /* Build configuration list for PBXProject "Travel Journal App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -454,6 +903,46 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6BC82E502CD06AE800FDB8C8 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		6BC82E522CD06AFC00FDB8C8 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		6BCDB5502CD0AFA0003BB1FE /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		6BCDB5522CD0AFAB003BB1FE /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		6BCDB5542CD0AFB7003BB1FE /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		6BCDB5562CD0AFBC003BB1FE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		6BE872B02CCF1DDB00CECCC9 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		6BE872B22CCF1DED00CECCC9 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
 		C1D092202CC3748F00E43436 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C1D0921F2CC3748F00E43436 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

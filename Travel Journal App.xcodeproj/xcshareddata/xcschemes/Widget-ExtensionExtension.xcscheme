@@ -16,7 +16,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6BC735D02CCF12210017B13A"
+               BlueprintIdentifier = "6B0D19C42CD0AEF2008147F3"
                BuildableName = "Widget-ExtensionExtension.appex"
                BlueprintName = "Widget-ExtensionExtension"
                ReferencedContainer = "container:Travel Journal App.xcodeproj">
@@ -62,7 +62,7 @@
          BundleIdentifier = "com.apple.springboard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6BC735D02CCF12210017B13A"
+            BlueprintIdentifier = "6B0D19C42CD0AEF2008147F3"
             BuildableName = "Widget-ExtensionExtension.appex"
             BlueprintName = "Widget-ExtensionExtension"
             ReferencedContainer = "container:Travel Journal App.xcodeproj">

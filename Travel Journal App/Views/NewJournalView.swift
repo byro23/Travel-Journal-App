@@ -28,17 +28,24 @@ struct NewJournalView: View {
     @State private var addressScale: CGFloat = 1.0
     @State private var autofillBackgroundOpacity: Double = 0
     
+    // variable for loading feedback
+    @State var isSaving : Bool = false
     
     //image
     @State var images: [UIImage] = []
     @State var photosPickerItems : [PhotosPickerItem]  = []
     
-    // variable for loading feedback
-    @State var isSaving : Bool = false
-    
-    init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double) {
+    // Optional image for Share Extension to provide
+    var selectedImage: UIImage?
+
+    init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double, selectedImage: UIImage? = nil) {
         self._showingSheet = showingSheet
         _viewModel = StateObject(wrappedValue: NewJournalViewModel(longitude: longitude, latitude: latitude))
+        //Import image from share extension
+        if let image = selectedImage {
+            images.append(image)
+        }
+        print("Images list size is: \($images.count)")
     }
     
     var placeNameField: some View {
@@ -330,6 +337,7 @@ struct NewJournalView: View {
             saveJournalSwiftData()
             isSaving = false
             viewModel.isJournalSaved = true
+            print("Images is empty")
             return
         }
         

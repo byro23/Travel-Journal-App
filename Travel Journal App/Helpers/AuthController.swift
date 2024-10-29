@@ -59,12 +59,14 @@ class AuthController: ObservableObject { // This class is used to manage the use
             print("User authenticated.")
             await fetchUser()
             authenticationState = .authenticated
+            
+            // Save credentials for extensions to access
+            saveCredentialsToSharedFile(email: email, password: password)
         }
         catch {
             authenticationState = .unauthenticated
             print("Failed to login user.")
         }
-        
         
     }
     
@@ -114,6 +116,7 @@ class AuthController: ObservableObject { // This class is used to manage the use
             try Auth.auth().signOut()
             self.currentUser = nil
             authenticationState = .unauthenticated
+            
         }
         catch {
             print("Error signing user out: \(error)")
@@ -124,6 +127,22 @@ class AuthController: ObservableObject { // This class is used to manage the use
         try await FirebaseManager.shared.updateUserProfile(newEmail: newEmail, newName: newName)
     }
     
+    private func saveCredentialsToSharedFile(email: String, password: String) {
+        if let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.UTS.Travel-Journal-App") {
+            let emailFilePath = sharedContainerURL.appendingPathComponent("email.txt")
+            let passwordFilePath = sharedContainerURL.appendingPathComponent("password.txt")
+            
+            do {
+                try email.write(to: emailFilePath, atomically: true, encoding: .utf8)
+                try password.write(to: passwordFilePath, atomically: true, encoding: .utf8)
+                print("Credentials saved successfully to shared container.")
+            } catch {
+                print("Error saving credentials: \(error)")
+            }
+        } else {
+            print("Failed to access shared container.")
+        }
+    }
     
 }
 
