@@ -59,14 +59,38 @@ class AuthController: ObservableObject { // This class is used to manage the use
             print("User authenticated.")
             await fetchUser()
             authenticationState = .authenticated
+            
+            // Save the ID token to a shared file
+            if let idToken = try await Auth.auth().currentUser?.getIDToken() {
+                saveIDTokenToSharedFile(token: idToken)
+            }
         }
         catch {
             authenticationState = .unauthenticated
             print("Failed to login user.")
         }
         
-        
     }
+    
+    // Autehtictates the user using token
+    func signIn(with token: String) {
+        Auth.auth().signIn(withCustomToken: token) { [weak self] (authResult, error) in
+            if let error = error {
+                print("Error signing in with token: \(error)")
+                return
+            }
+            
+            // If authResult is successful, access the Firebase user
+            if let firebaseUser = authResult?.user {
+                // Map Firebase User to AppUser
+                let userId = firebaseUser.uid
+                let email = firebaseUser.email ?? ""
+                self?.currentUser = User(id: userId, name: firebaseUser.displayName ?? "", email: email)
+                print("Authenticated user ID: \(firebaseUser.uid)")
+            }
+        }
+    }
+
     
     // Create an account and authenticate the user
     func signUp(email: String, password: String, name: String) async {
@@ -114,6 +138,9 @@ class AuthController: ObservableObject { // This class is used to manage the use
             try Auth.auth().signOut()
             self.currentUser = nil
             authenticationState = .unauthenticated
+            
+            // Remove ID token file
+            removeIDTokenFile()
         }
         catch {
             print("Error signing user out: \(error)")
@@ -124,6 +151,28 @@ class AuthController: ObservableObject { // This class is used to manage the use
         try await FirebaseManager.shared.updateUserProfile(newEmail: newEmail, newName: newName)
     }
     
+    private func saveIDTokenToSharedFile(token: String) {
+        // Use the main app's documents directory
+        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let tokenFilePath = documentsDirectory.appendingPathComponent("firebaseIDToken.txt")
+            do {
+                try token.write(to: tokenFilePath, atomically: true, encoding: .utf8)
+            } catch {
+                print("Error saving ID token: \(error)")
+            }
+        }
+    }
+    
+    private func removeIDTokenFile() {
+        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let tokenFilePath = documentsDirectory.appendingPathComponent("firebaseIDToken.txt")
+            do {
+                try FileManager.default.removeItem(at: tokenFilePath)
+            } catch {
+                print("Error removing ID token file: \(error)")
+            }
+        }
+    }
     
 }
 

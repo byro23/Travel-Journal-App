@@ -8,14 +8,6 @@
 import SwiftUI
 
 struct ShareView: View {
-    
-    @State private var image: UIImage
-    @State private var text: String
-        
-        init(image: UIImage) {
-            self.image = image
-            self.text = ""
-        }
         
         var body: some View {
             NavigationStack{
