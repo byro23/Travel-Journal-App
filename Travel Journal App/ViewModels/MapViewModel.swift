@@ -153,6 +153,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                             center: coordinate,
                             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                         )
+                        self.previousRegion = nil
                         self.cameraPosition = .region(self.region)
                     }
                     
