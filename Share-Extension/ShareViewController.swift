@@ -19,7 +19,7 @@ class ShareViewController: SLComposeServiceViewController {
     let authController = AuthController()
     var loadingView: UIHostingController<LoadingView>?
     
-    var selectedImage: UIImage?
+    @State var selectedImage: UIImage?
     var selectedCoordinates: (latitude: Double, longitude: Double) = (1, 1)
     
     override func viewDidLoad() {
@@ -35,71 +35,86 @@ class ShareViewController: SLComposeServiceViewController {
                 return
             }
         
-                // Check type identifier
-                let imageDataType = UTType.image.identifier
-                if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+            // Check type identifier
+            let imageDataType = UTType.image.identifier
+            if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                
+                // Load the item from itemProvider
+                itemProvider.loadItem(forTypeIdentifier: imageDataType , options: nil) { (providedImage, error) in
+                    if let error {
+                        print("Error loading image: \(error)")
+                        return
+                    }
                     
-                    // Load the item from itemProvider
-                    itemProvider.loadItem(forTypeIdentifier: imageDataType , options: nil) { (providedImage, error) in
-                        if let error {
-                            print("Error loading image: \(error)")
+                    if let image = providedImage as? UIImage {
+                        self.selectedImage = image
+                        self.extractLocationData(from: image)
+                        print("Set selectedImage from loaded UIImage")
+                    } else if let url = providedImage as? URL {
+                        do {
+                            let imageData = try Data(contentsOf: url)
+                            if let image = UIImage(data: imageData) {
+                                self.selectedImage = image
+                                self.extractLocationData(from: image)
+                                print("Set selectedImage from loaded URl")
+                            } else {
+                                print("Could not create UIImage from data.")
+                            }
+                        } catch {
+                            print("Error loading image from URL: \(error.localizedDescription)")
+                        }
+                    } else {
+                        print("Provided item is not a UIImage or URL.")
+                    }
+                    
+                    // Check selectedImage for nil after attempts to load
+                    if self.selectedImage == nil {
+                        print("Selected image is NIL after attempts to load.")
+                    } else {
+                        print("Selected image loaded successfully.")
+                    }
+                    
+                    // Retrieve email and password
+                    self.retrieveCredentialsFromSharedFile { [weak self] email, password in
+                        guard let self = self, let email = email, let password = password else {
+                            print("No valid credentials found.")
+                            DispatchQueue.main.async {
+                                self?.loadingView?.view.removeFromSuperview()
+                                self?.loadingView = nil
+                                self?.presentErrorView()
+                            }
                             return
                         }
                         
-                            // Check if providedImage is a UIImage
-                            if let image = providedImage as? UIImage {
-                                self.selectedImage = image
-                                self.extractLocationData(from: image)
-                                print("Saved selectedImage from type UIImage")
+                        // Sign in and show view
+                        Task {
+                            await self.authController.signIn(email: email, password: password)
+                            
+                            guard let currentUser = await self.authController.currentUser else {
+                                DispatchQueue.main.async {
+                                    self.loadingView?.view.removeFromSuperview()
+                                    self.loadingView = nil
+                                    self.presentErrorView()
+                                }
+                                print("No user returned after authentication with email: \(email)")
+                                return
                             }
-                            // Check if providedImage is a file URL to the image
-                            else if let url = providedImage as? URL, let imageData = try? Data(contentsOf: url), let image = UIImage(data: imageData) {
-                                self.selectedImage = image
-                                self.extractLocationData(from: image)
-                                print("Saved selectedImage from type file URl")
+                            
+                            if let image = await self.selectedImage {
+                                print("Selected image is valid before passing to NewJournalView")
+                            } else {
+                                print("Selected image is NIL before passing to NewJournalView")
                             }
-                            // Check if providedImage is NSData and convert to UIImage
-                            else if let imageData = providedImage as? Data, let image = UIImage(data: imageData) {
-                                self.selectedImage = image
-                                self.extractLocationData(from: image)
-                                print("Saved selectedImage from type NSData")
+                            
+                            DispatchQueue.main.async {
+                                self.loadingView?.view.removeFromSuperview()
+                                self.loadingView = nil
+                                self.presentView(with: currentUser)
                             }
+                        }
                     }
                 }
-        
-        // Retrieve email and password
-        retrieveCredentialsFromSharedFile { [weak self] email, password in
-            guard let self = self, let email = email, let password = password else {
-                print("No valid credentials found.")
-                DispatchQueue.main.async {
-                    self?.loadingView?.view.removeFromSuperview()
-                    self?.loadingView = nil
-                    self?.presentErrorView()
-                }
-                return
             }
-            
-            // Sign in and show view
-            Task {
-                await self.authController.signIn(email: email, password: password)
-                
-                guard let currentUser = self.authController.currentUser else {
-                    DispatchQueue.main.async {
-                        self.loadingView?.view.removeFromSuperview()
-                        self.loadingView = nil
-                        self.presentErrorView()
-                    }
-                    print("No user returned after authentication with email: \(email)")
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    self.loadingView?.view.removeFromSuperview()
-                    self.loadingView = nil
-                    self.presentShareView(with: currentUser)
-                }
-            }
-        }
     }
     
     func retrieveCredentialsFromSharedFile(completion: @escaping (String?, String?) -> Void) {
@@ -121,7 +136,7 @@ class ShareViewController: SLComposeServiceViewController {
         }
     }
     
-    private func presentShareView(with user: User) {
+    private func presentView(with user: User) {
         let contentView = UIHostingController(rootView: NewJournalView(showingSheet: .constant(true), longitude: selectedCoordinates.longitude, latitude: selectedCoordinates.latitude, selectedImage: selectedImage)
                 .environmentObject(authController)
                 .environmentObject(mapViewModel))
@@ -137,7 +152,7 @@ class ShareViewController: SLComposeServiceViewController {
             ])
             
             contentView.didMove(toParent: self)
-        }
+    }
     
     private func presentErrorView() {
         let contentView = UIHostingController(rootView: ErrorView())

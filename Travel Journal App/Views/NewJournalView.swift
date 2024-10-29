@@ -36,10 +36,11 @@ struct NewJournalView: View {
     @State var photosPickerItems : [PhotosPickerItem]  = []
     
     // Optional image for Share Extension to provide
-    var selectedImage: UIImage?
+    @State var selectedImage: UIImage?
 
     init(showingSheet: Binding<Bool>, longitude: Double, latitude: Double, selectedImage: UIImage? = nil) {
         self._showingSheet = showingSheet
+        self._selectedImage = State(initialValue: selectedImage)
         _viewModel = StateObject(wrappedValue: NewJournalViewModel(longitude: longitude, latitude: latitude))
     }
     
