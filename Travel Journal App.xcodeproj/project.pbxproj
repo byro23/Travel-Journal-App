@@ -119,6 +119,7 @@
 				Models/Place.swift,
 				Models/User.swift,
 				ViewModels/ChangePasswordViewModel.swift,
+				ViewModels/EditJournalViewModel.swift,
 				ViewModels/EditProfileViewModel.swift,
 				ViewModels/JournalDetailedViewModel.swift,
 				ViewModels/JournalsViewModel.swift,

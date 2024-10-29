@@ -9,7 +9,7 @@ import FirebaseStorage
 import MapKit
 
 struct JournalDetailedView: View {
-    let journal: JournalSwiftData
+    @Bindable var journal: JournalSwiftData
     
     @Environment(\.modelContext) private var context
     
@@ -26,7 +26,7 @@ struct JournalDetailedView: View {
     @State private var isPresentingEditView = false
     
     init(journal: JournalSwiftData) {
-        self.journal = journal
+        _journal = Bindable(wrappedValue: journal)
         _isFavorite = State(initialValue: journal.isFavourite)
         _region = State(initialValue: MKCoordinateRegion(
             center: CLLocationCoordinate2D(
@@ -123,6 +123,9 @@ struct JournalDetailedView: View {
             }
             .padding(.vertical)
         }
+        .onChange(of: journal.imageReferences) { _ in
+                fetchImages()
+        }
         .onAppear {
             fetchImages()
         }
@@ -150,7 +153,7 @@ struct JournalDetailedView: View {
         // Sheet for editing journal
         .sheet(isPresented: $isPresentingEditView) {
             NavigationView {
-                EditJournalView(journal: journal)
+                EditJournalView(viewModel: EditJournalViewModel(), journal: journal)
             }
         }
     }
