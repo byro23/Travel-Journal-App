@@ -119,17 +119,35 @@ struct MapView: View {
                                     )
                                     
                                     Annotation(journal.journalTitle, coordinate: coordinate) {
-                                        VStack {
-                                            
-                                            if journal.isFavourite {
-                                                Image(systemName: "heart.fill")
+                                        
+                                        if journal.isFavourite {
+                                            VStack {
+                                                
+                                                if journal.isFavourite {
+                                                    Image(systemName: "heart.fill")
+                                                        .resizable()
+                                                        .frame(width: viewModel.annotationSize * 0.8, height: viewModel.annotationSize * 0.8)
+                                                        .foregroundStyle(.red)
+                                                        .shadow(radius: 2)
+                                                        .offset(y: -viewModel.annotationSize * 0.1)
+                                                }
+                                                
+                                                Image(systemName: "mappin.circle.fill")
                                                     .resizable()
-                                                    .frame(width: viewModel.annotationSize * 0.8, height: viewModel.annotationSize * 0.8)
-                                                    .foregroundStyle(.red)
+                                                    .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
+                                                    .foregroundStyle(journal.isFavourite ? .red : .orange)
                                                     .shadow(radius: 2)
-                                                    .offset(y: -viewModel.annotationSize * 0.1)
+                                                    .background(Color.clear)  // Ensure padding area is invisible
+                                                    .contentShape(Circle())  // Define the tappable shape as a circle
+                                                    .onTapGesture {
+                                                        viewModel.tappedAnnotation = true
+                                                        viewModel.tappedJournal = journal
+                                                    }
                                             }
-                                            
+                                            .animation(.spring(response: 0.3, dampingFraction: 0.7),
+                                                       value: viewModel.getZoomLevel(viewModel.region.span))
+                                        }
+                                        else {
                                             Image(systemName: "mappin.circle.fill")
                                                 .resizable()
                                                 .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
@@ -141,9 +159,11 @@ struct MapView: View {
                                                     viewModel.tappedAnnotation = true
                                                     viewModel.tappedJournal = journal
                                                 }
+                                                .animation(.spring(response: 0.3, dampingFraction: 0.7),
+                                                           value: viewModel.getZoomLevel(viewModel.region.span))
                                         }
-                                        .animation(.spring(response: 0.3, dampingFraction: 0.7),
-                                                   value: viewModel.getZoomLevel(viewModel.region.span))
+                                        
+                                        
                                     }
                                 }
                                 
