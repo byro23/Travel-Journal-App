@@ -248,6 +248,7 @@ struct NewJournalView: View {
             .background(Color(.systemGroupedBackground))
             .onAppear {
                 viewModel.fetchNearbyPlaces()
+                mapViewModel.tappedCoordinates = nil
             }
             // append selected images to images array
             .onChange(of: photosPickerItems){ _, _ in
