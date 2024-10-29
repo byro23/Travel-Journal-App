@@ -140,10 +140,12 @@ struct MapView: View {
                                                             .padding(-4)
                                                     )
                                                     .contentShape(Circle())
+                                                    .padding(12)
                                                     .onTapGesture {
                                                         viewModel.tappedAnnotation = true
                                                         viewModel.tappedJournal = journal
                                                     }
+                                                    .padding(-12)
                                             }
                                             .animation(.spring(response: 0.3, dampingFraction: 0.7),
                                                       value: viewModel.getZoomLevel(viewModel.region.span))
@@ -158,11 +160,13 @@ struct MapView: View {
                                                         .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
                                                         .padding(-4)
                                                 )
+                                                .padding(12)
                                                 .contentShape(Circle())
                                                 .onTapGesture {
                                                     viewModel.tappedAnnotation = true
                                                     viewModel.tappedJournal = journal
                                                 }
+                                                .padding(-12)
                                                 .animation(.spring(response: 0.3, dampingFraction: 0.7),
                                                           value: viewModel.getZoomLevel(viewModel.region.span))
                                         }
