@@ -59,7 +59,7 @@ struct JournalsView: View {
                 .padding()
             }
             
-            if(!viewModel.journals.isEmpty) {
+            if(!viewModel.allJournals.isEmpty) {
                 HStack {
                     FilterButton(title: "All", isSelected: viewModel.filterState == .all) {
                         viewModel.filterState = .all
