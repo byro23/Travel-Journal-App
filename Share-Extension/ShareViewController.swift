@@ -52,6 +52,13 @@ class ShareViewController: SLComposeServiceViewController {
                         print("Set selectedImage from loaded UIImage")
                     } else if let url = providedImage as? URL {
                         do {
+                            print("Loading image from URL: \(url)")
+                            if FileManager.default.fileExists(atPath: url.path) {
+                                print("File exists at path: \(url.path)")
+                            } else {
+                                print("File does not exist at path: \(url.path)")
+                            }
+
                             let imageData = try Data(contentsOf: url)
                             if let image = UIImage(data: imageData) {
                                 self.selectedImage = image
