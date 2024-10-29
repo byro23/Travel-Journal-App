@@ -7,75 +7,30 @@
 
 import WidgetKit
 import SwiftUI
-
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), imageUrl: nil)
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), imageUrl: URL(string: "https://example.com/image.jpg"))
-        completion(entry)
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        let currentDate = Date()
-
-        fetchRandomImageUrl { imageUrl in
-            // Create entries with the fetched image URL
-            for hourOffset in 0 ..< 5 {
-                let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-                let entry = SimpleEntry(date: entryDate, imageUrl: imageUrl)
-                entries.append(entry)
-            }
-
-            // Pass the timeline back to the widget
-            let timeline = Timeline(entries: entries, policy: .atEnd)
-            completion(timeline)
-        }
-    }
-
-    func fetchRandomImageUrl(completion: @escaping (URL?) -> ()) {
-        
-        let testImageUrl = URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg/800px-Altja_j%C3%B5gi_Lahemaal.jpg")
-        print("Image URL: \(String(describing: testImageUrl))")
-        completion(testImageUrl)
-    }
-}
+import UIKit
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let imageUrl: URL?
+    let image: UIImage
+    let title: String
 }
 
 struct Widget_ExtensionEntryView: View {
-    var entry: Provider.Entry
+    var entry: SimpleEntry
 
     var body: some View {
-        ZStack {
-            if let imageUrl = entry.imageUrl {
-                AsyncImage(url: imageUrl) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color.gray // Placeholder while image loads
-                }
-            } else {
-                Color.gray // Fallback if no image URL is available
-            }
+        VStack {
+            Image(uiImage: entry.image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 100, height: 100) // Adjust as needed
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             
-            // Text overlay for the date
-            VStack {
-                Spacer()
-                Text(entry.date, style: .date)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding([.leading, .bottom, .trailing], 8)
-            }
+            Text(entry.title)
+                .font(.headline)
+                .padding([.top], 8)
         }
+        .padding()
     }
 }
 
@@ -84,22 +39,58 @@ struct Widget_Extension: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            if #available(iOS 17.0, *) {
-                Widget_ExtensionEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
-            } else {
-                Widget_ExtensionEntryView(entry: entry)
-                    .padding()
-                    .background()
-            }
+            Widget_ExtensionEntryView(entry: entry)
         }
-        .configurationDisplayName("Travel Journal Image")
-        .description("Shows a random travel journal image with the date.")
+        .configurationDisplayName("Travel Journal")
+        .description("Shows the latest journal entry.")
     }
 }
 
-#Preview(as: .systemSmall) {
-    Widget_Extension()
-} timeline: {
-    SimpleEntry(date: .now, imageUrl: URL(string: "https://example.com/image.jpg"))
+struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry {
+        let originalImage = UIImage(named: "placeholder") ?? UIImage(systemName: "photo")!
+        let resizedImage = resizeImage(originalImage, targetSize: CGSize(width: 500, height: 500))
+        return SimpleEntry(date: Date(), image: resizedImage, title: "Journal Title")
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
+        let originalImage = UIImage(named: "placeholder") ?? UIImage(systemName: "photo")!
+        let resizedImage = resizeImage(originalImage, targetSize: CGSize(width: 500, height: 500))
+        let entry = SimpleEntry(date: Date(), image: resizedImage, title: "Journal Title")
+        completion(entry)
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
+        let originalImage = UIImage(named: "placeholder") ?? UIImage(systemName: "photo")!
+        let resizedImage = resizeImage(originalImage, targetSize: CGSize(width: 500, height: 500))
+        let entry = SimpleEntry(date: Date(), image: resizedImage, title: "Journal Title")
+        
+        let timeline = Timeline(entries: [entry], policy: .atEnd)
+        completion(timeline)
+    }
+}
+
+// Helper function to resize images to fit within the widget's allowed dimensions
+func resizeImage(_ image: UIImage, targetSize: CGSize) -> UIImage {
+    let size = image.size
+    
+    let widthRatio  = targetSize.width  / size.width
+    let heightRatio = targetSize.height / size.height
+    let scaleFactor = min(widthRatio, heightRatio)
+    
+    let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
+    
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+    image.draw(in: CGRect(origin: .zero, size: newSize))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return newImage!
+}
+
+struct Widget_Extension_Previews: PreviewProvider {
+    static var previews: some View {
+        Widget_ExtensionEntryView(entry: SimpleEntry(date: Date(), image: UIImage(systemName: "photo")!, title: "Journal Title"))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+    }
 }

@@ -384,6 +384,10 @@ struct NewJournalView: View {
             do {
                 try context.save()  // Ensure the data is saved
                 print("Journal saved for: \(userId)")
+                // Save journal data and image to the shared container for the widget
+                if let firstImage = images.first {
+                    saveJournalDataToSharedContainer(journal: journal, image: firstImage)
+                }
             } catch {
                 print("Failed to save journal: \(error)")
             }
@@ -436,6 +440,33 @@ struct NewJournalView: View {
         print("Images list size is: \(images.count)")
     }
     
+    func saveJournalDataToSharedContainer(journal: JournalSwiftData, image: UIImage) {
+        if let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.UTS.Travel-Journal-App") {
+            let journalFilePath = sharedContainerURL.appendingPathComponent("latestJournal.txt")
+            let imageFilePath = sharedContainerURL.appendingPathComponent("latestImage.jpg")
+            
+            // Save journal text
+            let journalContent = "Title: \(journal.journalTitle)\nEntry: \(journal.journalEntry)"
+            do {
+                try journalContent.write(to: journalFilePath, atomically: true, encoding: .utf8)
+            } catch {
+                print("Error saving journal data: \(error)")
+            }
+            
+            // Save image as JPEG
+            if let imageData = image.jpegData(compressionQuality: 1.0) {
+                do {
+                    try imageData.write(to: imageFilePath)
+                    print("Latest journal image saved successfully.")
+                } catch {
+                    print("Error saving journal image: \(error)")
+                }
+            }
+        } else {
+            print("Failed to access shared container.")
+        }
+    }
+
 }
 
 
