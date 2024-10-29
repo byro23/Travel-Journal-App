@@ -133,18 +133,17 @@ struct MapView: View {
                                                     .resizable()
                                                     .frame(width: viewModel.annotationSize, height: viewModel.annotationSize)
                                                     .foregroundStyle(.red)
-                                            }
-                                            .background(
-                                                Circle()
-                                                    .fill(.white)
-                                                    .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
-                                                    .frame(width: viewModel.annotationSize * 1.4, height: viewModel.annotationSize * 1.4)
-                                            )
-                                            .padding(20) // Add padding for larger tap target
-                                            .contentShape(Rectangle()) // Make entire area tappable
-                                            .onTapGesture {
-                                                viewModel.tappedAnnotation = true
-                                                viewModel.tappedJournal = journal
+                                                    .background(
+                                                        Circle()
+                                                            .fill(.white)
+                                                            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                                            .padding(-4)
+                                                    )
+                                                    .contentShape(Circle())
+                                                    .onTapGesture {
+                                                        viewModel.tappedAnnotation = true
+                                                        viewModel.tappedJournal = journal
+                                                    }
                                             }
                                             .animation(.spring(response: 0.3, dampingFraction: 0.7),
                                                       value: viewModel.getZoomLevel(viewModel.region.span))
@@ -157,10 +156,9 @@ struct MapView: View {
                                                     Circle()
                                                         .fill(.white)
                                                         .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
-                                                        .frame(width: viewModel.annotationSize * 1.4, height: viewModel.annotationSize * 1.4)
+                                                        .padding(-4)
                                                 )
-                                                .padding(20) // Add padding for larger tap target
-                                                .contentShape(Rectangle()) // Make entire area tappable
+                                                .contentShape(Circle())
                                                 .onTapGesture {
                                                     viewModel.tappedAnnotation = true
                                                     viewModel.tappedJournal = journal
@@ -182,10 +180,9 @@ struct MapView: View {
                                                 Circle()
                                                     .fill(.white)
                                                     .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
-                                                    .frame(width: viewModel.annotationSize * 1.4, height: viewModel.annotationSize * 1.4)
+                                                    .padding(-4)
                                             )
-                                            .padding(20)
-                                            .contentShape(Rectangle())
+                                            .contentShape(Circle())
                                     }
                                 }
                             }
