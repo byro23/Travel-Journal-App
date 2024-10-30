@@ -6,6 +6,13 @@
 
 ## Instructions
 
+### Login Credentials
+
+To test out the app you can use the following login credentials: 
+Email: dylan@icloud.com
+Password: password123
+
+
 ### Package Dependencies
 
 All package dependencies should automatically install upon after cloning the repository.
